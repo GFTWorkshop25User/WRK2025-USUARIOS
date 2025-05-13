@@ -20,6 +20,15 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build and Verify
-      run: mvn -B verify --no-transfer-progress
+    - name: Build with Maven
+      run: mvn clean verify
+
+    - name: Check JaCoCo coverage
+      run: |
+        mvn jacoco:report
+        coverage=$(grep -oP 'line-rate="\K[0-9.]+(?=")' target/site/jacoco/jacoco.xml)
+        if (( $(echo "$coverage < 1.0" | bc -l) )); then
+          echo "Coverage is below 100%: $coverage"
+          exit 1
+        fi
 
