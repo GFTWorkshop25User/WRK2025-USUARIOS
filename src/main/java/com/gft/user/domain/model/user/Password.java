@@ -13,7 +13,6 @@ public class Password {
             throw new IllegalArgumentException("Password cannot be empty");
         }
         this.hashedValue = BCrypt.hashpw(value, BCrypt.gensalt());
-        System.out.println(hashedValue);
     }
 
     public boolean checkPassword(String password) {
