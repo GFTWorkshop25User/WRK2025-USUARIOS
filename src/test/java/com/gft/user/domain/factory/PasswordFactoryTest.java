@@ -1,6 +1,5 @@
-package com.gft.user.domain.service;
+package com.gft.user.domain.factory;
 
-import com.gft.user.domain.factory.PasswordFactory;
 import com.gft.user.domain.model.user.Password;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
