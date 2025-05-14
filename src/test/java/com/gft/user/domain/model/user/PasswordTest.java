@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PasswordTest {
+class PasswordTest {
 
     @Test
     public void should_throwIllegalArgumentException_when_emailPasswordIsNull() {

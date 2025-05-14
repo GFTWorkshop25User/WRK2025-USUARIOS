@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class UserIdTest {
+class UserIdTest {
 
     @Test
     void should_notBeNull_when_constructorCalled() {

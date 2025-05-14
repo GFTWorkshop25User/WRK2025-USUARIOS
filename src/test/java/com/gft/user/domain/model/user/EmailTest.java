@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EmailTest {
+class EmailTest {
 
     @Test
     public void should_throwIllegalArgumentException_when_emailIsNotValid() {
