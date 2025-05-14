@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
