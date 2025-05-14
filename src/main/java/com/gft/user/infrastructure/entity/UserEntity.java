@@ -1,8 +1,6 @@
 package com.gft.user.infrastructure.entity;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Generated;
 import lombok.Getter;
@@ -16,6 +14,7 @@ import java.util.UUID;
 @Setter
 @EqualsAndHashCode(of = "id")
 @Generated
+@Table(name = "USERS")
 public class UserEntity {
 
     @Id
@@ -28,7 +27,14 @@ public class UserEntity {
     @Embedded
     private AddressEntity address;
 
+    @ElementCollection
+    @CollectionTable(
+            name = "USER_FAVORITE_PRODUCTS",
+            joinColumns = @JoinColumn(name = "USER_ID")
+    )
+    @Column(name = "PRODUCT_ID")
     private Set<Long> favoriteProductIds;
+
     private int loyaltyPoints;
 
 }
