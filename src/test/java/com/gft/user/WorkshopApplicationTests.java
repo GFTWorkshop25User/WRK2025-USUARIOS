@@ -15,7 +15,6 @@ class WorkshopApplicationTests {
 	@Test
 	void testMain() {
 		WorkshopApplication.main(new String[] {});
-		assertTrue(true);
 	}
 
 }
