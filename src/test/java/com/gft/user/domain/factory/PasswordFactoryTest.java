@@ -14,9 +14,7 @@ class PasswordFactoryTest {
 
         String message = "Password must be at least 12 characters long and contain at least one lowercase letter" +
                 ", one uppercase letter, one digit, and one special character";
-        var exception = assertThrows(IllegalArgumentException.class, () -> {
-            password = passwordFactory.createFromPlainText("test");
-        });
+        var exception = assertThrows(IllegalArgumentException.class, () -> password = passwordFactory.createFromPlainText("test"));
 
         assertEquals(message, exception.getMessage());
         assertNull(password);

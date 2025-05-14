@@ -1,6 +1,5 @@
 package com.gft.user.domain.service;
 
-import com.gft.user.domain.service.PasswordStrengthValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
