@@ -8,7 +8,7 @@ public class Password {
     private final String hashedValue;
 
     Password(String value) {
-        // TODO: implementar hash
+        // TODO: implementar hash256
         this.hashedValue = value;
     }
 }
