@@ -11,8 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -26,9 +24,9 @@ class GetUserByIdUseCaseTest {
     @InjectMocks
     private GetUserByIdUseCase getUserByIdUseCase;
 
-    private UUID uuid = UUID.randomUUID();
+    private final UUID uuid = UUID.randomUUID();
 
-    private User user = User.create(
+    private final User user = User.create(
             UserId.create(uuid),
             "Alfonso Gutierrez",
             new Email("alfonsito@gmail.com"),
