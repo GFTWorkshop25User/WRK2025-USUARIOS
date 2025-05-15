@@ -4,7 +4,7 @@ import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.entity.UserEntity;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
-import com.gft.user.infrastructure.UserMapper;
+import com.gft.user.infrastructure.mapper.UserMapper;
 import com.gft.user.infrastructure.repository.jpa.JpaUserEntityRepository;
 import org.springframework.stereotype.Repository;
 

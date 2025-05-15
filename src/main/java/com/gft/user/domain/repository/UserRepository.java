@@ -6,4 +6,7 @@ import java.util.UUID;
 
 public interface UserRepository {
     UUID save(User user);
+
+    User getById(UUID id);
+
 }
