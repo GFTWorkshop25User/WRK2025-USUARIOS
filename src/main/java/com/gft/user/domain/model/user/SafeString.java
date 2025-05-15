@@ -5,6 +5,6 @@ import org.jmolecules.ddd.annotation.ValueObject;
 
 @ValueObject
 @Generated
-public record Address(String country, String zipCode, String city, String street) {
+public record SafeString(String value) {
 
 }

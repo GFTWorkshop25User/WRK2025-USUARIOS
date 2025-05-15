@@ -26,7 +26,7 @@ public class UserEntity {
     @Embedded
     private AddressEntity address;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "USER_FAVORITE_PRODUCTS",
             joinColumns = @JoinColumn(name = "USER_ID")

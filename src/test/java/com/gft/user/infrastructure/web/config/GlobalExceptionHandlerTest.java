@@ -1,6 +1,5 @@
-package com.gft.user.infraestructure.web.config;
+package com.gft.user.infrastructure.web.config;
 
-import com.gft.user.infrastructure.web.config.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

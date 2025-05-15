@@ -20,7 +20,7 @@ public class User {
     private final LoyaltyPoints loyaltyPoints;
     private final boolean disabled;
 
-    private User(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints) {
+    private User(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints, boolean disabled) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -28,11 +28,11 @@ public class User {
         this.address = address;
         this.favoriteProductIds = favoriteProductIds;
         this.loyaltyPoints = loyaltyPoints;
-        this.disabled = false;
+        this.disabled = disabled;
     }
 
-    public static User create(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints) {
-        return new User(id, name, email, password, address, favoriteProductIds, loyaltyPoints);
+    public static User create(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints, boolean disabled) {
+        return new User(id, name, email, password, address, favoriteProductIds, loyaltyPoints, disabled);
     }
 
     public static User register(String name, Email email, Password password) {
@@ -47,7 +47,8 @@ public class User {
                 password,
                 null,
                 new HashSet<>(),
-                new LoyaltyPoints(0)
+                new LoyaltyPoints(0),
+                false
         );
     }
 }

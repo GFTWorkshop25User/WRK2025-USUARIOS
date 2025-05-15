@@ -15,7 +15,12 @@ public class Password {
         this.hashedValue = BCrypt.hashpw(value, BCrypt.gensalt());
     }
 
+    public Password(SafeString safeString) {
+        this.hashedValue = safeString.value();
+    }
+
     public boolean checkPassword(String password) {
         return BCrypt.checkpw(password, hashedValue);
     }
+
 }
