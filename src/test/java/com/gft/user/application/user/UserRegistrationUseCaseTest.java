@@ -1,7 +1,6 @@
 package com.gft.user.application.user;
 
 import com.gft.user.application.user.dto.UserRequest;
-import com.gft.user.domain.model.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
