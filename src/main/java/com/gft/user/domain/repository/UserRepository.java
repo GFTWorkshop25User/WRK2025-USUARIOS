@@ -9,4 +9,5 @@ public interface UserRepository {
 
     User getById(UUID id);
 
+    boolean existsById(UUID id);
 }

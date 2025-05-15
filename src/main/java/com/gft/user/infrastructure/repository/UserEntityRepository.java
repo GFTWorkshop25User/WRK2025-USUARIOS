@@ -1,5 +1,6 @@
 package com.gft.user.infrastructure.repository;
 
+import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.entity.UserEntity;
@@ -38,4 +39,7 @@ public class UserEntityRepository implements UserRepository {
         return userMapper.fromUserEntity(optional.get());
 
     }
+
+    @Override
+    public boolean existsById(UUID id) { return jpaUserEntityRepository.existsById(id); }
 }
