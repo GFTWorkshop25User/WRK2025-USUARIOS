@@ -1,8 +1,6 @@
 package com.gft.user.domain.model.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Generated;
-import lombok.Getter;
 import org.jmolecules.ddd.annotation.ValueObject;
 
 @ValueObject

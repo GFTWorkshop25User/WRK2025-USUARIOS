@@ -5,7 +5,6 @@ import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
-import com.gft.user.infrastructure.web.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
