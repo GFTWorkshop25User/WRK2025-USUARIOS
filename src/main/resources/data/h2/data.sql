@@ -1,14 +1,14 @@
-INSERT INTO USERS (ID, NAME, EMAIL, HASHED_PASSWORD, COUNTRY, ZIP_CODE, CITY, STREET, LOYALTY_POINTS)
+INSERT INTO USERS (ID, NAME, EMAIL, HASHED_PASSWORD, COUNTRY, ZIP_CODE, CITY, STREET, LOYALTY_POINTS, DISABLED)
 VALUES ('11111111-1111-1111-1111-111111111111', 'Alice Johnson', 'alice@example.com', 'hashed_pass1', 'USA', '10001',
-        'New York', '123 Main St', 150),
+        'New York', '123 Main St', 150, FALSE),
        ('22222222-2222-2222-2222-222222222222', 'Bob Smith', 'bob@example.com', 'hashed_pass2', 'USA', '90001',
-        'Los Angeles', '456 Sunset Blvd', 200),
+        'Los Angeles', '456 Sunset Blvd', 200, FALSE),
        ('33333333-3333-3333-3333-333333333333', 'Carol White', 'carol@example.com', 'hashed_pass3', 'Canada', 'M5H',
-        'Toronto', '789 Queen St', 300),
+        'Toronto', '789 Queen St', 300, FALSE),
        ('44444444-4444-4444-4444-444444444444', 'David Brown', 'david@example.com', 'hashed_pass4', 'UK', 'SW1A',
-        'London', '10 Downing St', 120),
+        'London', '10 Downing St', 120, TRUE),
        ('55555555-5555-5555-5555-555555555555', 'Eve Black', 'eve@example.com', 'hashed_pass5', 'Australia', '2000',
-        'Sydney', '99 George St', 180);
+        'Sydney', '99 George St', 180, FALSE);
 
 
 INSERT INTO USER_FAVORITE_PRODUCTS (PRODUCT_ID, USER_ID)
