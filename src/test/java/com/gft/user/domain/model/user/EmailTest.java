@@ -17,7 +17,7 @@ class EmailTest {
     void should_throwIllegalArgumentException_when_emailIsNotValid() {
         String email = "whiwhatanose.nose.com";
         var exception = assertThrows(IllegalArgumentException.class, () -> new Email(email));
-        assertEquals("Invalid value", exception.getMessage());
+        assertEquals("Email is not valid", exception.getMessage());
     }
 
     @Test

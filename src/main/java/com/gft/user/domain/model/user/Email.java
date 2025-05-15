@@ -11,7 +11,7 @@ public record Email(String value) {
     public Email {
         Assert.notNull(value, "Email cannot be null");
         if (!isValid(value)) {
-            throw new IllegalArgumentException("Invalid value");
+            throw new IllegalArgumentException("Email is not valid");
         }
     }
 
