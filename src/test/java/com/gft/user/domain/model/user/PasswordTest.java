@@ -8,7 +8,7 @@ class PasswordTest {
 
     @Test
     void should_throwIllegalArgumentException_when_emailPasswordIsNull() {
-        var exception = assertThrows(IllegalArgumentException.class, () -> new Password(null));
+        var exception = assertThrows(IllegalArgumentException.class, () -> new Password((String) null));
         assertEquals("Password cannot be empty", exception.getMessage());
     }
 
@@ -25,4 +25,14 @@ class PasswordTest {
 
         assertTrue(password.checkPassword(plainPassword));
     }
+
+    @Test
+    void should_createPassword_when_safeStringProvided(){
+        SafeString safeString = new SafeString("GJNFDGFBYH");
+        Password password = new Password(safeString);
+
+        assertEquals(safeString.value(), password.getHashedValue());
+
+    }
+
 }
