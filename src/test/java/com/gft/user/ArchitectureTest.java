@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 
 @AnalyzeClasses(packagesOf = WorkshopApplication.class, importOptions = ImportOption.DoNotIncludeTests.class)
-public class ArchitectureTest {
+class ArchitectureTest {
 
     private final JavaClasses classes = new ClassFileImporter()
             .importPackages("com.gft.user");
 
     @Test
-    public void thereAreNoSystemOutPrintln() {
+    void thereAreNoSystemOutPrintln() {
         ArchRule rule = noClasses()
                 .should().callMethod(System.class, "out")
                 .orShould().callMethod(System.class, "println")
