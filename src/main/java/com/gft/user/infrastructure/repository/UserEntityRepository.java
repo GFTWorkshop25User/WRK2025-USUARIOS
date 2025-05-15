@@ -8,7 +8,6 @@ import com.gft.user.infrastructure.mapper.UserMapper;
 import com.gft.user.infrastructure.repository.jpa.JpaUserEntityRepository;
 import lombok.Generated;
 import org.springframework.stereotype.Repository;
-
 import java.util.UUID;
 
 @Generated
