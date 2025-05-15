@@ -1,6 +1,7 @@
 package com.gft.user.domain.model.user;
 
 import org.jmolecules.ddd.annotation.ValueObject;
+import org.springframework.util.Assert;
 
 @ValueObject
 public record Email(String value) {
@@ -8,6 +9,7 @@ public record Email(String value) {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     public Email {
+        Assert.notNull(value, "Email cannot be null");
         if (!isValid(value)) {
             throw new IllegalArgumentException("Invalid value");
         }

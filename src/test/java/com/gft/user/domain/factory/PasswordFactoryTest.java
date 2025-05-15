@@ -9,6 +9,16 @@ class PasswordFactoryTest {
     Password password = null;
 
     @Test
+    void should_ThrowIllegalArgumentException_when_password_is_null() {
+        var passwordFactory = new PasswordFactory();
+
+        var exception = assertThrows(IllegalArgumentException.class, () -> password = passwordFactory.createFromPlainText(null));
+
+        assertEquals("Password cannot be null", exception.getMessage());
+        assertNull(password);
+    }
+
+    @Test
     void should_ThrowIllegalArgumentException_when_password_is_invalid() {
         var passwordFactory = new PasswordFactory();
 
