@@ -29,6 +29,10 @@ public class User {
         this.loyaltyPoints = loyaltyPoints;
     }
 
+    public static User create(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints) {
+        return new User(id, name, email, password, address, favoriteProductIds, loyaltyPoints);
+    }
+
     public static User register(String name, Email email, Password password) {
         Assert.notNull(name, "Name cannot be null");
         Assert.notNull(email, "Email cannot be null");

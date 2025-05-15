@@ -1,5 +1,9 @@
 package com.gft.user.domain.repository;
 
-public interface UserRepository {
+import com.gft.user.domain.model.user.User;
 
+import java.util.UUID;
+
+public interface UserRepository {
+    UUID save(User user);
 }
