@@ -1,13 +1,13 @@
 package com.gft.user.infrastructure.entity;
 
 import jakarta.persistence.Embeddable;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Embeddable
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Generated
 public class AddressEntity {
 
