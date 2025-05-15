@@ -38,4 +38,7 @@ public class UserEntityRepository implements UserRepository {
         return userMapper.fromUserEntity(optional.get());
 
     }
+
+    @Override
+    public boolean existsById(UUID id) { return jpaUserEntityRepository.existsById(id); }
 }

@@ -2,9 +2,11 @@ package com.gft.user.infrastructure.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.GetUserByIdUseCase;
+import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
+import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +22,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +43,9 @@ class UserControllerTest {
 
     @MockitoBean
     private GetUserByIdUseCase getUserByIdUseCase;
+
+    @MockitoBean
+    private DeleteUserUseCase deleteUserUseCase;
 
     @Test
     void should_responseCreated_when_userRequestIsValid() throws Exception {
@@ -78,4 +86,30 @@ class UserControllerTest {
         assertThat(responseBodyActual).isEqualToIgnoringWhitespace(responseBodyExpected);
     }
 
+
+    @Test
+    void should_responseNotFound_when_deleteUserNotFound() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(deleteUserUseCase).execute(uuid);
+
+        MvcResult mvcResult = mockMvc.perform(delete("/api/v1/users/{id}", uuid)).andExpect(status().isNotFound()).andReturn();
+
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+
+    @Test
+    void should_noResponseAndDisableUser_when_deleteUser() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doNothing().when(deleteUserUseCase).execute(uuid);
+
+        mockMvc.perform(delete("/api/v1/users/{id}", uuid)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+
+        verify(deleteUserUseCase, times(1)).execute(uuid);
+    }
 }
