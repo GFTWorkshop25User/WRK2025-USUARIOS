@@ -1,9 +1,11 @@
 package com.gft.user.infrastructure.web;
 
 import com.gft.user.application.user.GetUserByIdUseCase;
+import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
 import com.gft.user.application.user.dto.UserRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,6 +20,7 @@ public class UserController {
 
     private final UserRegistrationUseCase userRegistrationUseCase;
     private final GetUserByIdUseCase getUserByIdUseCase;
+    private final DeleteUserUseCase deleteUserUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -32,4 +35,9 @@ public class UserController {
         return ResponseEntity.ok(getUserByIdUseCase.execute(id));
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable UUID id) {
+        deleteUserUseCase.execute(id);
+    }
 }
