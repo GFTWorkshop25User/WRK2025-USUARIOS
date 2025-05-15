@@ -1,10 +1,7 @@
 package com.gft.user.infrastructure.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
@@ -13,6 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
+@NoArgsConstructor
+@AllArgsConstructor
 @Generated
 @Table(name = "USERS")
 public class UserEntity {
