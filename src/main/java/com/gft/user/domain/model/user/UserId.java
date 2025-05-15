@@ -17,4 +17,12 @@ public class UserId {
         uuid = UUID.randomUUID();
     }
 
+    private UserId(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public static UserId create(UUID uuid) {
+        return new UserId(uuid);
+    }
+
 }
