@@ -1,0 +1,58 @@
+package com.gft.user.application.user;
+
+import com.gft.user.domain.model.user.*;
+import com.gft.user.domain.repository.UserRepository;
+import com.gft.user.infrastructure.exception.UserNotFoundException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.HashSet;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class DeleteUserUseCaseTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private DeleteUserUseCase deleteUserUseCase;
+
+    private final UUID userId = UUID.randomUUID();
+
+    private final User user = User.create(
+            UserId.create(userId),
+            "Alfonso Gutierrez",
+            new Email("alfonsito@gmail.com"),
+            new Password("Pepito1234!!"),
+            new Address("","","",""),
+            new HashSet<>(),
+            new LoyaltyPoints(0),
+            false
+    );
+
+    @Test
+    void should_throwException_when_userIdDoesNotExist() {
+        when(userRepository.existsById(userId)).thenReturn(false);
+        assertThrows(UserNotFoundException.class, () -> deleteUserUseCase.execute(userId));
+    }
+
+    @Test
+    void should_disableUser_when_userIdExists() {
+        UUID userId = UUID.randomUUID();
+
+        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.getById(userId)).thenReturn(user);
+
+        deleteUserUseCase.execute(userId);
+
+        assertTrue(user.isDisabled());
+    }
+}
