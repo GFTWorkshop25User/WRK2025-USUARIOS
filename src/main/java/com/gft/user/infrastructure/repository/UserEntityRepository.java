@@ -1,6 +1,5 @@
 package com.gft.user.infrastructure.repository;
 
-import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.entity.UserEntity;
