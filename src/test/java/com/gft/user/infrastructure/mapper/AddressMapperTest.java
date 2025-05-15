@@ -1,7 +1,6 @@
 package com.gft.user.infrastructure.mapper;
 
 import com.gft.user.domain.model.user.Address;
-import com.gft.user.infrastructure.AddressMapper;
 import com.gft.user.infrastructure.entity.AddressEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

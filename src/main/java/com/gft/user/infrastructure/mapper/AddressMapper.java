@@ -1,4 +1,4 @@
-package com.gft.user.infrastructure;
+package com.gft.user.infrastructure.mapper;
 
 import com.gft.user.domain.model.user.Address;
 import com.gft.user.infrastructure.entity.AddressEntity;
