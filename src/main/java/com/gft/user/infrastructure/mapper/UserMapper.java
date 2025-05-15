@@ -18,6 +18,6 @@ public class UserMapper {
 
     public UserEntity toUserEntity(User user) {
 
-        return new UserEntity(user.getId().getUuid(), user.getName(), user.getEmail().value(), user.getPassword().getHashedValue(), addressMapper.toAddressEntity(user.getAddress()), user.getFavoriteProductIds().stream().map(FavoriteId::value).collect(Collectors.toSet()), user.getLoyaltyPoints().getValue());
+        return new UserEntity(user.getId().getUuid(), user.getName(), user.getEmail().value(), user.getPassword().getHashedValue(), addressMapper.toAddressEntity(user.getAddress()), user.getFavoriteProductIds().stream().map(FavoriteId::value).collect(Collectors.toSet()), user.getLoyaltyPoints().getValue(), user.isDisabled());
     }
 }

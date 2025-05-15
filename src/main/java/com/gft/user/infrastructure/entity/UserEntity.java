@@ -35,5 +35,5 @@ public class UserEntity {
     private Set<Long> favoriteProductIds;
 
     private int loyaltyPoints;
-
+    private boolean disabled;
 }
