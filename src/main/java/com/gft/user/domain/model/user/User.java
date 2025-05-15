@@ -18,6 +18,7 @@ public class User {
     private final Address address;
     private final Set<FavoriteId> favoriteProductIds;
     private final LoyaltyPoints loyaltyPoints;
+    private final boolean disabled;
 
     private User(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints) {
         this.id = id;
@@ -27,6 +28,7 @@ public class User {
         this.address = address;
         this.favoriteProductIds = favoriteProductIds;
         this.loyaltyPoints = loyaltyPoints;
+        this.disabled = false;
     }
 
     public static User create(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints) {

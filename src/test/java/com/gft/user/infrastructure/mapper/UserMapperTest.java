@@ -45,5 +45,6 @@ class UserMapperTest {
         assertEquals(user.getAddress().getStreet(), userEntity.getAddress().getStreet());
         assertEquals(user.getFavoriteProductIds().stream().map(FavoriteId::value).collect(Collectors.toSet()), userEntity.getFavoriteProductIds());
         assertEquals(user.getLoyaltyPoints().getValue(), userEntity.getLoyaltyPoints());
+        assertEquals(user.isDisabled(), userEntity.isDisabled());
     }
 }
