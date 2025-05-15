@@ -10,7 +10,6 @@ import lombok.Generated;
 import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
-@Repository
 @Generated
 @Repository
 public class UserEntityRepository implements UserRepository {
