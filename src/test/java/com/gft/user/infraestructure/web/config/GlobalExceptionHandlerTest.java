@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     private GlobalExceptionHandler handler;
 
@@ -18,7 +18,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void should_throwException_when_GenericException() {
+    void should_throwException_when_GenericException() {
         Exception ex = new Exception("Generic exception has been thrown");
         ResponseEntity<Object> response = handler.handleException(ex);
 
@@ -27,7 +27,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void should_throwException_when_IllegalArgumentException() {
+    void should_throwException_when_IllegalArgumentException() {
 
         IllegalArgumentException ex = new IllegalArgumentException("Argument is invalid");
         ResponseEntity<Object> response = handler.handleException(ex);
@@ -35,8 +35,4 @@ public class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Argument is invalid", response.getBody());
     }
-
-
-
-
 }

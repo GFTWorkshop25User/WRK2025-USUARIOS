@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PasswordStrengthValidatorTest {
 
     @Test
-    public void should_throwIllegalArgumentException_when_passwordIsNotSecure() {
+    void should_throwIllegalArgumentException_when_passwordIsNotSecure() {
         PasswordStrengthValidator validator = new PasswordStrengthValidator();
 
         assertFalse(validator.validate("Password123456"));
@@ -17,7 +17,7 @@ class PasswordStrengthValidatorTest {
     }
 
     @Test
-    public void should_returnTrue_when_passwordIsSecure() {
+    void should_returnTrue_when_passwordIsSecure() {
         PasswordStrengthValidator validator = new PasswordStrengthValidator();
         assertTrue(validator.validate("Password123456!"));
     }
