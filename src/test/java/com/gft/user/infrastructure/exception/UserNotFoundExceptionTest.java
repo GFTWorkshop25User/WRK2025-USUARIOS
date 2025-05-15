@@ -1,6 +1,5 @@
-package com.gft.user.infraestructure.exception;
+package com.gft.user.infrastructure.exception;
 
-import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
