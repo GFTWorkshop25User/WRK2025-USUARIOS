@@ -1,6 +1,7 @@
 package com.gft.user.infrastructure.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gft.user.application.user.ChangeUserNameUseCase;
 import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
@@ -21,11 +22,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,6 +45,9 @@ class UserControllerTest {
 
     @MockitoBean
     private DeleteUserUseCase deleteUserUseCase;
+
+    @MockitoBean
+    private ChangeUserNameUseCase changeUserNameUseCase;
 
     @Test
     void should_responseCreated_when_userRequestIsValid() throws Exception {
@@ -111,5 +113,31 @@ class UserControllerTest {
 
 
         verify(deleteUserUseCase, times(1)).execute(uuid);
+    }
+
+    @Test
+    void should_responseNotFound_when_userToChangeNameNotFound() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(changeUserNameUseCase).execute(uuid, "New name");
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-name", uuid).content("New name").contentType(MediaType.TEXT_PLAIN))
+                .andExpect(status().isNotFound()).andReturn();
+
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_noResponseAndChangeUserName_when_changeNamePutCalled() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doNothing().when(changeUserNameUseCase).execute(uuid, "New name");
+
+        mockMvc.perform(put("/api/v1/users/{id}/change-name", uuid)
+                        .content("New name")
+                        .contentType(MediaType.TEXT_PLAIN))
+                .andExpect(status().isNoContent());
+
+        verify(changeUserNameUseCase, times(1)).execute(uuid, "New name");
     }
 }
