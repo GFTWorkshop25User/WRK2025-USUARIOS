@@ -41,6 +41,9 @@ public class User {
 
     public static User register(String name, Email email, Password password) {
         Assert.notNull(name, "Name cannot be null");
+        if(name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
         Assert.notNull(email, "Email cannot be null");
         Assert.notNull(password, "Password cannot be null");
 

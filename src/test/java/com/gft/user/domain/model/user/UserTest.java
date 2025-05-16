@@ -18,6 +18,12 @@ class UserTest {
     }
 
     @Test
+    void should_throwIllegalArgumentException_when_nameIsBlank() {
+        var exception = assertThrows(IllegalArgumentException.class, () -> User.register("", email, password));
+        assertEquals("Name cannot be blank", exception.getMessage());
+    }
+
+    @Test
     void should_throwIllegalArgumentException_when_emailIsNull() {
         var exception = assertThrows(IllegalArgumentException.class, () -> User.register(name, null, password));
         assertEquals("Email cannot be null", exception.getMessage());
