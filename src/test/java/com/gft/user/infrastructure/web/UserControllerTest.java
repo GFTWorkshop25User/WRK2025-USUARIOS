@@ -126,7 +126,7 @@ class UserControllerTest {
 
         doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(changeEmailUseCase).execute(uuid, newEmail);
 
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/changeEmail", uuid)
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/change-email", uuid)
                         .content(newEmail))
                 .andExpect(status().isNotFound())
                 .andReturn();
@@ -153,7 +153,7 @@ class UserControllerTest {
 
         doThrow(new IllegalArgumentException("Email is not valid")).when(changeEmailUseCase).execute(uuid, newEmail);
 
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/changeEmail", uuid)
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/change-email", uuid)
                         .content(newEmail)
                         .contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().isBadRequest())
@@ -169,7 +169,7 @@ class UserControllerTest {
 
         doThrow(new IllegalArgumentException("Email cannot be empty")).when(changeEmailUseCase).execute(uuid, newEmail);
 
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/changeEmail", uuid)
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-email", uuid)
                         .content(newEmail)
                         .contentType(MediaType.TEXT_PLAIN))
                 .andExpect(status().isBadRequest())
@@ -185,7 +185,7 @@ class UserControllerTest {
 
         doNothing().when(changeEmailUseCase).execute(userId, newEmail);
 
-        mockMvc.perform(put("/api/v1/users/{userId}/changeEmail", userId)
+        mockMvc.perform(put("/api/v1/users/{userId}/change-email", userId)
                         .content(newEmail)
                         .contentType(MediaType.TEXT_PLAIN)).
                 andExpect(status().isNoContent());
