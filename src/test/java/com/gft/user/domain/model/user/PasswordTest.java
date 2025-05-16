@@ -60,23 +60,7 @@ class PasswordTest {
         String newPassword = "Password12345!";
         Password oldPassword = Password.createPasswordFromPlain(newPassword);
 
-        User user = User.create(
-                new UserId(),
-                "miguel",
-                new Email("miguel@gmail.com"),
-                oldPassword,
-                new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
-                new HashSet<>(),
-                new LoyaltyPoints(0),
-                false
-        );
-
         assertTrue(oldPassword.checkPassword(newPassword));
-
-    }
-
-    @Test
-    void should_notChangePassword_when_passwordNotValid() {
 
     }
     
