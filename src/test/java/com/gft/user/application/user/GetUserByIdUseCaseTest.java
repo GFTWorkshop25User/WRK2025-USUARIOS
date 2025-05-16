@@ -30,7 +30,7 @@ class GetUserByIdUseCaseTest {
             UserId.create(uuid),
             "Alfonso Gutierrez",
             new Email("alfonsito@gmail.com"),
-            new Password("Pepito1234!!"),
+            Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe!!"),
             new Address("","","",""),
             new HashSet<>(),
             new LoyaltyPoints(0),

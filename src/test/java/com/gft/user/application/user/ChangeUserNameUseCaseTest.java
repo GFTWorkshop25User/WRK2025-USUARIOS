@@ -12,18 +12,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.HashSet;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DeleteUserUseCaseTest {
+class ChangeUserNameUseCaseTest {
 
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
-    private DeleteUserUseCase deleteUserUseCase;
+    private ChangeUserNameUseCase changeUserNameUseCase;
 
     private final UUID userId = UUID.randomUUID();
 
@@ -41,18 +41,16 @@ class DeleteUserUseCaseTest {
     @Test
     void should_throwException_when_userIdDoesNotExist() {
         when(userRepository.existsById(userId)).thenReturn(false);
-        assertThrows(UserNotFoundException.class, () -> deleteUserUseCase.execute(userId));
+        assertThrows(UserNotFoundException.class, () -> changeUserNameUseCase.execute(userId, "Alfonso Martínez"));
     }
 
     @Test
-    void should_disableUser_when_userIdExists() {
-        UUID userId = UUID.randomUUID();
-
+    void should_changeUserName_when_userIdExists() {
         when(userRepository.existsById(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
-        deleteUserUseCase.execute(userId);
+        changeUserNameUseCase.execute(userId, "Alfonso Martínez");
 
-        assertTrue(user.isDisabled());
+        assertEquals("Alfonso Martínez", user.getName());
     }
 }

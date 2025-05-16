@@ -1,6 +1,8 @@
 package com.gft.user.infrastructure.web;
 
+
 import com.gft.user.application.user.ChangeEmailUseCase;
+import com.gft.user.application.user.ChangeUserNameUseCase;
 import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
@@ -22,6 +24,7 @@ public class UserController {
     private final UserRegistrationUseCase userRegistrationUseCase;
     private final GetUserByIdUseCase getUserByIdUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final ChangeUserNameUseCase changeUserNameUseCase;
     private final ChangeEmailUseCase changeEmailUseCase;
 
     @PostMapping
@@ -43,6 +46,12 @@ public class UserController {
         deleteUserUseCase.execute(id);
     }
 
+    @PutMapping("/{id}/change-name")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUserName(@PathVariable UUID id, @RequestBody String newName) {
+        changeUserNameUseCase.execute(id, newName);
+    }
+  
     @PutMapping("/{id}/change-email")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void put(@PathVariable UUID id, @RequestBody String email) { changeEmailUseCase.execute(id, email); }

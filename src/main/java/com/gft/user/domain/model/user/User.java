@@ -12,8 +12,8 @@ import java.util.Set;
 public class User {
 
     private final UserId id;
-    private final String name;
     private Email email;
+    private String name;
     private final Password password;
     private final Address address;
     private final Set<FavoriteId> favoriteProductIds;
@@ -61,5 +61,12 @@ public class User {
                 new LoyaltyPoints(0),
                 false
         );
+    }
+
+    public void changeName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
+        this.name = name;
     }
 }

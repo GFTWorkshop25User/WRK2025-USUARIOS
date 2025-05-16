@@ -2,6 +2,7 @@ package com.gft.user.infrastructure.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.ChangeEmailUseCase;
+import com.gft.user.application.user.ChangeUserNameUseCase;
 import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
@@ -47,6 +48,9 @@ class UserControllerTest {
     private DeleteUserUseCase deleteUserUseCase;
 
     @MockitoBean
+    private ChangeUserNameUseCase changeUserNameUseCase;
+  
+    @MockitoBean
     private ChangeEmailUseCase changeEmailUseCase;
 
     @Test
@@ -69,7 +73,7 @@ class UserControllerTest {
                 new UserId(),
                 "miguel",
                 new Email("miguel@gmail.com"),
-                new Password("123456"),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe"),
                 new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
@@ -126,6 +130,18 @@ class UserControllerTest {
                         .content(newEmail))
                 .andExpect(status().isNotFound())
                 .andReturn();
+      
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_responseNotFound_when_userToChangeNameNotFound() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(changeUserNameUseCase).execute(uuid, "New name");
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-name", uuid).content("New name").contentType(MediaType.TEXT_PLAIN))
+                .andExpect(status().isNotFound()).andReturn();
 
         assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
@@ -175,5 +191,19 @@ class UserControllerTest {
                 andExpect(status().isNoContent());
 
         verify(changeEmailUseCase, times(1)).execute(userId, newEmail);
+    }
+
+    @Test
+    void should_noResponseAndChangeUserName_when_changeNamePutCalled() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doNothing().when(changeUserNameUseCase).execute(uuid, "New name");
+
+        mockMvc.perform(put("/api/v1/users/{id}/change-name", uuid)
+                        .content("New name")
+                        .contentType(MediaType.TEXT_PLAIN))
+                .andExpect(status().isNoContent());
+
+        verify(changeUserNameUseCase, times(1)).execute(uuid, "New name");
     }
 }

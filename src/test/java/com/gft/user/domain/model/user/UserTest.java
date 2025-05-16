@@ -9,7 +9,7 @@ class UserTest {
 
     private final String name = "username";
     private final Email email = new Email("email@gft.com");
-    private final Password password = new Password("Password123456!");
+    private final Password password = Password.createPasswordFromPlain("Password123456!");
 
     @Test
     void should_throwIllegalArgumentException_when_nameIsNull() {
@@ -41,5 +41,20 @@ class UserTest {
         assertEquals(name, user.getName());
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
+    }
+
+    @Test
+    void should_throwIllegalArgumentException_when_changeUserNameIsNullOrBlank() {
+        var user = User.register(name, email, password);
+        var exception = assertThrows(IllegalArgumentException.class, () -> user.changeName(null));
+        assertThrows(IllegalArgumentException.class, () -> user.changeName(" "));
+        assertEquals("Name cannot be blank", exception.getMessage());
+    }
+
+    @Test
+    void should_changeName_when_changeUserNameIsValid() {
+        var user = User.register(name, email, password);
+        user.changeName("New name");
+        assertEquals("New name", user.getName());
     }
 }
