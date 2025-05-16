@@ -42,4 +42,19 @@ class UserTest {
         assertEquals(email, user.getEmail());
         assertEquals(password, user.getPassword());
     }
+
+    @Test
+    void should_throwIllegalArgumentException_when_changeUserNameIsNullOrBlank() {
+        var user = User.register(name, email, password);
+        var exception = assertThrows(IllegalArgumentException.class, () -> user.changeName(null));
+        assertThrows(IllegalArgumentException.class, () -> user.changeName(" "));
+        assertEquals("Name cannot be blank", exception.getMessage());
+    }
+
+    @Test
+    void should_changeName_when_changeUserNameIsValid() {
+        var user = User.register(name, email, password);
+        user.changeName("New name");
+        assertEquals("New name", user.getName());
+    }
 }
