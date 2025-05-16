@@ -52,4 +52,14 @@ class PasswordTest {
         Password password = Password.createPasswordFromPlain(plainPassword);
         assertTrue(password.checkPassword(plainPassword));
     }
+    
+    @Test
+    void should_changePassword_when_passwordIsValid() {
+        String newPassword = "Password12345!";
+        Password oldPassword = Password.createPasswordFromPlain(newPassword);
+
+        assertTrue(oldPassword.checkPassword(newPassword));
+
+    }
+    
 }

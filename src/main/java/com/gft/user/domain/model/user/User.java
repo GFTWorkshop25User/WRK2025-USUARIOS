@@ -14,7 +14,7 @@ public class User {
     private final UserId id;
     private Email email;
     private String name;
-    private final Password password;
+    private Password password;
     private final Address address;
     private final Set<FavoriteId> favoriteProductIds;
     private final LoyaltyPoints loyaltyPoints;
@@ -61,6 +61,10 @@ public class User {
                 new LoyaltyPoints(0),
                 false
         );
+    }
+
+    public void changePassword(Password newPassword) {
+        this.password = newPassword;
     }
 
     public void changeName(String name) {

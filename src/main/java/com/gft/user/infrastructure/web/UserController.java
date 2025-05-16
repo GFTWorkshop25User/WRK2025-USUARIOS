@@ -1,11 +1,12 @@
 package com.gft.user.infrastructure.web;
 
-
+import com.gft.user.application.user.ChangePasswordUseCase;
 import com.gft.user.application.user.ChangeEmailUseCase;
 import com.gft.user.application.user.ChangeUserNameUseCase;
 import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
+import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class UserController {
     private final DeleteUserUseCase deleteUserUseCase;
     private final ChangeUserNameUseCase changeUserNameUseCase;
     private final ChangeEmailUseCase changeEmailUseCase;
+    private final ChangePasswordUseCase changePasswordUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -45,7 +47,7 @@ public class UserController {
     public void deleteUser(@PathVariable UUID id) {
         deleteUserUseCase.execute(id);
     }
-
+    
     @PutMapping("/{id}/change-name")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUserName(@PathVariable UUID id, @RequestBody String newName) {
@@ -55,4 +57,10 @@ public class UserController {
     @PutMapping("/{id}/change-email")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void put(@PathVariable UUID id, @RequestBody String email) { changeEmailUseCase.execute(id, email); }
+
+    @PutMapping("/{id}/change-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changePassword(@PathVariable UUID id, @RequestBody ChangePasswordRequest changePasswordRequest) {
+        changePasswordUseCase.execute(id, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
+    }
 }
