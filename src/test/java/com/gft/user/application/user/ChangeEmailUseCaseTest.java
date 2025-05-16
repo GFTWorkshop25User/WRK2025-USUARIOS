@@ -32,7 +32,7 @@ class ChangeEmailUseCaseTest {
             UserId.create(userId),
             "Alfonso Gutierrez",
             new Email("alfonsito@gmail.com"),
-            new Password("Pepito1234!!"),
+            Password.createPasswordFromPlain("Pepito1234!!"),
             new Address("","","",""),
             new HashSet<>(),
             new LoyaltyPoints(0),
