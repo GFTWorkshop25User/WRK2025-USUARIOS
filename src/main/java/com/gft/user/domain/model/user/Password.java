@@ -8,15 +8,23 @@ public class Password {
 
     private final String hashedValue;
 
-    public Password(String value) {
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("Password cannot be empty");
-        }
-        this.hashedValue = BCrypt.hashpw(value, BCrypt.gensalt());
+    private Password(String hashedValue) {
+        this.hashedValue = hashedValue;
     }
 
-    public Password(SafeString safeString) {
-        this.hashedValue = safeString.value();
+    public static Password createPasswordFromPlain(String plainPassword) {
+        if (plainPassword == null || plainPassword.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+
+        return new Password(BCrypt.hashpw(plainPassword, BCrypt.gensalt()));
+    }
+
+    public static Password createPasswordFromHashed(String hashedValue) {
+        if (hashedValue == null || hashedValue.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+        return new Password(hashedValue);
     }
 
     public boolean checkPassword(String password) {

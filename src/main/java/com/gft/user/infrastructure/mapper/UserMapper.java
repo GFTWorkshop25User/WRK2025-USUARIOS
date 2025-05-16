@@ -33,7 +33,7 @@ public class UserMapper {
                 UserId.create(userEntity.getId()),
                 userEntity.getName(),
                 new Email(userEntity.getEmail()),
-                new Password(new SafeString(userEntity.getHashedPassword())),
+                Password.createPasswordFromHashed(userEntity.getHashedPassword()),
                 addressMapper.fromAddressEntity(userEntity.getAddress()),
                 userEntity.getFavoriteProductIds().stream().map(FavoriteId::new).collect(Collectors.toSet()),
                 new LoyaltyPoints(userEntity.getLoyaltyPoints()),

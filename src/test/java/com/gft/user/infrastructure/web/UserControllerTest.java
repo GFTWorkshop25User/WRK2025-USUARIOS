@@ -67,7 +67,7 @@ class UserControllerTest {
                 new UserId(),
                 "miguel",
                 new Email("miguel@gmail.com"),
-                new Password("123456"),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe"),
                 new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
