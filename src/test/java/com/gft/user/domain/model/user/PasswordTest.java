@@ -2,6 +2,8 @@ package com.gft.user.domain.model.user;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordTest {
@@ -52,4 +54,34 @@ class PasswordTest {
         Password password = Password.createPasswordFromPlain(plainPassword);
         assertTrue(password.checkPassword(plainPassword));
     }
+    
+    @Test
+    void should_changePassword_when_passwordIsValid() {
+        String newPassword = "Password12345!";
+        Password oldPassword = Password.createPasswordFromPlain(newPassword);
+
+        User user = User.create(
+                new UserId(),
+                "miguel",
+                new Email("miguel@gmail.com"),
+                oldPassword,
+                new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
+                new HashSet<>(),
+                new LoyaltyPoints(0),
+                false
+        );
+
+        //when();
+        //user.changePassword(newPassword, oldPassword);
+
+        assertTrue(oldPassword.checkPassword(newPassword));
+
+
+    }
+
+    @Test
+    void should_notChangePassword_when_passwordNotValid() {
+
+    }
+    
 }

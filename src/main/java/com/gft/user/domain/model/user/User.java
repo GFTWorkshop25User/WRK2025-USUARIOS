@@ -1,5 +1,6 @@
 package com.gft.user.domain.model.user;
 
+import com.gft.user.domain.factory.PasswordFactory;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.springframework.util.Assert;
@@ -14,7 +15,7 @@ public class User {
     private final UserId id;
     private final String name;
     private final Email email;
-    private final Password password;
+    private Password password;
     private final Address address;
     private final Set<FavoriteId> favoriteProductIds;
     private final LoyaltyPoints loyaltyPoints;
@@ -58,4 +59,9 @@ public class User {
                 false
         );
     }
+
+    public void changePassword(Password newPassword) {
+        this.password = newPassword;
+    }
+
 }
