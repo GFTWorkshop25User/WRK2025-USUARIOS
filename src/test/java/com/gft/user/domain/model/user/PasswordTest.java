@@ -2,8 +2,6 @@ package com.gft.user.domain.model.user;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordTest {
