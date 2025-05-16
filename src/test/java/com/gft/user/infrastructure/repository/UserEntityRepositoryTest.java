@@ -39,7 +39,7 @@ class UserEntityRepositoryTest {
                 uuid,
                 "Miguel",
                 "miguel@gmail.com",
-                "Pepito123!!!!!!!!",
+                "$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe",
                 new AddressEntity("Spain", "241852", "Villalba", "Calle los floriponcios"),
                 new HashSet<>(),
                 0,
@@ -50,7 +50,7 @@ class UserEntityRepositoryTest {
                 UserId.create(uuid),
                 "Miguel",
                 new Email("miguel@gmail.com"),
-                new Password("Pepito123!!!!!!!!"),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe"),
                 new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
@@ -70,13 +70,12 @@ class UserEntityRepositoryTest {
     @Test
     void should_getUserById() {
         UUID uuid = UUID.randomUUID();
-        SafeString safeString = new SafeString("Pepito123!!!!!!!!");
 
         User user = User.create(
                 UserId.create(uuid),
                 "Miguel",
                 new Email("miguel@gmail.com"),
-                new Password(safeString),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe"),
                 new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
@@ -87,7 +86,7 @@ class UserEntityRepositoryTest {
                 uuid,
                 "Miguel",
                 "miguel@gmail.com",
-                "Pepito123!!!!!!!!",
+                "$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe",
                 new AddressEntity("Spain", "241852", "Villalba", "Calle los floriponcios"),
                 new HashSet<>(),
                 0,

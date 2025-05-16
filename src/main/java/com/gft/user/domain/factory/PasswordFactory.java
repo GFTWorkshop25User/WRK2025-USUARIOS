@@ -15,6 +15,6 @@ public class PasswordFactory {
             throw new IllegalArgumentException("Password must be at least 12 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character");
         }
 
-        return new Password(plainTextPassword);
+        return Password.createPasswordFromPlain(plainTextPassword);
     }
 }

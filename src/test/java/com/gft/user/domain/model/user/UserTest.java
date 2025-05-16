@@ -9,7 +9,7 @@ class UserTest {
 
     private final String name = "username";
     private final Email email = new Email("email@gft.com");
-    private final Password password = new Password("Password123456!");
+    private final Password password = Password.createPasswordFromPlain("Password123456!");
 
     @Test
     void should_throwIllegalArgumentException_when_nameIsNull() {
