@@ -43,7 +43,7 @@ public class UserController {
         deleteUserUseCase.execute(id);
     }
 
-    @PutMapping("/{id}/changeEmail")
+    @PutMapping("/{id}/change-email")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void put(@PathVariable UUID id, @RequestBody String email) { changeEmailUseCase.execute(id, email); }
 }
