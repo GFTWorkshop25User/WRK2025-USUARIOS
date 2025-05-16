@@ -13,7 +13,7 @@ public class User {
 
     private final UserId id;
     private final String name;
-    private final Email email;
+    private Email email;
     private final Password password;
     private final Address address;
     private final Set<FavoriteId> favoriteProductIds;
@@ -33,6 +33,10 @@ public class User {
 
     public void disableUser() {
         this.disabled = true;
+    }
+
+    public void changeEmail(Email email) {
+        this.email = email;
     }
 
     public static User create(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints, boolean disabled) {
