@@ -1,6 +1,7 @@
 package com.gft.user.infrastructure.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gft.user.application.user.ChangeEmailUseCase;
 import com.gft.user.application.user.ChangeUserNameUseCase;
 import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.DeleteUserUseCase;
@@ -48,6 +49,9 @@ class UserControllerTest {
 
     @MockitoBean
     private ChangeUserNameUseCase changeUserNameUseCase;
+  
+    @MockitoBean
+    private ChangeEmailUseCase changeEmailUseCase;
 
     @Test
     void should_responseCreated_when_userRequestIsValid() throws Exception {
@@ -78,7 +82,7 @@ class UserControllerTest {
         when(getUserByIdUseCase.execute(uuid)).thenReturn(user);
 
         String requestBody = objectMapper.writeValueAsString(user);
-        MvcResult mvcResult= mockMvc.perform(get("/api/v1/users/" + uuid).content(requestBody).contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/" + uuid).content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -108,11 +112,26 @@ class UserControllerTest {
         doNothing().when(deleteUserUseCase).execute(uuid);
 
         mockMvc.perform(delete("/api/v1/users/{id}", uuid)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
 
         verify(deleteUserUseCase, times(1)).execute(uuid);
+    }
+
+    @Test
+    void should_responseNotFound_when_changeEmailUserIdIsInvalid() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        String newEmail = "juanmiguel@gmail.com";
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(changeEmailUseCase).execute(uuid, newEmail);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/change-email", uuid)
+                        .content(newEmail))
+                .andExpect(status().isNotFound())
+                .andReturn();
+      
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
 
     @Test
@@ -125,6 +144,53 @@ class UserControllerTest {
                 .andExpect(status().isNotFound()).andReturn();
 
         assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_responseBadRequest_when_changeEmailEmailIsInvalid() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        String newEmail = "juanmiguel@gmail";
+
+        doThrow(new IllegalArgumentException("Email is not valid")).when(changeEmailUseCase).execute(uuid, newEmail);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/change-email", uuid)
+                        .content(newEmail)
+                        .contentType(MediaType.TEXT_PLAIN))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        assertEquals("Email is not valid", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_responseBadRequest_when_changeEmailEmailIsEmpty() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        String newEmail = " ";
+
+        doThrow(new IllegalArgumentException("Email cannot be empty")).when(changeEmailUseCase).execute(uuid, newEmail);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-email", uuid)
+                        .content(newEmail)
+                        .contentType(MediaType.TEXT_PLAIN))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        assertEquals("Email cannot be empty", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_noResponseAndChangeEmail_when_changeEmail() throws Exception {
+        UUID userId = UUID.randomUUID();
+        String newEmail = "juanmiguel@gmail.com";
+
+        doNothing().when(changeEmailUseCase).execute(userId, newEmail);
+
+        mockMvc.perform(put("/api/v1/users/{userId}/change-email", userId)
+                        .content(newEmail)
+                        .contentType(MediaType.TEXT_PLAIN)).
+                andExpect(status().isNoContent());
+
+        verify(changeEmailUseCase, times(1)).execute(userId, newEmail);
     }
 
     @Test
