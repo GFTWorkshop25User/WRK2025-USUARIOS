@@ -1,5 +1,6 @@
 package com.gft.user.infrastructure.web;
 
+import com.gft.user.application.user.ChangeEmailUseCase;
 import com.gft.user.application.user.GetUserByIdUseCase;
 import com.gft.user.application.user.DeleteUserUseCase;
 import com.gft.user.application.user.UserRegistrationUseCase;
@@ -21,6 +22,7 @@ public class UserController {
     private final UserRegistrationUseCase userRegistrationUseCase;
     private final GetUserByIdUseCase getUserByIdUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final ChangeEmailUseCase changeEmailUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -40,4 +42,8 @@ public class UserController {
     public void deleteUser(@PathVariable UUID id) {
         deleteUserUseCase.execute(id);
     }
+
+    @PutMapping("/{id}/changeEmail")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void put(@PathVariable UUID id, @RequestBody String email) { changeEmailUseCase.execute(id, email); }
 }
