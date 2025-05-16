@@ -1,6 +1,5 @@
 package com.gft.user.application.user;
 
-import com.gft.user.domain.factory.PasswordFactory;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;

@@ -1,6 +1,5 @@
 package com.gft.user.domain.model.user;
 
-import com.gft.user.domain.factory.PasswordFactory;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.springframework.util.Assert;

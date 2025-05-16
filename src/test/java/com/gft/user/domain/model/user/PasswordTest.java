@@ -71,11 +71,7 @@ class PasswordTest {
                 false
         );
 
-        //when();
-        //user.changePassword(newPassword, oldPassword);
-
         assertTrue(oldPassword.checkPassword(newPassword));
-
 
     }
 
