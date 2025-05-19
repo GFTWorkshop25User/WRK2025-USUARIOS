@@ -59,6 +59,9 @@ public class UserControllerIT {
     @MockitoBean
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
 
+    @MockitoBean 
+    private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
+  
     @MockitoBean
     private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
 
@@ -286,6 +289,20 @@ public class UserControllerIT {
         String actualResponseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+    }
+
+    @Test
+    void should_addProduct_when_addProductToFavoritesCalled() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doNothing().when(addUserFavoriteProductUseCase).execute(uuid, 4L);
+
+        mockMvc.perform(put("/api/v1/users/{id}/favorite-products/add", uuid)
+                        .content(objectMapper.writeValueAsString(4L))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(addUserFavoriteProductUseCase, times(1)).execute(uuid, 4L);
     }
 
     @Test

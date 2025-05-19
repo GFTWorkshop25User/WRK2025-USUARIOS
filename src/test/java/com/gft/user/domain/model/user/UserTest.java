@@ -1,9 +1,10 @@
 package com.gft.user.domain.model.user;
 
+import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
+import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
@@ -56,5 +57,21 @@ class UserTest {
         var user = User.register(name, email, password);
         user.changeName("New name");
         assertEquals("New name", user.getName());
+    }
+
+    @Test
+    void should_addFavouriteProduct_when_isNotInFavorites() {
+        var user = User.register(name, email, password);
+        user.addFavoriteProduct(new FavoriteId(4L));
+
+        assertTrue(user.getFavoriteProductIds().contains(new FavoriteId(4L)));
+    }
+
+    @Test
+    void should_notAddFavouriteProduct_when_isInFavorites() {
+        var user = User.register(name, email, password);
+        user.addFavoriteProduct(new FavoriteId(4L));
+
+        assertThrows(ProductAlreadyInFavoritesException.class, () -> user.addFavoriteProduct(new FavoriteId(4L)));
     }
 }
