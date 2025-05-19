@@ -1,5 +1,12 @@
 package com.gft.user.domain.model.user;
 
+import com.gft.user.domain.exception.ProductNotInFavoritesException;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -58,7 +65,7 @@ class UserTest {
         user.changeName("New name");
         assertEquals("New name", user.getName());
     }
-
+  
     @Test
     void should_addFavouriteProduct_when_isNotInFavorites() {
         var user = User.register(name, email, password);
@@ -73,5 +80,47 @@ class UserTest {
         user.addFavoriteProduct(new FavoriteId(4L));
 
         assertThrows(ProductAlreadyInFavoritesException.class, () -> user.addFavoriteProduct(new FavoriteId(4L)));
+    }
+  
+    @Test
+    void should_throwIllegalArgumentException_when_removeFavoriteIsNull() {
+        var user = User.register(name, email, password);
+        assertThrows(IllegalArgumentException.class, () -> user.removeFavorite(null));
+    }
+
+    @Test
+    void should_throwProductNotInFavoritesException_when_removeProductNotInFavorites() {
+        User user = User.create(
+                new UserId(),
+                "Alfonso Gutierrez",
+                new Email("alfonsito@gmail.com"),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe!!"),
+                new Address("","","",""),
+                Set.of(new FavoriteId(4L), new FavoriteId(5L)),
+                new LoyaltyPoints(0),
+                false
+        );
+        assertThrows(ProductNotInFavoritesException.class, () -> user.removeFavorite(new FavoriteId(2L)));
+    }
+
+    @Test
+    void should_removeFavorite_when_removeFavoriteIsValid() {
+        Set<FavoriteId> favorites = new HashSet<>();
+        favorites.add(new FavoriteId(4L));
+        favorites.add(new FavoriteId(5L));
+        User user = User.create(
+                new UserId(),
+                "Alfonso Gutierrez",
+                new Email("alfonsito@gmail.com"),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe!!"),
+                new Address("","","",""),
+                favorites,
+                new LoyaltyPoints(0),
+                false
+        );
+
+        user.removeFavorite(new FavoriteId(5L));
+
+        assertEquals(1, user.getFavoriteProductIds().size());
     }
 }

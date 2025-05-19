@@ -59,6 +59,9 @@ class UserControllerTest {
     @Mock
     private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
 
+    @Mock
+    private RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
+
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
         UUID uuid = UUID.randomUUID();
@@ -182,5 +185,15 @@ class UserControllerTest {
         assertEquals(favoriteIds, response.getBody());
 
         verify(getFavoriteProductsUseCase, times(1)).execute(uuid);
+    }
+
+    @Test
+    void should_removeFavoriteProduct_when_removeFavoriteProductCalled() {
+        UUID uuid = UUID.randomUUID();
+        Long productId = 1L;
+
+        userController.removeFavoriteProduct(uuid, productId);
+
+        verify(removeUserFavoriteProductUseCase, times(1)).execute(uuid, productId);
     }
 }

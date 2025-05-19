@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
+import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
@@ -59,12 +60,15 @@ public class UserControllerIT {
 
     @MockitoBean
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
-
-    @MockitoBean 
-    private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
   
     @MockitoBean
     private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
+
+    @MockitoBean 
+    private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
+
+    @MockitoBean
+    private RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
 
     @Test
     void should_responseCreated_when_userRequestIsValid() throws Exception {
@@ -334,6 +338,51 @@ public class UserControllerIT {
     }
 
     @Test
+    void should_noResponse_when_removeLoyaltyPoints() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        long productId = 4L;
+
+        doNothing().when(removeUserFavoriteProductUseCase).execute(uuid, productId);
+
+        mockMvc.perform(put("/api/v1/users/{id}/favorite-products/remove", uuid)
+                        .content(objectMapper.writeValueAsString(productId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(removeUserFavoriteProductUseCase, times(1)).execute(uuid, productId);
+    }
+
+    @Test
+    void should_responseNotFound_when_userNotFoundForRemoveLoyaltyPoints() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        long productId = 4L;
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(removeUserFavoriteProductUseCase).execute(uuid, productId);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/favorite-products/remove", uuid)
+                        .content(objectMapper.writeValueAsString(productId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound()).andReturn();
+
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_responseBadRequest_when_favoriteToRemoveNotFound() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        long productId = 8L;
+
+        doThrow(new ProductNotInFavoritesException("Product 8 is not in favorite products")).when(removeUserFavoriteProductUseCase).execute(uuid, productId);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/favorite-products/remove", uuid)
+                        .content(objectMapper.writeValueAsString(productId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        assertEquals("Product 8 is not in favorite products", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
     void should_responseBadRequest_when_productIsAlreadyInFavorites() throws Exception {
         UUID uuid = UUID.randomUUID();
         Long productId = 4L;
@@ -349,5 +398,4 @@ public class UserControllerIT {
 
         assertEquals("Product is already in favorites", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
-
 }

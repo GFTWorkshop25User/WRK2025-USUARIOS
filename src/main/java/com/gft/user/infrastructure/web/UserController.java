@@ -31,6 +31,7 @@ public class UserController {
     private final GetFavoriteProductsUseCase getFavoriteProductsUseCase;
     private final GetUserLoyaltyPointsUseCase userLoyaltyPointsUseCase;
     private final AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
+    private final RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -77,6 +78,11 @@ public class UserController {
     public ResponseEntity<?> getUserLoyaltyPoints(@PathVariable UUID id){
         return ResponseEntity.ok(userLoyaltyPointsUseCase.execute(id));
     }
+  
+    @GetMapping("/{id}/favorite-products")
+    public ResponseEntity<?> getFavorites(@PathVariable UUID id) {
+        return ResponseEntity.ok(getFavoriteProductsUseCase.execute(id));
+    }
 
     @PutMapping("/{id}/favorite-products/add")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -84,8 +90,9 @@ public class UserController {
         addUserFavoriteProductUseCase.execute(id, productId);
     }
 
-    @GetMapping("/{id}/favorite-products")
-    public ResponseEntity<?> getFavorites(@PathVariable UUID id) {
-        return ResponseEntity.ok(getFavoriteProductsUseCase.execute(id));
+    @PutMapping("/{id}/favorite-products/remove")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeFavoriteProduct(@PathVariable UUID id, @RequestBody Long productId) {
+        removeUserFavoriteProductUseCase.execute(id, productId);
     }
 }
