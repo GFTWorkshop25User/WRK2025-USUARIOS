@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,6 +56,8 @@ class UserControllerTest {
     @Mock
     private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
     
+    @Mock
+    private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
 
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
@@ -166,4 +169,18 @@ class UserControllerTest {
         verify(addUserFavoriteProductUseCase, times(1)).execute(uuid, 4L);
     }
 
+    @Test
+    void should_obtainFavoriteIds_when_obtainFavoriteIdsCalled() {
+        UUID uuid = UUID.randomUUID();
+        Set<FavoriteId> favoriteIds = new HashSet<>();
+        favoriteIds.add(new FavoriteId(4L));
+        when(getFavoriteProductsUseCase.execute(uuid)).thenReturn(favoriteIds);
+
+        ResponseEntity<?> response = userController.getFavorites(uuid);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(favoriteIds, response.getBody());
+
+        verify(getFavoriteProductsUseCase, times(1)).execute(uuid);
+    }
 }

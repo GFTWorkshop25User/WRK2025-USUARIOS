@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -54,11 +55,15 @@ public class UserControllerIT {
 
     @MockitoBean
     private ChangeAddressUseCase changeAddressUseCase;
-  
+
     @MockitoBean
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
 
-    @MockitoBean AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
+    @MockitoBean 
+    private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
+  
+    @MockitoBean
+    private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
 
     @Test
     void should_responseCreated_when_userRequestIsValid() throws Exception {
@@ -245,7 +250,7 @@ public class UserControllerIT {
 
         verify(changeUserNameUseCase, times(1)).execute(uuid, "New name");
     }
-  
+
     @Test
     void should_noResponseAndChangeAddress_when_changeAddressPutCalled() throws Exception {
         UUID uuid = UUID.randomUUID();
@@ -278,7 +283,7 @@ public class UserControllerIT {
 
         when(getUserLoyaltyPointsCaseUseCase.execute(uuid)).thenReturn(4);
 
-        MvcResult mvcResult= mockMvc.perform(get("/api/v1/users/{id}/loyalty-points", uuid)).andExpect(status().isOk()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/{id}/loyalty-points", uuid)).andExpect(status().isOk()).andReturn();
 
         String expectedResponseBody = objectMapper.writeValueAsString(4);
         String actualResponseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -300,4 +305,30 @@ public class UserControllerIT {
         verify(addUserFavoriteProductUseCase, times(1)).execute(uuid, 4L);
     }
 
+    @Test
+    void should_responseNotFound_when_userNotFoundForGetFavoriteIds() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(getFavoriteProductsUseCase).execute(uuid);
+
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/{id}/favorite-products", uuid)).andExpect(status().isNotFound()).andReturn();
+
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_returnOk_when_userFoundForGetFavoriteIds() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        Set<FavoriteId> favoriteIds = new HashSet<>();
+        favoriteIds.add(new FavoriteId(4L));
+        when(getFavoriteProductsUseCase.execute(uuid)).thenReturn(favoriteIds);
+
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/{id}/favorite-products", uuid)).andExpect(status().isOk()).andReturn();
+
+        String expectedResponseBody = objectMapper.writeValueAsString(favoriteIds);
+        String actualResponseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+    }
 }
