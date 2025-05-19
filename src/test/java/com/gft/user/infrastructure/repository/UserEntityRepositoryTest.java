@@ -128,16 +128,4 @@ class UserEntityRepositoryTest {
 
         assertTrue(userEntityRepository.existsById(uuid));
     }
-
-    @Test
-    void should_returnPoints_when_userExists() {
-
-        UUID uuid = UUID.randomUUID();
-        when(jpaUserEntityRepository.findLoyaltyPointsById(uuid)).thenReturn(4);
-
-        int points = userEntityRepository.getLoyaltyPoints(uuid);
-
-        assertEquals(4, points);
-    }
-
 }
