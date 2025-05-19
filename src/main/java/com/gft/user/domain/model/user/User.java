@@ -1,5 +1,6 @@
 package com.gft.user.domain.model.user;
 
+import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.springframework.util.Assert;
@@ -76,5 +77,15 @@ public class User {
             throw new IllegalArgumentException("Name cannot be blank");
         }
         this.name = name;
+    }
+
+    public void addFavoriteProduct(FavoriteId favoriteId) {
+        Assert.notNull(favoriteId, "Favorite Id cannot be null");
+
+        if (favoriteProductIds.contains(favoriteId)) {
+            throw new ProductAlreadyInFavoritesException("This product is already in favorites");
+        }
+
+        favoriteProductIds.add(favoriteId);
     }
 }

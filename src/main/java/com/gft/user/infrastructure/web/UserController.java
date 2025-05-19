@@ -5,6 +5,7 @@ import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.Address;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class UserController {
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ChangeAddressUseCase changeAddressUseCase;
     private final GetUserLoyaltyPointsUseCase userLoyaltyPointsUseCase;
+    private final AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -72,4 +74,11 @@ public class UserController {
     public ResponseEntity<?> getUserLoyaltyPoints(@PathVariable UUID id){
         return ResponseEntity.ok(userLoyaltyPointsUseCase.execute(id));
     }
+
+    @PutMapping("/{id}/favorite-products/add")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addProductToFavorites(@PathVariable UUID id, @RequestBody Long productId) {
+        addUserFavoriteProductUseCase.execute(id, productId);
+    }
+
 }

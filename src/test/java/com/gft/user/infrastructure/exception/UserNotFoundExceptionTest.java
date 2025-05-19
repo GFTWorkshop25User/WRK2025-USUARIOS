@@ -8,7 +8,7 @@ class UserNotFoundExceptionTest {
 
     @Test
     void should_createExceptionWithMessage_when_constructorCalled() {
-        String expectedMessage = "Usuario no encontrado.";
+        String expectedMessage = "User not found";
         UserNotFoundException exception = new UserNotFoundException(expectedMessage);
         assertEquals(expectedMessage, exception.getMessage());
     }

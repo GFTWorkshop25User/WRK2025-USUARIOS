@@ -51,6 +51,9 @@ class UserControllerTest {
     
     @Mock
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsUseCase;
+
+    @Mock
+    private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
     
 
     @Test
@@ -154,4 +157,13 @@ class UserControllerTest {
 
         verify(getUserLoyaltyPointsUseCase, times(1)).execute(uuid);
     }
+
+    @Test
+    void should_addFavorite_when_addProductToFavoritesCalled() {
+        UUID uuid = UUID.randomUUID();
+        userController.addProductToFavorites(uuid,4L);
+
+        verify(addUserFavoriteProductUseCase, times(1)).execute(uuid, 4L);
+    }
+
 }
