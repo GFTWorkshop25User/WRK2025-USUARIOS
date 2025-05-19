@@ -1,11 +1,6 @@
 package com.gft.user.infrastructure.web;
 
-import com.gft.user.application.user.ChangePasswordUseCase;
-import com.gft.user.application.user.ChangeEmailUseCase;
-import com.gft.user.application.user.ChangeUserNameUseCase;
-import com.gft.user.application.user.GetUserByIdUseCase;
-import com.gft.user.application.user.DeleteUserUseCase;
-import com.gft.user.application.user.UserRegistrationUseCase;
+import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
@@ -44,12 +39,15 @@ class UserControllerTest {
 
     @Mock
     private ChangeUserNameUseCase changeUserNameUseCase;
-  
+
     @Mock
     private ChangeEmailUseCase changeEmailUseCase;
-  
+
     @Mock
     private ChangePasswordUseCase changePasswordUseCase;
+
+    @Mock
+    private ChangeAddressUseCase changeAddressUseCase;
 
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
@@ -75,7 +73,7 @@ class UserControllerTest {
                 "Alfonso Gutierrez",
                 new Email("alfonsito@gmail.com"),
                 Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe!!"),
-                new Address("","","",""),
+                new Address("", "", "", ""),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
                 false
@@ -128,6 +126,16 @@ class UserControllerTest {
         userController.changePassword(uuid, changePasswordRequest);
 
         verify(changePasswordUseCase).execute(uuid, "Password123456!", "newPassword123456!");
+    }
+
+    @Test
+    void should_changeAddress_when_changeAddressCalled() {
+        UUID uuid = UUID.randomUUID();
+        Address address = new Address("Germany", "85215", "Berlin", "Der Gesang der toten Kolibris");
+
+        userController.changeAddress(uuid, address);
+
+        verify(changeAddressUseCase).execute(uuid, address);
     }
 
 }
