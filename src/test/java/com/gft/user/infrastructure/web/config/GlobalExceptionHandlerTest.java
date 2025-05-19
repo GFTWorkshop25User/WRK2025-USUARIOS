@@ -1,5 +1,6 @@
 package com.gft.user.infrastructure.web.config;
 
+import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,15 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Argument is invalid", response.getBody());
+    }
+
+    @Test
+    void should_throwException_when_UserNotFoundException() {
+
+        UserNotFoundException ex = new UserNotFoundException("User not found");
+        ResponseEntity<Object> response = handler.handleException(ex);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("User not found", response.getBody());
     }
 }
