@@ -40,6 +40,7 @@ jobs:
 
         if (( $(echo "$coverage < 1.0" | bc -l) )); then
           echo "Coverage is below 100%: $coverage"
+          echo "jacoco.xml contents:"
+          cat target/site/jacoco/jacoco.xml
           exit 1
         fi
-
