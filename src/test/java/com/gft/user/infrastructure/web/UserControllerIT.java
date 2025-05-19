@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
+import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -331,4 +332,22 @@ public class UserControllerIT {
 
         assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
     }
+
+    @Test
+    void should_responseBadRequest_when_productIsAlreadyInFavorites() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Long productId = 4L;
+
+        doThrow(new ProductAlreadyInFavoritesException("Product is already in favorites"))
+                .when(addUserFavoriteProductUseCase).execute(uuid, productId);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/favorite-products/add", uuid)
+                        .content(objectMapper.writeValueAsString(productId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        assertEquals("Product is already in favorites", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
 }
