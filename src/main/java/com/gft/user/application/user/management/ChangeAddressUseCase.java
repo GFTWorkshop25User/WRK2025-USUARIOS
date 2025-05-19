@@ -19,6 +19,10 @@ public class ChangeAddressUseCase {
 
     public void execute(UUID userId, Address address) {
         Assert.notNull(address, "Address cannot be null");
+        Assert.notNull(address.city(), "City cannot be null");
+        Assert.notNull(address.country(), "Country cannot be null");
+        Assert.notNull(address.street(), "Street cannot be null");
+        Assert.notNull(address.zipCode(), "ZipCode cannot be null");
 
         if (address.city().isBlank() || address.street().isBlank() || address.zipCode().isBlank() || address.country().isBlank()) {
             throw new IllegalArgumentException("Address cannot have empty fields");

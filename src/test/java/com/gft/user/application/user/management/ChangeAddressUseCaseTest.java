@@ -54,6 +54,58 @@ public class ChangeAddressUseCaseTest {
     }
 
     @Test
+    void should_throwIllegalArgumentException_when_addressCountryIsNull() {
+        Address invalidAddress = new Address(
+                null,
+                "85215",
+                "Berlin",
+                "Der Gesang der toten Kolibris"
+        );
+
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> changeAddressUseCase.execute(userId, invalidAddress));
+        assertEquals("Country cannot be null", illegalArgumentException.getMessage());
+    }
+
+    @Test
+    void should_throwIllegalArgumentException_when_addressZipCodeIsNull() {
+        Address invalidAddress = new Address(
+                "Germany",
+                null,
+                "Berlin",
+                "Der Gesang der toten Kolibris"
+        );
+
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> changeAddressUseCase.execute(userId, invalidAddress));
+        assertEquals("ZipCode cannot be null", illegalArgumentException.getMessage());
+    }
+
+    @Test
+    void should_throwIllegalArgumentException_when_addressCityIsNull() {
+        Address invalidAddress = new Address(
+                "Germany",
+                "85215",
+                null,
+                "Der Gesang der toten Kolibris"
+        );
+
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> changeAddressUseCase.execute(userId, invalidAddress));
+        assertEquals("City cannot be null", illegalArgumentException.getMessage());
+    }
+
+    @Test
+    void should_throwIllegalArgumentException_when_addressStreetIsNull() {
+        Address invalidAddress = new Address(
+                "Germany",
+                "85215",
+                "Berlin",
+                null
+        );
+
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> changeAddressUseCase.execute(userId, invalidAddress));
+        assertEquals("Street cannot be null", illegalArgumentException.getMessage());
+    }
+
+    @Test
     void should_throwIllegalArgumentException_when_addressCountryIsBlank() {
         Address invalidAddress = new Address(
                 "",
