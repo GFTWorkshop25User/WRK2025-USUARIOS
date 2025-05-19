@@ -54,6 +54,9 @@ public class UserControllerIT {
 
     @MockitoBean
     private ChangeAddressUseCase changeAddressUseCase;
+  
+    @MockitoBean
+    private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
 
     @Test
     void should_responseCreated_when_userRequestIsValid() throws Exception {
@@ -240,7 +243,7 @@ public class UserControllerIT {
 
         verify(changeUserNameUseCase, times(1)).execute(uuid, "New name");
     }
-
+  
     @Test
     void should_noResponseAndChangeAddress_when_changeAddressPutCalled() throws Exception {
         UUID uuid = UUID.randomUUID();
@@ -254,5 +257,30 @@ public class UserControllerIT {
                 .andExpect(status().isNoContent());
 
         verify(changeAddressUseCase, times(1)).execute(uuid, address);
+    }
+
+    @Test
+    void should_responseNotFound_when_userNotFoundForLoyaltyPoints() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(getUserLoyaltyPointsCaseUseCase).execute(uuid);
+
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/{id}/loyalty-points", uuid)).andExpect(status().isNotFound()).andReturn();
+
+        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_returnOk_when_userFoundForLoyaltyPoints() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        when(getUserLoyaltyPointsCaseUseCase.execute(uuid)).thenReturn(4);
+
+        MvcResult mvcResult= mockMvc.perform(get("/api/v1/users/{id}/loyalty-points", uuid)).andExpect(status().isOk()).andReturn();
+
+        String expectedResponseBody = objectMapper.writeValueAsString(4);
+        String actualResponseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
     }
 }

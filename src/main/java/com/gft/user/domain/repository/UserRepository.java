@@ -1,5 +1,6 @@
 package com.gft.user.domain.repository;
 
+import com.gft.user.domain.model.user.LoyaltyPoints;
 import com.gft.user.domain.model.user.User;
 
 import java.util.UUID;
@@ -10,4 +11,7 @@ public interface UserRepository {
     User getById(UUID id);
 
     boolean existsById(UUID id);
+
+    int getLoyaltyPoints(UUID id);
+
 }

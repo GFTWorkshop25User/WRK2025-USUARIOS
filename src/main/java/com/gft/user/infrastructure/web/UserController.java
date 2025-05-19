@@ -25,6 +25,7 @@ public class UserController {
     private final ChangeEmailUseCase changeEmailUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ChangeAddressUseCase changeAddressUseCase;
+    private final GetUserLoyaltyPointsUseCase userLoyaltyPointsUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -60,10 +61,15 @@ public class UserController {
     public void changePassword(@PathVariable UUID id, @RequestBody ChangePasswordRequest changePasswordRequest) {
         changePasswordUseCase.execute(id, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
     }
-
+  
     @PutMapping("/{id}/change-address")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeAddress(@PathVariable UUID id, @RequestBody Address address) {
         changeAddressUseCase.execute(id, address);
+    }
+
+    @GetMapping("/{id}/loyalty-points")
+    public ResponseEntity<?> getUserLoyaltyPoints(@PathVariable UUID id){
+        return ResponseEntity.ok(userLoyaltyPointsUseCase.execute(id));
     }
 }

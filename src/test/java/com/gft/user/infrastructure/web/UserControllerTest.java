@@ -48,6 +48,10 @@ class UserControllerTest {
 
     @Mock
     private ChangeAddressUseCase changeAddressUseCase;
+    
+    @Mock
+    private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsUseCase;
+    
 
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
@@ -127,7 +131,7 @@ class UserControllerTest {
 
         verify(changePasswordUseCase).execute(uuid, "Password123456!", "newPassword123456!");
     }
-
+  
     @Test
     void should_changeAddress_when_changeAddressCalled() {
         UUID uuid = UUID.randomUUID();
@@ -138,4 +142,16 @@ class UserControllerTest {
         verify(changeAddressUseCase).execute(uuid, address);
     }
 
+    @Test
+    void should_obtainLoyaltyPoints_when_obtainLoyaltyPointsCalled() {
+        UUID uuid = UUID.randomUUID();
+        when(getUserLoyaltyPointsUseCase.execute(uuid)).thenReturn(4);
+
+        ResponseEntity<?> response = userController.getUserLoyaltyPoints(uuid);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(4, response.getBody());
+
+        verify(getUserLoyaltyPointsUseCase, times(1)).execute(uuid);
+    }
 }
