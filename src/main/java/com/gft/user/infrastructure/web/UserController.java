@@ -4,6 +4,7 @@ import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.Address;
+import com.gft.user.domain.model.user.FavoriteId;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -25,6 +27,7 @@ public class UserController {
     private final ChangeEmailUseCase changeEmailUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
     private final ChangeAddressUseCase changeAddressUseCase;
+    private final GetFavoriteProductsUseCase getFavoriteProductsUseCase;
     private final GetUserLoyaltyPointsUseCase userLoyaltyPointsUseCase;
 
     @PostMapping
@@ -61,7 +64,7 @@ public class UserController {
     public void changePassword(@PathVariable UUID id, @RequestBody ChangePasswordRequest changePasswordRequest) {
         changePasswordUseCase.execute(id, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
     }
-  
+
     @PutMapping("/{id}/change-address")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeAddress(@PathVariable UUID id, @RequestBody Address address) {
@@ -71,5 +74,10 @@ public class UserController {
     @GetMapping("/{id}/loyalty-points")
     public ResponseEntity<?> getUserLoyaltyPoints(@PathVariable UUID id){
         return ResponseEntity.ok(userLoyaltyPointsUseCase.execute(id));
+    }
+
+    @GetMapping("/{id}/favorite-products")
+    public ResponseEntity<?> getFavorites(@PathVariable UUID id) {
+        return ResponseEntity.ok(getFavoriteProductsUseCase.execute(id));
     }
 }

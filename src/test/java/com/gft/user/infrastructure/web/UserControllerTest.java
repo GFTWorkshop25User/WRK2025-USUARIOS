@@ -4,6 +4,7 @@ import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
+import org.apache.coyote.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,7 +53,9 @@ class UserControllerTest {
     
     @Mock
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsUseCase;
-    
+
+    @Mock
+    private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
 
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
@@ -153,5 +157,21 @@ class UserControllerTest {
         assertEquals(4, response.getBody());
 
         verify(getUserLoyaltyPointsUseCase, times(1)).execute(uuid);
+    }
+
+
+    @Test
+    void should_obtainFavoriteIds_when_obtainFavoriteIdsCalled() {
+        UUID uuid = UUID.randomUUID();
+        Set<FavoriteId> favoriteIds = new HashSet<>();
+        favoriteIds.add(new FavoriteId(4L));
+        when(getFavoriteProductsUseCase.execute(uuid)).thenReturn(favoriteIds);
+
+        ResponseEntity<?> response = userController.getFavorites(uuid);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(favoriteIds, response.getBody());
+
+        verify(getFavoriteProductsUseCase, times(1)).execute(uuid);
     }
 }
