@@ -39,15 +39,19 @@ class UserControllerTest {
 
     @Mock
     private ChangeUserNameUseCase changeUserNameUseCase;
-  
+
     @Mock
     private ChangeEmailUseCase changeEmailUseCase;
-  
+
     @Mock
     private ChangePasswordUseCase changePasswordUseCase;
 
     @Mock
+    private ChangeAddressUseCase changeAddressUseCase;
+    
+    @Mock
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsUseCase;
+    
 
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
@@ -73,7 +77,7 @@ class UserControllerTest {
                 "Alfonso Gutierrez",
                 new Email("alfonsito@gmail.com"),
                 Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe!!"),
-                new Address("","","",""),
+                new Address("", "", "", ""),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
                 false
@@ -127,6 +131,16 @@ class UserControllerTest {
 
         verify(changePasswordUseCase).execute(uuid, "Password123456!", "newPassword123456!");
     }
+  
+    @Test
+    void should_changeAddress_when_changeAddressCalled() {
+        UUID uuid = UUID.randomUUID();
+        Address address = new Address("Germany", "85215", "Berlin", "Der Gesang der toten Kolibris");
+
+        userController.changeAddress(uuid, address);
+
+        verify(changeAddressUseCase).execute(uuid, address);
+    }
 
     @Test
     void should_obtainLoyaltyPoints_when_obtainLoyaltyPointsCalled() {
@@ -140,5 +154,4 @@ class UserControllerTest {
 
         verify(getUserLoyaltyPointsUseCase, times(1)).execute(uuid);
     }
-
 }

@@ -53,6 +53,9 @@ public class UserControllerIT {
     private ChangePasswordUseCase changePasswordUseCase;
 
     @MockitoBean
+    private ChangeAddressUseCase changeAddressUseCase;
+  
+    @MockitoBean
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
 
     @Test
@@ -129,8 +132,8 @@ public class UserControllerIT {
         doNothing().when(changePasswordUseCase).execute(uuid, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
 
         mockMvc.perform(put("/api/v1/users/{id}/change-password", uuid)
-                .content(objectMapper.writeValueAsString(changePasswordRequest))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(changePasswordRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
         verify(changePasswordUseCase, times(1)).execute(uuid, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
@@ -197,6 +200,22 @@ public class UserControllerIT {
     }
 
     @Test
+    void should_responseBadRequest_when_changeAddressAddressHasNullFields() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Address address = new Address(" ", "85215", "Berlin", "Der Gesang der toten Kolibris");
+
+        doThrow(new IllegalArgumentException("Address cannot have an empty field")).when(changeAddressUseCase).execute(uuid, address);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-address", uuid)
+                        .content(objectMapper.writeValueAsString(address))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        assertEquals("Address cannot have an empty field", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
     void should_noResponseAndChangeEmail_when_changeEmail() throws Exception {
         UUID userId = UUID.randomUUID();
         String newEmail = "juanmiguel@gmail.com";
@@ -224,6 +243,21 @@ public class UserControllerIT {
 
         verify(changeUserNameUseCase, times(1)).execute(uuid, "New name");
     }
+  
+    @Test
+    void should_noResponseAndChangeAddress_when_changeAddressPutCalled() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        Address address = new Address("Germany", "85215", "Berlin", "Der Gesang der toten Kolibris");
+        doNothing().when(changeAddressUseCase).execute(uuid, address);
+
+        mockMvc.perform(put("/api/v1/users/{id}/change-address", uuid)
+                        .content(objectMapper.writeValueAsString(address))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(changeAddressUseCase, times(1)).execute(uuid, address);
+    }
 
     @Test
     void should_responseNotFound_when_userNotFoundForLoyaltyPoints() throws Exception {
@@ -235,7 +269,6 @@ public class UserControllerIT {
 
         assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
-
 
     @Test
     void should_returnOk_when_userFoundForLoyaltyPoints() throws Exception {
@@ -250,5 +283,4 @@ public class UserControllerIT {
 
         assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
     }
-
 }
