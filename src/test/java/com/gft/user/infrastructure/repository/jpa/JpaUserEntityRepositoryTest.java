@@ -28,7 +28,4 @@ class JpaUserEntityRepositoryTest {
         int points = jpaUserEntityRepository.findLoyaltyPointsById(uuid);
         assertEquals(150, points);
     }
-
-
-
 }
