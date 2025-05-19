@@ -1,5 +1,6 @@
 package com.gft.user.infrastructure.web.config;
 
+import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleException(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleException(ProductNotInFavoritesException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

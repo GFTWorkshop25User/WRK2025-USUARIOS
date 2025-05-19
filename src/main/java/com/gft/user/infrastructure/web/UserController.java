@@ -29,6 +29,7 @@ public class UserController {
     private final ChangeAddressUseCase changeAddressUseCase;
     private final GetFavoriteProductsUseCase getFavoriteProductsUseCase;
     private final GetUserLoyaltyPointsUseCase userLoyaltyPointsUseCase;
+    private final RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -79,5 +80,11 @@ public class UserController {
     @GetMapping("/{id}/favorite-products")
     public ResponseEntity<?> getFavorites(@PathVariable UUID id) {
         return ResponseEntity.ok(getFavoriteProductsUseCase.execute(id));
+    }
+
+    @PutMapping("/{id}/favorite-products/remove")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeFavoriteProduct(@PathVariable UUID id, @RequestBody Long productId) {
+        removeUserFavoriteProductUseCase.execute(id, productId);
     }
 }
