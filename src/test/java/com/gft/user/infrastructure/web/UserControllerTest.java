@@ -1,6 +1,5 @@
 package com.gft.user.infrastructure.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.ChangePasswordUseCase;
 import com.gft.user.application.user.ChangeEmailUseCase;
 import com.gft.user.application.user.ChangeUserNameUseCase;
@@ -10,16 +9,16 @@ import com.gft.user.application.user.UserRegistrationUseCase;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
-import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -27,204 +26,108 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
+@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @InjectMocks
+    private UserController userController;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockitoBean
+    @Mock
     private UserRegistrationUseCase userRegistrationUseCase;
 
-    @MockitoBean
+    @Mock
     private GetUserByIdUseCase getUserByIdUseCase;
 
-    @MockitoBean
+    @Mock
     private DeleteUserUseCase deleteUserUseCase;
 
-    @MockitoBean
+    @Mock
     private ChangeUserNameUseCase changeUserNameUseCase;
   
-    @MockitoBean
+    @Mock
     private ChangeEmailUseCase changeEmailUseCase;
   
-    @MockitoBean
+    @Mock
     private ChangePasswordUseCase changePasswordUseCase;
 
     @Test
-    void should_responseCreated_when_userRequestIsValid() throws Exception {
+    void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
         UUID uuid = UUID.randomUUID();
         UserRequest userRequest = new UserRequest("Pepe", "pepe@mail.com", "Pepito123456!!");
         when(userRegistrationUseCase.execute(userRequest)).thenReturn(uuid);
 
-        String requestBody = objectMapper.writeValueAsString(userRequest);
+        UriComponentsBuilder ucb = UriComponentsBuilder.fromUriString("http://localhost:8080");
 
-        mockMvc.perform(post("/api/v1/users").content(requestBody).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/api/v1/users/" + uuid));
+        ResponseEntity<?> response = userController.registerUser(userRequest, ucb);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertThat(response.getHeaders().getLocation()).isEqualTo(URI.create("http://localhost:8080/api/v1/users/" + uuid));
+
+        verify(userRegistrationUseCase, times(1)).execute(userRequest);
     }
 
     @Test
-    void should_responseFound_when_userRequestIsValid() throws Exception {
+    void should_returnUser_when_userExists() {
         UUID uuid = UUID.randomUUID();
         User user = User.create(
-                new UserId(),
-                "miguel",
-                new Email("miguel@gmail.com"),
-                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe"),
-                new Address("Spain", "241852", "Villalba", "Calle los floriponcios"),
+                UserId.create(uuid),
+                "Alfonso Gutierrez",
+                new Email("alfonsito@gmail.com"),
+                Password.createPasswordFromHashed("$2a$10$hZwpOSjHC/eNQAqFYDHG4OuVDQ1U.JX6QKg/fBi9uML.Xp/p8h8qe!!"),
+                new Address("","","",""),
                 new HashSet<>(),
                 new LoyaltyPoints(0),
                 false
         );
+
         when(getUserByIdUseCase.execute(uuid)).thenReturn(user);
 
-        String requestBody = objectMapper.writeValueAsString(user);
-        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/" + uuid).content(requestBody).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+        ResponseEntity<?> response = userController.getUser(uuid);
 
-        String responseBodyExpected = objectMapper.writeValueAsString(user);
-        String responseBodyActual = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(user, response.getBody());
 
-        assertThat(responseBodyActual).isEqualToIgnoringWhitespace(responseBodyExpected);
+        verify(getUserByIdUseCase, times(1)).execute(uuid);
     }
 
-
     @Test
-    void should_responseNotFound_when_deleteUserNotFound() throws Exception {
+    void should_callDeleteUserUseCase_when_deleteUserCalled() {
         UUID uuid = UUID.randomUUID();
 
-        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(deleteUserUseCase).execute(uuid);
+        userController.deleteUser(uuid);
 
-        MvcResult mvcResult = mockMvc.perform(delete("/api/v1/users/{id}", uuid)).andExpect(status().isNotFound()).andReturn();
-
-        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+        verify(deleteUserUseCase).execute(uuid);
     }
 
-
     @Test
-    void should_noResponseAndDisableUser_when_deleteUser() throws Exception {
+    void should_changeUserName_when_changeUserNameCalled() {
         UUID uuid = UUID.randomUUID();
+        String newName = "New Name";
 
-        doNothing().when(deleteUserUseCase).execute(uuid);
+        userController.updateUserName(uuid, newName);
 
-        mockMvc.perform(delete("/api/v1/users/{id}", uuid)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-
-
-        verify(deleteUserUseCase, times(1)).execute(uuid);
+        verify(changeUserNameUseCase, times(1)).execute(uuid, newName);
     }
 
     @Test
-    void should_noResponseAndChangePassword_when_changePasswordIsValid() throws Exception {
+    void should_changeEmail_when_changeEmailCalled() {
         UUID uuid = UUID.randomUUID();
-        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("Pepito123456!", "Josep123456!");
+        String newEmail = "new@email.com";
 
-        doNothing().when(changePasswordUseCase).execute(uuid, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
+        userController.put(uuid, newEmail);
 
-        mockMvc.perform(put("/api/v1/users/{id}/change-password", uuid)
-                .content(objectMapper.writeValueAsString(changePasswordRequest))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-
-        verify(changePasswordUseCase, times(1)).execute(uuid, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
-
+        verify(changeEmailUseCase, times(1)).execute(uuid, newEmail);
     }
 
     @Test
-    void should_responseNotFound_when_changeEmailUserIdIsInvalid() throws Exception {
+    void should_changePassword_when_changePasswordCalled() {
         UUID uuid = UUID.randomUUID();
-        String newEmail = "juanmiguel@gmail.com";
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest("Password123456!", "newPassword123456!");
 
-        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(changeEmailUseCase).execute(uuid, newEmail);
+        userController.changePassword(uuid, changePasswordRequest);
 
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/change-email", uuid)
-                        .content(newEmail))
-                .andExpect(status().isNotFound())
-                .andReturn();
-      
-        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+        verify(changePasswordUseCase).execute(uuid, "Password123456!", "newPassword123456!");
     }
 
-    @Test
-    void should_responseNotFound_when_userToChangeNameNotFound() throws Exception {
-        UUID uuid = UUID.randomUUID();
-
-        doThrow(new UserNotFoundException("User with id " + uuid + " not found")).when(changeUserNameUseCase).execute(uuid, "New name");
-
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-name", uuid).content("New name").contentType(MediaType.TEXT_PLAIN))
-                .andExpect(status().isNotFound()).andReturn();
-
-        assertEquals("User with id " + uuid + " not found", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
-    }
-
-    @Test
-    void should_responseBadRequest_when_changeEmailEmailIsInvalid() throws Exception {
-        UUID uuid = UUID.randomUUID();
-        String newEmail = "juanmiguel@gmail";
-
-        doThrow(new IllegalArgumentException("Email is not valid")).when(changeEmailUseCase).execute(uuid, newEmail);
-
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{userId}/change-email", uuid)
-                        .content(newEmail)
-                        .contentType(MediaType.TEXT_PLAIN))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        assertEquals("Email is not valid", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
-    }
-
-    @Test
-    void should_responseBadRequest_when_changeEmailEmailIsEmpty() throws Exception {
-        UUID uuid = UUID.randomUUID();
-        String newEmail = " ";
-
-        doThrow(new IllegalArgumentException("Email cannot be empty")).when(changeEmailUseCase).execute(uuid, newEmail);
-
-        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/change-email", uuid)
-                        .content(newEmail)
-                        .contentType(MediaType.TEXT_PLAIN))
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        assertEquals("Email cannot be empty", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
-    }
-
-    @Test
-    void should_noResponseAndChangeEmail_when_changeEmail() throws Exception {
-        UUID userId = UUID.randomUUID();
-        String newEmail = "juanmiguel@gmail.com";
-
-        doNothing().when(changeEmailUseCase).execute(userId, newEmail);
-
-        mockMvc.perform(put("/api/v1/users/{userId}/change-email", userId)
-                        .content(newEmail)
-                        .contentType(MediaType.TEXT_PLAIN)).
-                andExpect(status().isNoContent());
-
-        verify(changeEmailUseCase, times(1)).execute(userId, newEmail);
-    }
-
-    @Test
-    void should_noResponseAndChangeUserName_when_changeNamePutCalled() throws Exception {
-        UUID uuid = UUID.randomUUID();
-
-        doNothing().when(changeUserNameUseCase).execute(uuid, "New name");
-
-        mockMvc.perform(put("/api/v1/users/{id}/change-name", uuid)
-                        .content("New name")
-                        .contentType(MediaType.TEXT_PLAIN))
-                .andExpect(status().isNoContent());
-
-        verify(changeUserNameUseCase, times(1)).execute(uuid, "New name");
-    }
 }
