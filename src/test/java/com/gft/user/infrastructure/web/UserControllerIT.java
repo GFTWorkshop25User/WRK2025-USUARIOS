@@ -5,6 +5,7 @@ import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
+import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -59,9 +60,12 @@ public class UserControllerIT {
 
     @MockitoBean
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
-
+  
     @MockitoBean
     private GetFavoriteProductsUseCase getFavoriteProductsUseCase;
+
+    @MockitoBean 
+    private AddUserFavoriteProductUseCase addUserFavoriteProductUseCase;
 
     @MockitoBean
     private RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
@@ -293,6 +297,20 @@ public class UserControllerIT {
     }
 
     @Test
+    void should_addProduct_when_addProductToFavoritesCalled() throws Exception {
+        UUID uuid = UUID.randomUUID();
+
+        doNothing().when(addUserFavoriteProductUseCase).execute(uuid, 4L);
+
+        mockMvc.perform(put("/api/v1/users/{id}/favorite-products/add", uuid)
+                        .content(objectMapper.writeValueAsString(4L))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(addUserFavoriteProductUseCase, times(1)).execute(uuid, 4L);
+    }
+
+    @Test
     void should_responseNotFound_when_userNotFoundForGetFavoriteIds() throws Exception {
         UUID uuid = UUID.randomUUID();
 
@@ -362,5 +380,22 @@ public class UserControllerIT {
                 .andExpect(status().isBadRequest()).andReturn();
 
         assertEquals("Product 8 is not in favorite products", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void should_responseBadRequest_when_productIsAlreadyInFavorites() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        Long productId = 4L;
+
+        doThrow(new ProductAlreadyInFavoritesException("Product is already in favorites"))
+                .when(addUserFavoriteProductUseCase).execute(uuid, productId);
+
+        MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/favorite-products/add", uuid)
+                        .content(objectMapper.writeValueAsString(productId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        assertEquals("Product is already in favorites", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
 }

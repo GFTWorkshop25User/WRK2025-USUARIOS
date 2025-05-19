@@ -1,5 +1,6 @@
 package com.gft.user.domain.model.user;
 
+import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
@@ -78,7 +79,17 @@ public class User {
         }
         this.name = name;
     }
+  
+    public void addFavoriteProduct(FavoriteId favoriteId) {
+        Assert.notNull(favoriteId, "Favorite Id cannot be null");
 
+        if (favoriteProductIds.contains(favoriteId)) {
+            throw new ProductAlreadyInFavoritesException("This product is already in favorites");
+        }
+
+        favoriteProductIds.add(favoriteId);
+    }
+  
     public void removeFavorite(FavoriteId favoriteId) {
         Assert.notNull(favoriteId, "FavoriteId cannot be null");
 

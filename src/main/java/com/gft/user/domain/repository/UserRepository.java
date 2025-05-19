@@ -1,6 +1,5 @@
 package com.gft.user.domain.repository;
 
-import com.gft.user.domain.model.user.LoyaltyPoints;
 import com.gft.user.domain.model.user.User;
 
 import java.util.UUID;
