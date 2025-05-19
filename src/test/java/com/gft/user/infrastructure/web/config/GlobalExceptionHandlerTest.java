@@ -49,10 +49,10 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void should_throwException_when_ProductAlreadyInFavoritesException() {
-        ProductAlreadyInFavoritesException ex = new ProductAlreadyInFavoritesException("Product id already in Favorites");
+        ProductAlreadyInFavoritesException ex = new ProductAlreadyInFavoritesException("Product is already in Favorites");
         ResponseEntity<Object> response = handler.handleException(ex);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Product id already in Favorites", response.getBody());
+        assertEquals("Product is already in Favorites", response.getBody());
     }
 }
