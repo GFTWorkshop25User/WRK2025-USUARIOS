@@ -1,11 +1,6 @@
 package com.gft.user.infrastructure.web;
 
-import com.gft.user.application.user.ChangePasswordUseCase;
-import com.gft.user.application.user.ChangeEmailUseCase;
-import com.gft.user.application.user.ChangeUserNameUseCase;
-import com.gft.user.application.user.GetUserByIdUseCase;
-import com.gft.user.application.user.DeleteUserUseCase;
-import com.gft.user.application.user.UserRegistrationUseCase;
+import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import lombok.AllArgsConstructor;
@@ -28,6 +23,7 @@ public class UserController {
     private final ChangeUserNameUseCase changeUserNameUseCase;
     private final ChangeEmailUseCase changeEmailUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
+    private final GetUserLoyaltyPointsUseCase userLoyaltyPointsUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -63,4 +59,10 @@ public class UserController {
     public void changePassword(@PathVariable UUID id, @RequestBody ChangePasswordRequest changePasswordRequest) {
         changePasswordUseCase.execute(id, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
     }
+
+    @GetMapping("/{id}/loyalty-points")
+    public ResponseEntity<?> getUserLoyaltyPoints(@PathVariable UUID id){
+        return ResponseEntity.ok(userLoyaltyPointsUseCase.execute(id));
+    }
+
 }

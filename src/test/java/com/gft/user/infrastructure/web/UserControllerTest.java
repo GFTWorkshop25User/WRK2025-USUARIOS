@@ -1,11 +1,6 @@
 package com.gft.user.infrastructure.web;
 
-import com.gft.user.application.user.ChangePasswordUseCase;
-import com.gft.user.application.user.ChangeEmailUseCase;
-import com.gft.user.application.user.ChangeUserNameUseCase;
-import com.gft.user.application.user.GetUserByIdUseCase;
-import com.gft.user.application.user.DeleteUserUseCase;
-import com.gft.user.application.user.UserRegistrationUseCase;
+import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
@@ -50,6 +45,9 @@ class UserControllerTest {
   
     @Mock
     private ChangePasswordUseCase changePasswordUseCase;
+
+    @Mock
+    private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsUseCase;
 
     @Test
     void should_returnCreatedLocation_when_userRegisteredSuccessfully() {
@@ -128,6 +126,19 @@ class UserControllerTest {
         userController.changePassword(uuid, changePasswordRequest);
 
         verify(changePasswordUseCase).execute(uuid, "Password123456!", "newPassword123456!");
+    }
+
+    @Test
+    void should_obtainLoyaltyPoints_when_obtainLoyaltyPointsCalled() {
+        UUID uuid = UUID.randomUUID();
+        when(getUserLoyaltyPointsUseCase.execute(uuid)).thenReturn(4);
+
+        ResponseEntity<?> response = userController.getUserLoyaltyPoints(uuid);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(4, response.getBody());
+
+        verify(getUserLoyaltyPointsUseCase, times(1)).execute(uuid);
     }
 
 }
