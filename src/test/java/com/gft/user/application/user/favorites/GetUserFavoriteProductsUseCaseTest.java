@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -56,7 +57,7 @@ public class GetUserFavoriteProductsUseCaseTest {
         when(userRepository.existsById(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
-        assertEquals(getUserFavoriteProductsUseCase.execute(userId), user.getFavoriteProductIds());
+        assertEquals(getUserFavoriteProductsUseCase.execute(userId), user.getFavoriteProductIds().stream().map(FavoriteId::value).collect(Collectors.toSet()));
     }
 
 }

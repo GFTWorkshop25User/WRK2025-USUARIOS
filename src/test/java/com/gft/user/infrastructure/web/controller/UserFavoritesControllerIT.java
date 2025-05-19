@@ -77,8 +77,8 @@ public class UserFavoritesControllerIT {
     void should_returnOk_when_userFoundForGetFavoriteIds() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        Set<FavoriteId> favoriteIds = new HashSet<>();
-        favoriteIds.add(new FavoriteId(4L));
+        Set<Long> favoriteIds = new HashSet<>();
+        favoriteIds.add(4L);
         when(getUserFavoriteProductsUseCase.execute(uuid)).thenReturn(favoriteIds);
 
         MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/{id}/favorite-products", uuid)).andExpect(status().isOk()).andReturn();
