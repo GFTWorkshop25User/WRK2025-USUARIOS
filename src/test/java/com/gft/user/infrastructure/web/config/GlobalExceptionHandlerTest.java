@@ -1,5 +1,6 @@
 package com.gft.user.infrastructure.web.config;
 
+import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,5 +45,14 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("User not found", response.getBody());
+    }
+
+    @Test
+    void should_throwException_when_ProductAlreadyInFavoritesException() {
+        ProductAlreadyInFavoritesException ex = new ProductAlreadyInFavoritesException("Product is already in Favorites");
+        ResponseEntity<Object> response = handler.handleException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Product is already in Favorites", response.getBody());
     }
 }
