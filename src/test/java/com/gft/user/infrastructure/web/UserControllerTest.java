@@ -4,7 +4,6 @@ import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
 import com.gft.user.domain.model.user.*;
-import org.apache.coyote.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
