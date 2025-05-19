@@ -15,7 +15,7 @@ public class User {
     private Email email;
     private String name;
     private Password password;
-    private final Address address;
+    private Address address;
     private final Set<FavoriteId> favoriteProductIds;
     private final LoyaltyPoints loyaltyPoints;
     private boolean disabled;
@@ -37,6 +37,10 @@ public class User {
 
     public void changeEmail(Email email) {
         this.email = email;
+    }
+
+    public void changeAddress(Address address) {
+        this.address = address;
     }
 
     public static User create(UserId id, String name, Email email, Password password, Address address, Set<FavoriteId> favoriteProductIds, LoyaltyPoints loyaltyPoints, boolean disabled) {
