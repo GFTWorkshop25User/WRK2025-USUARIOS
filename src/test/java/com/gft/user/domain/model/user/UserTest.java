@@ -5,11 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
-import com.gft.user.infrastructure.exception.UserNotFoundException;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
