@@ -1,13 +1,9 @@
 package com.gft.user.infrastructure.web;
 
-import com.gft.user.application.user.ChangePasswordUseCase;
-import com.gft.user.application.user.ChangeEmailUseCase;
-import com.gft.user.application.user.ChangeUserNameUseCase;
-import com.gft.user.application.user.GetUserByIdUseCase;
-import com.gft.user.application.user.DeleteUserUseCase;
-import com.gft.user.application.user.UserRegistrationUseCase;
+import com.gft.user.application.user.*;
 import com.gft.user.application.user.dto.ChangePasswordRequest;
 import com.gft.user.application.user.dto.UserRequest;
+import com.gft.user.domain.model.user.Address;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +24,7 @@ public class UserController {
     private final ChangeUserNameUseCase changeUserNameUseCase;
     private final ChangeEmailUseCase changeEmailUseCase;
     private final ChangePasswordUseCase changePasswordUseCase;
+    private final ChangeAddressUseCase changeAddressUseCase;
 
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
@@ -47,13 +44,13 @@ public class UserController {
     public void deleteUser(@PathVariable UUID id) {
         deleteUserUseCase.execute(id);
     }
-    
+
     @PutMapping("/{id}/change-name")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUserName(@PathVariable UUID id, @RequestBody String newName) {
         changeUserNameUseCase.execute(id, newName);
     }
-  
+
     @PutMapping("/{id}/change-email")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void put(@PathVariable UUID id, @RequestBody String email) { changeEmailUseCase.execute(id, email); }
@@ -62,5 +59,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@PathVariable UUID id, @RequestBody ChangePasswordRequest changePasswordRequest) {
         changePasswordUseCase.execute(id, changePasswordRequest.oldPassword(), changePasswordRequest.newPassword());
+    }
+
+    @PutMapping("/{id}/change-address")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changeAddress(@PathVariable UUID id, @RequestBody Address address) {
+        changeAddressUseCase.execute(id, address);
     }
 }
