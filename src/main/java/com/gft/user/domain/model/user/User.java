@@ -37,6 +37,14 @@ public class User {
         this.disabled = true;
     }
 
+    public void incrementLoyaltyPoints(int points) {
+        this.loyaltyPoints.increment(points);
+    }
+
+    public void decrementLoyaltyPoints(int points) {
+        this.loyaltyPoints.decrement(points);
+    }
+
     public void changeEmail(Email email) {
         this.email = email;
     }

@@ -22,7 +22,7 @@ public class IncrementLoyaltyPointsUseCase {
         }
 
         User user = userRepository.getById(userId);
-        user.getLoyaltyPoints().increment(incrementAmmount);
+        user.incrementLoyaltyPoints(incrementAmmount);
 
         userRepository.save(user);
     }

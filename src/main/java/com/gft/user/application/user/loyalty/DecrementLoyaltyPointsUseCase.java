@@ -22,7 +22,7 @@ public class DecrementLoyaltyPointsUseCase {
         }
 
         User user = userRepository.getById(userId);
-        user.getLoyaltyPoints().decrement(decrementAmmount);
+        user.decrementLoyaltyPoints(decrementAmmount);
 
         userRepository.save(user);
     }
