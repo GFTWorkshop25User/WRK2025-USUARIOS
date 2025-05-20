@@ -63,7 +63,7 @@ class GlobalExceptionHandlerTest {
         ProductNotInFavoritesException ex = new ProductNotInFavoritesException("Favorite not found");
         ResponseEntity<Object> response = handler.handleException(ex);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Favorite not found", response.getBody());
     }
 }

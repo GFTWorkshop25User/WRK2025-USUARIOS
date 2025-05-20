@@ -119,7 +119,7 @@ public class UserFavoritesControllerIT {
     }
 
     @Test
-    void should_responseBadRequest_when_favoriteToRemoveNotFound() throws Exception {
+    void should_responseNotFound_when_favoriteToRemoveNotFound() throws Exception {
         UUID uuid = UUID.randomUUID();
         long productId = 8L;
 
@@ -128,7 +128,7 @@ public class UserFavoritesControllerIT {
         MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/favorite-products/remove", uuid)
                         .content(objectMapper.writeValueAsString(productId))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()).andReturn();
+                .andExpect(status().isNotFound()).andReturn();
 
         assertEquals("Product 8 is not in favorite products", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }

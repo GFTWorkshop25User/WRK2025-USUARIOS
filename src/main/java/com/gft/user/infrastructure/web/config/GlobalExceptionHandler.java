@@ -32,8 +32,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
   
-    @ExceptionHandler
+    @ExceptionHandler(ProductNotInFavoritesException.class)
     public ResponseEntity<Object> handleException(ProductNotInFavoritesException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
