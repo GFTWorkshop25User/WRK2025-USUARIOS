@@ -7,7 +7,6 @@ import com.gft.user.application.user.favorites.GetUserFavoriteProductsUseCase;
 import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
-import com.gft.user.domain.model.user.FavoriteId;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +144,7 @@ public class UserFavoritesControllerIT {
         MvcResult mvcResult = mockMvc.perform(put("/api/v1/users/{id}/favorite-products/add", uuid)
                         .content(objectMapper.writeValueAsString(productId))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isConflict())
                 .andReturn();
 
         assertEquals("Product is already in favorites", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));

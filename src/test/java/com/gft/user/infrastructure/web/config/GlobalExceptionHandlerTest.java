@@ -53,7 +53,7 @@ class GlobalExceptionHandlerTest {
         ProductAlreadyInFavoritesException ex = new ProductAlreadyInFavoritesException("Product is already in Favorites");
         ResponseEntity<Object> response = handler.handleException(ex);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals("Product is already in Favorites", response.getBody());
     }
   
