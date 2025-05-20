@@ -8,10 +8,10 @@ spring:
     username: dbuser
     password: 12345678A
 
-#  sql:
-#    init:
-#      schema-locations: classpath:/data/h2/schema.sql
-#      data-locations: classpath:/data/h2/data.sql
+  sql:
+    init:
+      schema-locations: classpath:/data/h2/schema.sql
+      data-locations: classpath:/data/h2/data.sql
 
   jpa:
     hibernate:
