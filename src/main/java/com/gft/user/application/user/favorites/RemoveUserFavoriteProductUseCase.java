@@ -24,7 +24,7 @@ public class RemoveUserFavoriteProductUseCase {
     @Transactional
     public void execute(UUID userId, Long productId) {
         if(!this.userRepository.existsByIdAndDisabledFalse(userId)) {
-            logger.warn("Tried to add a favorite product to a non-existent user [{}]", userId);
+            logger.warn("Tried to remove a favorite product to a non-existent user [{}]", userId);
             throw new UserNotFoundException(String.format("User with id %s not found", userId));
         }
 
