@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/notifications")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class NotificationController {
 
     GetUserNotificationsUseCase getUserNotificationsUseCase;
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}/notifications")
     public ResponseEntity<?> getUserNotifications(@PathVariable UUID id) {
         return ResponseEntity.ok(getUserNotificationsUseCase.execute(id));
     }

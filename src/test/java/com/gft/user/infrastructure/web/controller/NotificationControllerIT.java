@@ -46,7 +46,7 @@ class NotificationControllerIT {
 
         String requestBody = objectMapper.writeValueAsString(notificationsListSent);
         when(getUserNotificationsUseCase.execute(uuid)).thenReturn(notificationsListSent);
-        MvcResult mvcResult = mockMvc.perform(get("/api/v1/notifications/{id}", uuid).content(requestBody).contentType(MediaType.APPLICATION_JSON))
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/{id}/notifications", uuid).content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
