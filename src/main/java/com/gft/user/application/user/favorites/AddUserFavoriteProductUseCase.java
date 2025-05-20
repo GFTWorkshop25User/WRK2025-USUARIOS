@@ -22,20 +22,20 @@ public class AddUserFavoriteProductUseCase {
     }
 
     @Transactional
-    public void execute(UUID uuid, Long productId) {
+    public void execute(UUID userId, Long productId) {
         if(productId == null) {
             logger.warn("Tried to add a favorite product with a null product id");
             throw new IllegalArgumentException("Product id cannot be null");
         }
 
-        if(!userRepository.existsByIdAndDisabledFalse(uuid)) {
-            logger.warn("Tried to add a favorite product to a non-existent user [{}]", uuid);
-            throw new UserNotFoundException(String.format("User with id %s not found", uuid));
+        if(!userRepository.existsByIdAndDisabledFalse(userId)) {
+            logger.warn("Tried to add a favorite product to a non-existent user [{}]", userId);
+            throw new UserNotFoundException(String.format("User with id %s not found", userId));
         }
 
-        User user = userRepository.getById(uuid);
+        User user = userRepository.getById(userId);
         user.addFavoriteProduct(new FavoriteId(productId));
         userRepository.save(user);
-        logger.info("Added favorite product [{}] to user [{}]", productId, uuid);
+        logger.info("Added favorite product [{}] to user [{}]", productId, userId);
     }
 }

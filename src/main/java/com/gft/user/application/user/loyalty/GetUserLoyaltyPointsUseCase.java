@@ -19,14 +19,14 @@ public class GetUserLoyaltyPointsUseCase {
         this.userRepository = userRepository;
     }
 
-    public int execute(UUID uuid){
+    public int execute(UUID userId){
 
-        if (!userRepository.existsByIdAndDisabledFalse(uuid)) {
+        if (!userRepository.existsByIdAndDisabledFalse(userId)) {
             logger.warn("Tried to get loyalty points from a non-existent user");
-            throw new UserNotFoundException(String.format("User with id %s not found", uuid));
+            throw new UserNotFoundException(String.format("User with id %s not found", userId));
         }
 
-        User user = userRepository.getById(uuid);
+        User user = userRepository.getById(userId);
 
         return user.getLoyaltyPoints().getValue();
     }
