@@ -37,7 +37,7 @@ public class UserRegistrationUseCase {
 
         User user = User.register(userRequest.name(), new Email(userRequest.email()), password);
 
-        logger.info("Registered user: [{}], [{}]", user.getName(), user.getEmail());
+        logger.info("Registered user: [{}], [{}], [{}]", user.getId(), user.getName(), user.getEmail());
         return userRepository.save(user);
     }
 }
