@@ -40,4 +40,12 @@ public class NotificationRestClient implements NotificationService {
 
         return response.stream().map(notificationMapper::toNotificationDto).collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteNotification(UUID notificationId) {
+        restClient.delete()
+                .uri("/notifications/{notificationId}", notificationId)
+                .retrieve()
+                .toBodilessEntity();
+    }
 }
