@@ -40,7 +40,7 @@ class AddUserFavoriteProductUseCaseTest {
 
     @Test
     void should_addUserFavoriteProduct_whenUserExists() {
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
         addUserFavoriteProductUseCase.execute(user.getId().getUuid(), 5L);
@@ -55,7 +55,7 @@ class AddUserFavoriteProductUseCaseTest {
 
     @Test
     void should_throwUserNotFoundException_when_userDoesNotExist() {
-        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(false);
         assertThrows(UserNotFoundException.class, () -> addUserFavoriteProductUseCase.execute(userId, 4L));
     }
 

@@ -40,13 +40,13 @@ class ChangeUserNameUseCaseTest {
 
     @Test
     void should_throwException_when_userIdDoesNotExist() {
-        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(false);
         assertThrows(UserNotFoundException.class, () -> changeUserNameUseCase.execute(userId, "Alfonso Martínez"));
     }
 
     @Test
     void should_changeUserName_when_userIdExists() {
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
         changeUserNameUseCase.execute(userId, "Alfonso Martínez");

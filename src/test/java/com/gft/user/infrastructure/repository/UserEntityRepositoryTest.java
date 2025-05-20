@@ -128,4 +128,13 @@ class UserEntityRepositoryTest {
 
         assertTrue(userEntityRepository.existsById(uuid));
     }
+
+    @Test
+    void should_returnTrue_when_userExistsAndIsNotDisabled() {
+        UUID uuid = UUID.randomUUID();
+
+        when(jpaUserEntityRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(true);
+
+        assertTrue(userEntityRepository.existsByIdAndDisabledFalse(uuid));
+    }
 }

@@ -46,7 +46,7 @@ public class ChangeAddressUseCaseTest {
 
     @Test
     void should_throwUserNotFoundException_when_userDoesNotExist() {
-        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(false);
 
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () -> changeAddressUseCase.execute(userId, address));
 
@@ -167,7 +167,7 @@ public class ChangeAddressUseCaseTest {
     @Test
     void should_changeAddress_when_addressIsValid() {
         when(userRepository.getById(userId)).thenReturn(user);
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
 
         changeAddressUseCase.execute(userId, address);
 

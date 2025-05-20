@@ -40,7 +40,7 @@ class GetUserLoyaltyPointsUseCaseTest {
                 false
         );
 
-        when(userRepository.existsById(uuid)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(true);
         when(userRepository.getById(uuid)).thenReturn(user);
 
         int points = getUserLoyaltyPointsUseCase.execute(uuid);
@@ -52,7 +52,7 @@ class GetUserLoyaltyPointsUseCaseTest {
     @Test
     void should_throwException_when_executeUUIDNotFound() {
         UUID uuid = UUID.randomUUID();
-        when(userRepository.existsById(uuid)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(false);
         assertThrows(UserNotFoundException.class, () -> getUserLoyaltyPointsUseCase.execute(uuid));
     }
 

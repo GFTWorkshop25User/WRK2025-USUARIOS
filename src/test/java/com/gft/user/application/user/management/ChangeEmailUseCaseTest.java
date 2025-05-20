@@ -40,7 +40,7 @@ class ChangeEmailUseCaseTest {
 
     @Test
     void should_throwUserNotFoundException_when_userDoesNotExist() {
-        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(false);
 
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () -> changeEmailUseCase.execute(userId, "gmail.com"));
 
@@ -57,7 +57,7 @@ class ChangeEmailUseCaseTest {
     @Test
     void should_throwIllegalArgumentException_when_emailIsNotValid() {
         when(userRepository.getById(userId)).thenReturn(user);
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
 
         IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> changeEmailUseCase.execute(userId, "mockito@test"));
 
@@ -67,7 +67,7 @@ class ChangeEmailUseCaseTest {
     @Test
     void should_changeEmail_when_emailIsValid() {
         when(userRepository.getById(userId)).thenReturn(user);
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
 
         changeEmailUseCase.execute(userId, "mockito@test.com");
 

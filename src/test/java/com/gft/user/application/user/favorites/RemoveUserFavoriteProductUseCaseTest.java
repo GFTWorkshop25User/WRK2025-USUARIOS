@@ -40,7 +40,7 @@ class RemoveUserFavoriteProductUseCaseTest {
 
     @Test
     void should_throwException_when_userIdDoesNotExist() {
-        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(false);
         assertThrows(UserNotFoundException.class, () -> removeUserFavoriteProductUseCase.execute(userId, 4L));
     }
 
@@ -48,7 +48,7 @@ class RemoveUserFavoriteProductUseCaseTest {
     void should_disableUser_when_userIdExists() {
         UUID userId = UUID.randomUUID();
 
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
         removeUserFavoriteProductUseCase.execute(userId, 4L);

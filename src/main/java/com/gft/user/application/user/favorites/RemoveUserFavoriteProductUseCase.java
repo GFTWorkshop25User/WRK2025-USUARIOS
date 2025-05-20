@@ -20,7 +20,7 @@ public class RemoveUserFavoriteProductUseCase {
 
     @Transactional
     public void execute(UUID userId, Long productId) {
-        if(!this.userRepository.existsById(userId)) {
+        if(!this.userRepository.existsByIdAndDisabledFalse(userId)) {
             throw new UserNotFoundException(String.format("User with id %s not found", userId));
         }
 
