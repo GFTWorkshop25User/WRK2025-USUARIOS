@@ -5,6 +5,8 @@ import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,6 +15,7 @@ import java.util.UUID;
 public class AddUserFavoriteProductUseCase {
 
     private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(AddUserFavoriteProductUseCase.class);
 
     public AddUserFavoriteProductUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -21,15 +24,18 @@ public class AddUserFavoriteProductUseCase {
     @Transactional
     public void execute(UUID uuid, Long productId) {
         if(productId == null) {
+            logger.warn("Tried to add a favorite product with a null product id");
             throw new IllegalArgumentException("Product id cannot be null");
         }
 
         if(!userRepository.existsByIdAndDisabledFalse(uuid)) {
+            logger.warn("Tried to add a favorite product to a non-existent user [{}]", uuid);
             throw new UserNotFoundException(String.format("User with id %s not found", uuid));
         }
 
         User user = userRepository.getById(uuid);
         user.addFavoriteProduct(new FavoriteId(productId));
         userRepository.save(user);
+        logger.info("Added favorite product [{}] to user [{}]", productId, uuid);
     }
 }
