@@ -45,8 +45,8 @@ public class UserFavoritesControllerTest {
     @Test
     void should_obtainFavoriteIds_when_obtainFavoriteIdsCalled() {
         UUID uuid = UUID.randomUUID();
-        Set<FavoriteId> favoriteIds = new HashSet<>();
-        favoriteIds.add(new FavoriteId(4L));
+        Set<Long> favoriteIds = new HashSet<>();
+        favoriteIds.add(4L);
         when(getUserFavoriteProductsUseCase.execute(uuid)).thenReturn(favoriteIds);
 
         ResponseEntity<?> response = userFavoritesController.getFavorites(uuid);
