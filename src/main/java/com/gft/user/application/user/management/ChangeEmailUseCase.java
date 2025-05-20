@@ -22,7 +22,7 @@ public class ChangeEmailUseCase {
             throw new IllegalArgumentException("Email cannot be empty");
         }
 
-        if(!userRepository.existsById(userId)) {
+        if(!userRepository.existsByIdAndDisabledFalse(userId)) {
             throw new UserNotFoundException(String.format("User with id %s not found", userId));
         }
 

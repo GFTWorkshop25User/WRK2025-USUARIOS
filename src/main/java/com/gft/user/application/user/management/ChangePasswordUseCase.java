@@ -22,7 +22,7 @@ public class ChangePasswordUseCase {
     @Transactional
     public void execute(UUID uuid, String oldPlainPassword, String newPlainPassword) {
 
-        if (!userRepository.existsById(uuid)) {
+        if (!userRepository.existsByIdAndDisabledFalse(uuid)) {
             throw new UserNotFoundException(String.format("User with id %s not found", uuid));
         }
 

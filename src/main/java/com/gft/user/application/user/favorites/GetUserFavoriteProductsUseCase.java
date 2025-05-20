@@ -18,7 +18,7 @@ public class GetUserFavoriteProductsUseCase {
     }
 
     public Set<Long> execute(UUID userId) {
-        if(!userRepository.existsById(userId)) {
+        if(!userRepository.existsByIdAndDisabledFalse(userId)) {
             throw new UserNotFoundException(String.format("User with id %s not found", userId));
         }
 

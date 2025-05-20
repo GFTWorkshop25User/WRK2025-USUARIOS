@@ -47,14 +47,14 @@ public class GetUserFavoriteProductsUseCaseTest {
 
     @Test
     void should_throwException_when_userIdDoesNotExist() {
-        when(userRepository.existsById(userId)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(false);
         assertThrows(UserNotFoundException.class, () -> getUserFavoriteProductsUseCase.execute(userId));
     }
 
 
     @Test
     void should_returnFavoriteIds_when_userIdIsValid() {
-        when(userRepository.existsById(userId)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
         assertEquals(getUserFavoriteProductsUseCase.execute(userId), user.getFavoriteProductIds().stream().map(FavoriteId::value).collect(Collectors.toSet()));

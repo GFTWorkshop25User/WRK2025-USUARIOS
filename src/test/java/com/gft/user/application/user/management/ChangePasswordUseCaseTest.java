@@ -42,7 +42,7 @@ class ChangePasswordUseCaseTest {
     @Test
     void should_change_whenPasswordIsCorrect() {
         when(userRepository.getById(uuid)).thenReturn(user);
-        when(userRepository.existsById(uuid)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(true);
 
         changePasswordUseCase.execute(uuid, oldPassword, newPassword);
 
@@ -54,7 +54,7 @@ class ChangePasswordUseCaseTest {
     @Test
     void should_throwException_whenPasswordIsNotTheOld() {
         when(userRepository.getById(uuid)).thenReturn(user);
-        when(userRepository.existsById(uuid)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, () -> changePasswordUseCase.execute(uuid, "PepeAntonioJose12345!", newPassword));
         assertEquals("The old password does not match.", exception.getMessage());
@@ -63,7 +63,7 @@ class ChangePasswordUseCaseTest {
     @Test
     void should_throwException_whenPasswordIsNull() {
         when(userRepository.getById(uuid)).thenReturn(user);
-        when(userRepository.existsById(uuid)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, () -> changePasswordUseCase.execute(uuid, oldPassword, null));
         assertEquals("The new password cannot be null.", exception.getMessage());
@@ -72,7 +72,7 @@ class ChangePasswordUseCaseTest {
     @Test
     void should_throwException_whenPasswordSameAsOld() {
         when(userRepository.getById(uuid)).thenReturn(user);
-        when(userRepository.existsById(uuid)).thenReturn(true);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, () -> changePasswordUseCase.execute(uuid, oldPassword, oldPassword));
         assertEquals("The new password cannot be the same as the old password.", exception.getMessage());
@@ -80,7 +80,7 @@ class ChangePasswordUseCaseTest {
 
     @Test
     void should_throwException_whenUserNotFound() {
-        when(userRepository.existsById(uuid)).thenReturn(false);
+        when(userRepository.existsByIdAndDisabledFalse(uuid)).thenReturn(false);
         assertThrows(UserNotFoundException.class, () -> changePasswordUseCase.execute(uuid, oldPassword, newPassword));
     }
 

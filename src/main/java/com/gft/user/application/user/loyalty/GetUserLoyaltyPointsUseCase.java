@@ -18,7 +18,7 @@ public class GetUserLoyaltyPointsUseCase {
 
     public int execute(UUID uuid){
 
-        if (!userRepository.existsById(uuid)) {
+        if (!userRepository.existsByIdAndDisabledFalse(uuid)) {
             throw new UserNotFoundException(String.format("User with id %s not found", uuid));
         }
 

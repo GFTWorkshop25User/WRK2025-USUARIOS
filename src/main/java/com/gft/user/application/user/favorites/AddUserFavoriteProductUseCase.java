@@ -24,7 +24,7 @@ public class AddUserFavoriteProductUseCase {
             throw new IllegalArgumentException("Product id cannot be null");
         }
 
-        if(!userRepository.existsById(uuid)) {
+        if(!userRepository.existsByIdAndDisabledFalse(uuid)) {
             throw new UserNotFoundException(String.format("User with id %s not found", uuid));
         }
 

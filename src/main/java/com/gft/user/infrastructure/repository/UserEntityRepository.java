@@ -39,5 +39,12 @@ public class UserEntityRepository implements UserRepository {
     }
 
     @Override
-    public boolean existsById(UUID id) { return jpaUserEntityRepository.existsById(id); }
+    public boolean existsById(UUID id) {
+        return jpaUserEntityRepository.existsById(id);
+    }
+
+    @Override
+    public boolean existsByIdAndDisabledFalse(UUID id) {
+        return jpaUserEntityRepository.existsByIdAndDisabledFalse(id);
+    }
 }
