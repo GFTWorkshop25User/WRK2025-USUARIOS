@@ -137,4 +137,21 @@ class UserEntityRepositoryTest {
 
         assertTrue(userEntityRepository.existsByIdAndDisabledFalse(uuid));
     }
+
+    @Test
+    void should_returnTrue_when_emailExists() {
+        String email = "enrique@gmail.com";
+        when(jpaUserEntityRepository.existsByEmail(email)).thenReturn(true);
+
+        assertTrue(userEntityRepository.existsByEmail(email));
+    }
+
+    @Test
+    void should_returnFalse_when_emailDoesNotExists() {
+        String email = "enrique@gmail.com";
+        when(jpaUserEntityRepository.existsByEmail(email)).thenReturn(false);
+
+        assertFalse(userEntityRepository.existsByEmail(email));
+    }
+
 }
