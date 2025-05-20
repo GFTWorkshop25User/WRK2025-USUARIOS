@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.notification.dto.NotificationDto;
 import com.gft.user.infrastructure.dto.NotificationResponse;
+import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.mapper.NotificationMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,9 @@ class NotificationRestClientTest {
                 .andExpect(method(HttpMethod.DELETE))
                 .andRespond(withResourceNotFound());
 
-        assertThrows(HttpClientErrorException.NotFound.class, () -> client.deleteNotification(notificationId));
+        var exception = assertThrows(NotificationNotFoundException.class, () -> client.deleteNotification(notificationId));
+
+        assertEquals(exception.getMessage(), String.format("Notification with id %s not found", notificationId));
 
         server.verify();
     }
