@@ -3,6 +3,7 @@ package com.gft.user.application.user.management;
 import com.gft.user.domain.model.user.Email;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
+import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class ChangeEmailUseCase {
     public void execute(UUID userId, String newEmail) {
         if(newEmail.isBlank()) {
             throw new IllegalArgumentException("Email cannot be empty");
+        }
+
+        if (userRepository.existsByEmail(newEmail)){
+            throw new EmailAlreadyRegisteredException(String.format("Email %s is already being used", newEmail));
         }
 
         if(!userRepository.existsByIdAndDisabledFalse(userId)) {

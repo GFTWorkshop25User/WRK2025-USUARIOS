@@ -12,4 +12,7 @@ public interface UserRepository {
     boolean existsById(UUID id);
 
     boolean existsByIdAndDisabledFalse(UUID id);
+
+    boolean existsByEmail(String email);
+
 }

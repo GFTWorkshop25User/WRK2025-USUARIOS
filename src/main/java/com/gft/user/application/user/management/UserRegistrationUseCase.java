@@ -6,6 +6,7 @@ import com.gft.user.domain.model.user.Email;
 import com.gft.user.domain.model.user.Password;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
+import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,11 @@ public class UserRegistrationUseCase {
 
     @Transactional
     public UUID execute(UserRequest userRequest) {
+
+        if (userRepository.existsByEmail(userRequest.email())){
+            throw new EmailAlreadyRegisteredException(String.format("Email %s is already being used", userRequest.email()));
+        }
+
         PasswordFactory passwordFactory = new PasswordFactory();
         Password password = passwordFactory.createFromPlainText(userRequest.plainPassword());
 

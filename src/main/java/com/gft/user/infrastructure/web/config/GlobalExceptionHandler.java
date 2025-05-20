@@ -2,7 +2,9 @@ package com.gft.user.infrastructure.web.config;
 
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
+import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,4 +38,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleException(ProductNotInFavoritesException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleException(EmailAlreadyRegisteredException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
 }
