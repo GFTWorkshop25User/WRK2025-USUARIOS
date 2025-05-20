@@ -3,7 +3,6 @@ package com.gft.user.infrastructure.web.controller;
 import com.gft.user.application.user.favorites.AddUserFavoriteProductUseCase;
 import com.gft.user.application.user.favorites.GetUserFavoriteProductsUseCase;
 import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
-import com.gft.user.domain.model.user.FavoriteId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
