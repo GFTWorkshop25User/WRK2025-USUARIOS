@@ -36,4 +36,7 @@ public class UserEntity {
 
     private int loyaltyPoints;
     private boolean disabled;
+
+    public UserEntity(UUID uuid, String manolo, Object o) {
+    }
 }
