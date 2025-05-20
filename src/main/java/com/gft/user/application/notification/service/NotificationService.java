@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface NotificationService {
     List<NotificationDto> getUserNotifications(UUID userId);
+
+    void deleteNotification(UUID notificationId);
 }

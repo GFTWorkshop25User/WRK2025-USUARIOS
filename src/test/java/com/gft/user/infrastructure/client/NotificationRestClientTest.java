@@ -8,22 +8,24 @@ import com.gft.user.infrastructure.mapper.NotificationMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @RestClientTest(NotificationRestClient.class)
-public class NotificationRestClientTest {
+class NotificationRestClientTest {
 
     @Autowired
     MockRestServiceServer server;
@@ -38,7 +40,7 @@ public class NotificationRestClientTest {
     NotificationMapper notificationMapper;
 
     @Test
-    public void should_returnNotifications_when_areNotifications() throws JsonProcessingException {
+    void should_returnNotifications_when_areNotifications() throws JsonProcessingException {
         UUID userId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
 
@@ -54,24 +56,54 @@ public class NotificationRestClientTest {
         when(notificationMapper.toNotificationDto(notificationResponse1)).thenReturn(notificationDto1);
         when(notificationMapper.toNotificationDto(notificationResponse2)).thenReturn(notificationDto2);
 
-        this.server
-                .expect(requestTo("http://notificacionservice/api/v1/notifications/" + userId))
+        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + userId))
+                .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(objectMapper.writeValueAsString(notificationResponses), MediaType.APPLICATION_JSON));
 
         List<NotificationDto> response = client.getUserNotifications(userId);
         assertEquals(2, response.size());
         assertTrue(response.containsAll(notificationDtos));
+
+        server.verify();
     }
 
     @Test
-    public void should_returnEmptyList_when_responseIsNull() throws JsonProcessingException {
+    void should_returnEmptyList_when_responseIsNull() throws JsonProcessingException {
         UUID userId = UUID.randomUUID();
 
-        this.server
-                .expect(requestTo("http://notificacionservice/api/v1/notifications/" + userId))
+        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + userId))
+                .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(objectMapper.writeValueAsString(null), MediaType.APPLICATION_JSON));
 
         List<NotificationDto> response = client.getUserNotifications(userId);
         assertEquals(0, response.size());
+
+        server.verify();
+    }
+
+    @Test
+    void should_noContent_when_deleteNotification() {
+        UUID notificationId = UUID.randomUUID();
+
+        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + notificationId))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withNoContent());
+
+        client.deleteNotification(notificationId);
+
+        server.verify();
+    }
+
+    @Test
+    void should_throwException_when_deleteNotificationNotFound() {
+        UUID notificationId = UUID.randomUUID();
+
+        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + notificationId))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withResourceNotFound());
+
+        assertThrows(HttpClientErrorException.NotFound.class, () -> client.deleteNotification(notificationId));
+
+        server.verify();
     }
 }
