@@ -2,6 +2,7 @@ package com.gft.user.application.user.management;
 
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
+import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,5 +73,11 @@ class ChangeEmailUseCaseTest {
         changeEmailUseCase.execute(userId, "mockito@test.com");
 
         assertEquals("mockito@test.com", user.getEmail().value());
+    }
+
+    @Test
+    void should_throwException_whenEmailAlreadyExists() {
+        when(userRepository.existsByEmail("pepe@json.com")).thenReturn(true);
+        assertThrows(EmailAlreadyRegisteredException.class, () -> changeEmailUseCase.execute(UUID.randomUUID(), "pepe@json.com"));
     }
 }
