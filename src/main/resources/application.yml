@@ -3,9 +3,10 @@ spring:
     name: workshop
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
+    url: jdbc:postgresql://127.0.0.1:5432/users_db
+    driver-class-name: org.postgresql.Driver
+    username: dbuser
+    password: 12345678A
 
   sql:
     init:
