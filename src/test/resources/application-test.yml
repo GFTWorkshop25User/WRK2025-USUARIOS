@@ -1,6 +1,6 @@
 spring:
   application:
-    name: workshop
+    name: workshop-test
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -9,8 +9,8 @@ spring:
 
     sql:
       init:
-        schema-locations: classpath:/data/h2/schema.sql
-        data-locations: classpath:/data/h2/data.sql
+        schema-locations: classpath:/data/h2/schema_testing.sql
+        data-locations: classpath:/data/h2/data_testing.sql
 
   jpa:
     hibernate:
