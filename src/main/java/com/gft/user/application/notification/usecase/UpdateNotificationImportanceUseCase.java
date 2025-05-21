@@ -1,6 +1,7 @@
 package com.gft.user.application.notification.usecase;
 
 import com.gft.user.application.notification.service.NotificationService;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class UpdateNotificationImportanceUseCase {
         this.notificationService = notificationService;
     }
 
+    @Transactional
     public void execute(UUID notificationId, boolean importance) {
         notificationService.updateNotificationImportance(notificationId, importance);
         logger.info("Update notification [{}] importance: [{}]", notificationId, importance);
