@@ -3,6 +3,7 @@ package com.gft.user.infrastructure.web.config;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
+import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -39,9 +40,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(EmailAlreadyRegisteredException.class)
     public ResponseEntity<Object> handleException(EmailAlreadyRegisteredException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
+    @ExceptionHandler(NotificationNotFoundException.class)
+    public ResponseEntity<Object> handleException(NotificationNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }
