@@ -2,6 +2,8 @@ package com.gft.user.infrastructure.web.config;
 
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
+import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
+import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +58,7 @@ class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals("Product is already in Favorites", response.getBody());
     }
-  
+
     @Test
     void should_throwException_when_ProductNotInFavoritesException() {
 
@@ -65,5 +67,23 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Favorite not found", response.getBody());
+    }
+
+    @Test
+    void should_throwException_when_emailAlreadyRegistered() {
+        EmailAlreadyRegisteredException ex = new EmailAlreadyRegisteredException("Email is already in registered");
+        ResponseEntity<Object> response = handler.handleException(ex);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Email is already in registered", response.getBody());
+    }
+
+    @Test
+    void should_throwException_when_notificationNotFound() {
+        NotificationNotFoundException ex = new NotificationNotFoundException("Notification not found");
+        ResponseEntity<Object> response = handler.handleException(ex);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Notification not found", response.getBody());
     }
 }

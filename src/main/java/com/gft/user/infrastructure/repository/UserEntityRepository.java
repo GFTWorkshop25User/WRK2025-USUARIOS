@@ -47,4 +47,10 @@ public class UserEntityRepository implements UserRepository {
     public boolean existsByIdAndDisabledFalse(UUID id) {
         return jpaUserEntityRepository.existsByIdAndDisabledFalse(id);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return jpaUserEntityRepository.existsByEmail(email);
+    }
+
 }

@@ -15,8 +15,8 @@ public class GetUserByIdUseCase {
         this.userRepository = userRepository;
     }
 
-    public User execute(UUID id) {
-        return userRepository.getById(id);
+    public User execute(UUID userId) {
+        return userRepository.getById(userId);
     }
 
 }
