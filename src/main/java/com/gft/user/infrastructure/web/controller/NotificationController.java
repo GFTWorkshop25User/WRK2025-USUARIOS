@@ -15,8 +15,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NotificationController {
 
-    GetUserNotificationsUseCase getUserNotificationsUseCase;
-    DeleteNotificationUseCase deleteNotificationUseCase;
+    private final GetUserNotificationsUseCase getUserNotificationsUseCase;
+    private final DeleteNotificationUseCase deleteNotificationUseCase;
 
     @GetMapping("/users/{id}/notifications")
     public ResponseEntity<?> getUserNotifications(@PathVariable UUID id) {
