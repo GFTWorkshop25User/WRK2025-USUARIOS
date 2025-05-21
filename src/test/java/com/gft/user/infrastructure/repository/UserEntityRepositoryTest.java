@@ -12,9 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -153,5 +151,37 @@ class UserEntityRepositoryTest {
 
         assertFalse(userEntityRepository.existsByEmail(email));
     }
+
+    @Test
+    void should_returnUserIds_when_productIdExistsInAnyOfThem() {
+        List<UUID> userIdsGiven = List.of(
+                UUID.fromString("550e8400-e29b-41d4-a716-446655440000"),
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
+        );
+        List<UUID> userIdsReturned;
+        Long productId = 1L;
+
+        when(jpaUserEntityRepository.findUserIdsByFavoriteProductId(productId)).thenReturn(userIdsGiven);
+
+        userIdsReturned = userEntityRepository.findAllUsersByProductId(productId);
+
+        assertEquals(userIdsGiven.size(), userIdsReturned.size());
+        assertEquals(userIdsGiven.get(0), userIdsReturned.get(0));
+    }
+
+    @Test
+    void should_returnUserIdsEmpty_when_productIdDoesNotExistsInAnyOfThem() {
+        List<UUID> userIdsGiven = new ArrayList<>();
+        List<UUID> userIdsReturned;
+        Long productId = 1L;
+
+        when(jpaUserEntityRepository.findUserIdsByFavoriteProductId(productId)).thenReturn(userIdsGiven);
+
+        userIdsReturned = userEntityRepository.findAllUsersByProductId(productId);
+
+        assertEquals(userIdsGiven.size(), userIdsReturned.size());
+        assertTrue(userIdsGiven.isEmpty());
+    }
+
 
 }
