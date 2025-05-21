@@ -4,6 +4,7 @@ import com.gft.user.domain.model.user.Address;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ChangeAddressUseCase {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public void execute(UUID userId, Address address) {
         Assert.notNull(address, "Address cannot be null");
         Assert.notNull(address.city(), "City cannot be null");
