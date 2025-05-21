@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.notification.dto.NotificationDto;
 import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
 import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
+import com.gft.user.application.notification.usecase.UpdateNotificationImportanceUseCase;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,10 +18,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -41,6 +42,9 @@ class NotificationControllerIT {
 
     @MockitoBean
     private DeleteNotificationUseCase deleteNotificationUseCase;
+
+    @MockitoBean
+    private UpdateNotificationImportanceUseCase updateNotificationImportanceUseCase;
 
     @Test
     void should_returnUserNotifications_when_getUserNotificationsCalled() throws Exception {
@@ -87,4 +91,33 @@ class NotificationControllerIT {
 
         assertEquals("Notification not found " + notificationId, mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
+
+    @Test
+    void should_updateNotificationImportance_when_called() throws Exception {
+        UUID notificationId = UUID.randomUUID();
+
+        doNothing().when(updateNotificationImportanceUseCase).execute(notificationId, true);
+
+        mockMvc.perform(patch("/api/v1/notifications/{notificationId}", notificationId)
+                .content("true").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(updateNotificationImportanceUseCase, times(1)).execute(notificationId, true);
+    }
+
+    @Test
+    void should_throwException_when_notificationId_isNull_on_updateImportance() throws Exception {
+        UUID notificationId = UUID.randomUUID();
+
+
+        doThrow(new NotificationNotFoundException("Notification not found " + notificationId)).when(updateNotificationImportanceUseCase).execute(notificationId, false);
+
+        MvcResult mvcResult = mockMvc.perform(patch("/api/v1/notifications/{notificationId}", notificationId)
+                        .content("false").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        assertEquals("Notification not found " + notificationId, mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
+    }
+
 }

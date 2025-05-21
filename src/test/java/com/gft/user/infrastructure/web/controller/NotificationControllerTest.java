@@ -3,6 +3,7 @@ package com.gft.user.infrastructure.web.controller;
 import com.gft.user.application.notification.dto.NotificationDto;
 import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
 import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
+import com.gft.user.application.notification.usecase.UpdateNotificationImportanceUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,6 +33,9 @@ class NotificationControllerTest {
     @Mock
     private DeleteNotificationUseCase deleteNotificationUseCase;
 
+    @Mock
+    private UpdateNotificationImportanceUseCase updateNotificationImportanceUseCase;
+
     @Test
     void should_returnUserNotifications_whenGetNotifications() {
         UUID uuid = UUID.randomUUID();
@@ -43,7 +47,6 @@ class NotificationControllerTest {
         when(getUserNotificationsUseCase.execute(uuid)).thenReturn(notificationsListSent);
 
         ResponseEntity<?> response = notificationController.getUserNotifications(uuid);
-
 
         verify(getUserNotificationsUseCase, times(1)).execute(uuid);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -58,4 +61,12 @@ class NotificationControllerTest {
 
         verify(deleteNotificationUseCase).execute(notificationId);
     }
+
+    @Test
+    void should_callUpdateNotification_when_updateNotificationCalled() {
+        UUID notificationId = UUID.randomUUID();
+        notificationController.updateNotification(notificationId, true);
+        verify(updateNotificationImportanceUseCase).execute(notificationId, true);
+    }
+
 }
