@@ -4,6 +4,7 @@ package com.gft.user.infrastructure.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.favorites.AddUserFavoriteProductUseCase;
 import com.gft.user.application.user.favorites.GetUserFavoriteProductsUseCase;
+import com.gft.user.application.user.favorites.GetUserIdsByFavoriteProductIdUseCase;
 import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserFavoritesController.class)
@@ -46,6 +49,9 @@ public class UserFavoritesControllerIT {
 
     @MockitoBean
     private RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
+
+    @MockitoBean
+    private GetUserIdsByFavoriteProductIdUseCase getUserIdsByFavoriteProductIdUseCase;
 
     @Test
     void should_addProduct_when_addProductToFavoritesCalled() throws Exception {
@@ -149,4 +155,24 @@ public class UserFavoritesControllerIT {
 
         assertEquals("Product is already in favorites", mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8));
     }
+
+    @Test
+    void should_returnUserIds_when_productIdAmongThem() throws Exception {
+        Long productId = 4L;
+        List<UUID> userIds = List.of(
+                UUID.fromString("550e8400-e29b-41d4-a716-446655440000"),
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
+        );
+
+        when(getUserIdsByFavoriteProductIdUseCase.execute(productId)).thenReturn(userIds);
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/users/favorite-product/{productId}", productId)).andExpect(status().isOk()).andReturn();
+
+        String expectedResponseBody = objectMapper.writeValueAsString(userIds);
+        String actualResponseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(expectedResponseBody);
+        verify(getUserIdsByFavoriteProductIdUseCase, times(1)).execute(productId);
+
+    }
+
 }
