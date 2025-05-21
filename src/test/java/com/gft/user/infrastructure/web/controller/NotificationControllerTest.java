@@ -1,8 +1,8 @@
 package com.gft.user.infrastructure.web.controller;
 
 import com.gft.user.application.notification.dto.NotificationDto;
+import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
 import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
-import org.aspectj.weaver.ast.Not;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +29,9 @@ class NotificationControllerTest {
     @Mock
     private GetUserNotificationsUseCase getUserNotificationsUseCase;
 
+    @Mock
+    private DeleteNotificationUseCase deleteNotificationUseCase;
+
     @Test
     void should_returnUserNotifications_whenGetNotifications() {
         UUID uuid = UUID.randomUUID();
@@ -47,4 +50,12 @@ class NotificationControllerTest {
         assertEquals(notificationsListSent, response.getBody());
     }
 
+    @Test
+    void should_callDeleteNotification_when_deleteNotificationCalled() {
+        UUID notificationId = UUID.randomUUID();
+
+        notificationController.deleteNotification(notificationId);
+
+        verify(deleteNotificationUseCase).execute(notificationId);
+    }
 }

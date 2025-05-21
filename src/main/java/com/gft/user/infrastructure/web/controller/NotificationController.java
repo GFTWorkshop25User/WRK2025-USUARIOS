@@ -1,13 +1,12 @@
 package com.gft.user.infrastructure.web.controller;
 
 
+import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
 import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -16,11 +15,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NotificationController {
 
-    GetUserNotificationsUseCase getUserNotificationsUseCase;
+    private final GetUserNotificationsUseCase getUserNotificationsUseCase;
+    private final DeleteNotificationUseCase deleteNotificationUseCase;
 
     @GetMapping("/users/{id}/notifications")
     public ResponseEntity<?> getUserNotifications(@PathVariable UUID id) {
         return ResponseEntity.ok(getUserNotificationsUseCase.execute(id));
     }
 
+    @DeleteMapping("/notifications/{notificationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteNotification(@PathVariable UUID notificationId) {
+        deleteNotificationUseCase.execute(notificationId);
+    }
 }
