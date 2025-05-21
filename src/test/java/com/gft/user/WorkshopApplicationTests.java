@@ -14,7 +14,7 @@ class WorkshopApplicationTests {
 
 	@Test
 	void testMain() {
-		WorkshopApplication.main(new String[] {});
+		WorkshopApplication.main(new String[] { "--spring.profiles.active=test" });
 	}
 
 }
