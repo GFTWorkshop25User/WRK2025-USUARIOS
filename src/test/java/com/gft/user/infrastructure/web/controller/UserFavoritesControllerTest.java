@@ -2,6 +2,7 @@ package com.gft.user.infrastructure.web.controller;
 
 import com.gft.user.application.user.favorites.AddUserFavoriteProductUseCase;
 import com.gft.user.application.user.favorites.GetUserFavoriteProductsUseCase;
+import com.gft.user.application.user.favorites.GetUserIdsByFavoriteProductIdUseCase;
 import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,6 +34,9 @@ public class UserFavoritesControllerTest {
 
     @Mock
     private RemoveUserFavoriteProductUseCase removeUserFavoriteProductUseCase;
+
+    @Mock
+    private GetUserIdsByFavoriteProductIdUseCase getUserIdsByFavoriteProductIdUseCase;
 
     @Test
     void should_addFavorite_when_addProductToFavoritesCalled() {
@@ -62,7 +67,23 @@ public class UserFavoritesControllerTest {
         Long productId = 1L;
 
         userFavoritesController.removeFavoriteProduct(uuid, productId);
-
         verify(removeUserFavoriteProductUseCase, times(1)).execute(uuid, productId);
     }
+
+    @Test
+    void should_obtainUserIds_when_getUserIdsWithProductIdCalled() {
+        Long productId = 4L;
+        List<UUID> userIds = List.of(
+                UUID.fromString("550e8400-e29b-41d4-a716-446655440000"),
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
+        );
+
+        when(getUserIdsByFavoriteProductIdUseCase.execute(productId)).thenReturn(userIds);
+        ResponseEntity<?> responseEntity = userFavoritesController.getUserIdsWithProductId(productId);
+
+        assertEquals(userIds, responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(getUserIdsByFavoriteProductIdUseCase, times(1)).execute(productId);
+    }
+
 }
