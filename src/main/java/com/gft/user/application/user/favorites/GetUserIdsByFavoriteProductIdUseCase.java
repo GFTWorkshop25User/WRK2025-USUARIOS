@@ -12,7 +12,6 @@ import java.util.UUID;
 public class GetUserIdsByFavoriteProductIdUseCase {
 
     private final UserRepository userRepository;
-    private final Logger logger = LoggerFactory.getLogger(GetUserIdsByFavoriteProductIdUseCase.class);
 
     public GetUserIdsByFavoriteProductIdUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;
