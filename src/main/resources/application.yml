@@ -18,3 +18,13 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+    
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+logging:
+  file:
+    name: logs/app.log
