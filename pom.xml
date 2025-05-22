@@ -168,11 +168,6 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.11</version>
-				<configuration>
-					<excludes>
-						<exclude>com/gft/user/WorkshopApplication*</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -189,6 +184,7 @@
 				</executions>
 				<configuration>
 					<excludes>
+						<exclude>com/gft/user/WorkshopApplication*</exclude>
 						<exclude>com/gft/user/infrastructure/messaging/RabbitMQNotificationConsumer*</exclude>
 					</excludes>
 				</configuration>
