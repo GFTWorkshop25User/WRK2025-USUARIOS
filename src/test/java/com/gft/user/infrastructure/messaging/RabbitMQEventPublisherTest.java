@@ -26,7 +26,7 @@ class RabbitMQEventPublisherTest {
     void should_publishEvent_when_sendUserDisabledMessage() {
         UserDisabledEvent userDisabledEvent = new UserDisabledEvent(UUID.randomUUID());
 
-        eventPublisher.sendUserDisabledMessage(userDisabledEvent);
+        eventPublisher.publishUserDisabledEvent(userDisabledEvent);
 
         verify(rabbitTemplate, times(1)).convertAndSend("user", "disabled", userDisabledEvent);
     }

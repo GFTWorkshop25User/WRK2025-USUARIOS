@@ -1,5 +1,7 @@
 package com.gft.user.application.user.management;
 
+import com.gft.user.domain.event.DomainEventPublisher;
+import com.gft.user.domain.event.UserDisabledEvent;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
@@ -14,10 +16,12 @@ import java.util.UUID;
 public class DeleteUserUseCase {
 
     private final UserRepository userRepository;
+    private final DomainEventPublisher domainEventPublisher;
     private final Logger logger = LoggerFactory.getLogger(DeleteUserUseCase.class);
 
-    public DeleteUserUseCase(UserRepository userRepository) {
+    public DeleteUserUseCase(UserRepository userRepository, DomainEventPublisher domainEventPublisher) {
         this.userRepository = userRepository;
+        this.domainEventPublisher = domainEventPublisher;
     }
 
     @Transactional
@@ -32,5 +36,6 @@ public class DeleteUserUseCase {
 
         logger.info("Disabled user [{}]", user);
         this.userRepository.save(user);
+        domainEventPublisher.publishUserDisabledEvent(new UserDisabledEvent(userId));
     }
 }

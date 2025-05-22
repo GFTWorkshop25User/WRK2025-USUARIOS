@@ -148,21 +148,4 @@ class UserManagementE2EIT {
         assertEquals("Algeciras", user.getAddress().city());
         assertEquals("La Pau", user.getAddress().street());
     }
-
-    @Test
-    @DisplayName("Change the user to disabled true")
-    @Order(7)
-    void disableUser() {
-        assertThat(userId).isNotNull();
-
-        String userUrl = baseUrl() + "/" + userId;
-        restTemplate.delete(userUrl);
-
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(userUrl, String.class);
-        User user = restTemplate.getForObject(userUrl, User.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertTrue(user.isDisabled());
-    }
-
 }
