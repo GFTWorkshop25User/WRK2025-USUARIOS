@@ -1,4 +1,4 @@
-package com.gft.user.infrastructure.web.controller;
+package com.gft.user.infrastructure.web.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.management.dto.ChangePasswordRequest;
@@ -6,6 +6,7 @@ import com.gft.user.application.user.management.dto.UserRequest;
 import com.gft.user.application.user.management.*;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
+import com.gft.user.infrastructure.web.controller.UserManagementController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
