@@ -5,8 +5,6 @@ import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.entity.AddressEntity;
 import com.gft.user.infrastructure.entity.UserEntity;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -14,11 +12,10 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 class UserMapperTest {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final AddressMapper addressMapper = new AddressMapper();
+    private final UserMapper userMapper = new UserMapper(addressMapper);
 
     @Test
     void should_mapUser_to_userEntity() {
