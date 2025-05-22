@@ -1,4 +1,4 @@
-package com.gft.user.infrastructure.web.controller;
+package com.gft.user.infrastructure.web.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.notification.dto.NotificationDto;
@@ -6,7 +6,7 @@ import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
 import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
 import com.gft.user.application.notification.usecase.UpdateNotificationImportanceUseCase;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
-import org.junit.jupiter.api.Disabled;
+import com.gft.user.infrastructure.web.controller.NotificationController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,7 +19,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
