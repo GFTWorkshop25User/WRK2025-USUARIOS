@@ -22,8 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserManagementController.class)
 class UserManagementControllerIT {
@@ -61,13 +60,14 @@ class UserManagementControllerIT {
     void should_responseCreated_when_userRequestIsValid() throws Exception {
         UUID uuid = UUID.randomUUID();
         UserRequest userRequest = new UserRequest("Pepe", "pepe@mail.com", "Pepito123456!!");
+
         when(userRegistrationUseCase.execute(userRequest)).thenReturn(uuid);
 
         String requestBody = objectMapper.writeValueAsString(userRequest);
 
         mockMvc.perform(post("/api/v1/users").content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/api/v1/users/" + uuid));
+                .andExpect(content().string("\"" + uuid + "\""));
     }
 
     @Test

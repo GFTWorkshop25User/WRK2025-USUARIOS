@@ -93,7 +93,7 @@ class NotificationControllerIT {
     }
 
     @Test
-    void should_updateNotificationImportance_when_called() throws Exception {
+    void should_updateNotificationImportanceImportance_when_called() throws Exception {
         UUID notificationId = UUID.randomUUID();
 
         doNothing().when(updateNotificationImportanceUseCase).execute(notificationId, true);

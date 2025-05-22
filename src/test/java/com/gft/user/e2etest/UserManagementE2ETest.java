@@ -43,12 +43,10 @@ public class UserManagementE2ETest {
     @Order(1)
     void registerUser() {
         UserRequest userRequest = new UserRequest("Mari", "maripili@gft.com", "Mari1234567!");
-        ResponseEntity<Void> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, Void.class);
+        ResponseEntity<UUID> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, UUID.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        String location = Objects.requireNonNull(responseEntity.getHeaders().getLocation()).toString();
-        userId = UUID.fromString(location.substring(baseUrl().length() + 1));
-
+        userId = responseEntity.getBody();
     }
 
     @Test

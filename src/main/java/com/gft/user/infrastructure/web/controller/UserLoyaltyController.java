@@ -2,7 +2,6 @@ package com.gft.user.infrastructure.web.controller;
 
 import com.gft.user.application.user.loyalty.GetUserLoyaltyPointsUseCase;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,7 @@ public class UserLoyaltyController {
 
 
     @GetMapping("/{id}/loyalty-points")
-    public ResponseEntity<?> getUserLoyaltyPoints(@PathVariable UUID id){
-        return ResponseEntity.ok(userLoyaltyPointsUseCase.execute(id));
+    public int getUserLoyaltyPoints(@PathVariable UUID id){
+        return userLoyaltyPointsUseCase.execute(id);
     }
 }
