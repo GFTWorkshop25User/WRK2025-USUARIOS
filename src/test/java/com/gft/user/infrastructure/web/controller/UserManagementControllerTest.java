@@ -11,13 +11,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.HashSet;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -55,12 +52,11 @@ class UserManagementControllerTest {
         UserRequest userRequest = new UserRequest("Pepe", "pepe@mail.com", "Pepito123456!!");
         when(userRegistrationUseCase.execute(userRequest)).thenReturn(uuid);
 
-        UriComponentsBuilder ucb = UriComponentsBuilder.fromUriString("http://localhost:8080");
 
-        ResponseEntity<?> response = userManagementController.registerUser(userRequest, ucb);
+        ResponseEntity<UUID> response = userManagementController.registerUser(userRequest);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertThat(response.getHeaders().getLocation()).isEqualTo(URI.create("http://localhost:8080/api/v1/users/" + uuid));
+        assertEquals(uuid, response.getBody());
 
         verify(userRegistrationUseCase, times(1)).execute(userRequest);
     }
@@ -81,10 +77,9 @@ class UserManagementControllerTest {
 
         when(getUserByIdUseCase.execute(uuid)).thenReturn(user);
 
-        ResponseEntity<?> response = userManagementController.getUser(uuid);
+        User response = userManagementController.getUser(uuid);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(user, response.getBody());
+        assertEquals(user, response);
 
         verify(getUserByIdUseCase, times(1)).execute(uuid);
     }

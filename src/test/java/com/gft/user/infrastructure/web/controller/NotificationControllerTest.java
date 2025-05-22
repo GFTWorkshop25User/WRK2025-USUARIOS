@@ -46,11 +46,10 @@ class NotificationControllerTest {
 
         when(getUserNotificationsUseCase.execute(uuid)).thenReturn(notificationsListSent);
 
-        ResponseEntity<?> response = notificationController.getUserNotifications(uuid);
+        List<NotificationDto> response = notificationController.getUserNotifications(uuid);
 
         verify(getUserNotificationsUseCase, times(1)).execute(uuid);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(notificationsListSent, response.getBody());
+        assertEquals(notificationsListSent, response);
     }
 
     @Test
@@ -63,9 +62,9 @@ class NotificationControllerTest {
     }
 
     @Test
-    void should_callUpdateNotification_when_updateNotificationCalled() {
+    void should_callUpdateNotification_when_updateNotificationImportanceCalled() {
         UUID notificationId = UUID.randomUUID();
-        notificationController.updateNotification(notificationId, true);
+        notificationController.updateNotificationImportance(notificationId, true);
         verify(updateNotificationImportanceUseCase).execute(notificationId, true);
     }
 
