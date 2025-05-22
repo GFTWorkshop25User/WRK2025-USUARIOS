@@ -8,6 +8,7 @@ import com.gft.user.infrastructure.mapper.UserMapper;
 import com.gft.user.infrastructure.repository.jpa.JpaUserEntityRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,4 +54,8 @@ public class UserEntityRepository implements UserRepository {
         return jpaUserEntityRepository.existsByEmail(email);
     }
 
+    @Override
+    public List<UUID> findAllUsersByProductId(Long productId) {
+        return jpaUserEntityRepository.findUserIdsByFavoriteProductId(productId);
+    }
 }

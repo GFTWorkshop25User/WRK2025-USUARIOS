@@ -10,12 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@SpringBootTest
-@ActiveProfiles("test")
 class AddressMapperTest {
 
-    @Autowired
-    private AddressMapper addressMapper;
+    private final AddressMapper addressMapper = new AddressMapper();
 
     @Test
     void should_returnNull_when_mapToAddressEntityIsNull() {
