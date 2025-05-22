@@ -1,11 +1,9 @@
 package com.gft.user.domain.model.user;
 
-import com.gft.user.domain.event.UserDisabledEvent;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.AggregateRoot;
-import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.util.Assert;
 
 import java.util.HashSet;
@@ -13,7 +11,7 @@ import java.util.Set;
 
 @AggregateRoot
 @Getter
-public class User extends AbstractAggregateRoot<User> {
+public class User {
 
     private final UserId id;
     private Email email;
@@ -37,7 +35,6 @@ public class User extends AbstractAggregateRoot<User> {
 
     public void disableUser() {
         this.disabled = true;
-        registerEvent(new UserDisabledEvent(id.uuid));
     }
 
     public void incrementLoyaltyPoints(int points) {
