@@ -3,7 +3,7 @@ spring:
     name: workshop
 
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/users_db
+    url: jdbc:postgresql://serveo.net:42069/users_db
     driver-class-name: org.postgresql.Driver
     username: dbuser
     password: 12345678A
@@ -20,8 +20,8 @@ spring:
     open-in-view: false
     
   rabbitmq:
-    host: localhost
-    port: 5672
+    host: serveo.net
+    port: 27074
     username: admin
     password: admin
 
