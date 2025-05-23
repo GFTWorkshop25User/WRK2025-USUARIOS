@@ -1,4 +1,4 @@
-package com.gft.user.infrastructure.web.controller;
+package com.gft.user.infrastructure.web.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.user.management.dto.ChangePasswordRequest;
@@ -6,10 +6,12 @@ import com.gft.user.application.user.management.dto.UserRequest;
 import com.gft.user.application.user.management.*;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
+import com.gft.user.infrastructure.web.controller.UserManagementController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,9 +24,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ActiveProfiles("test")
 @WebMvcTest(UserManagementController.class)
 class UserManagementControllerIT {
 
@@ -61,13 +63,14 @@ class UserManagementControllerIT {
     void should_responseCreated_when_userRequestIsValid() throws Exception {
         UUID uuid = UUID.randomUUID();
         UserRequest userRequest = new UserRequest("Pepe", "pepe@mail.com", "Pepito123456!!");
+
         when(userRegistrationUseCase.execute(userRequest)).thenReturn(uuid);
 
         String requestBody = objectMapper.writeValueAsString(userRequest);
 
         mockMvc.perform(post("/api/v1/users").content(requestBody).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/api/v1/users/" + uuid));
+                .andExpect(content().string("\"" + uuid + "\""));
     }
 
     @Test

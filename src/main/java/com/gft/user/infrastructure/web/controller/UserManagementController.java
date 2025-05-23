@@ -4,13 +4,12 @@ import com.gft.user.application.user.management.dto.ChangePasswordRequest;
 import com.gft.user.application.user.management.dto.UserRequest;
 import com.gft.user.application.user.management.*;
 import com.gft.user.domain.model.user.Address;
+import com.gft.user.domain.model.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -27,16 +26,13 @@ public class UserManagementController {
     private final ChangeAddressUseCase changeAddressUseCase;
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucb) {
-        UUID userUuid = userRegistrationUseCase.execute(userRequest);
-        URI uri = ucb.path("/api/v1/users/{userUuid}").build(userUuid);
-
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<UUID> registerUser(@RequestBody UserRequest userRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userRegistrationUseCase.execute(userRequest));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable UUID id) {
-        return ResponseEntity.ok(getUserByIdUseCase.execute(id));
+    public User getUser(@PathVariable UUID id) {
+        return getUserByIdUseCase.execute(id);
     }
 
     @DeleteMapping("/{id}")

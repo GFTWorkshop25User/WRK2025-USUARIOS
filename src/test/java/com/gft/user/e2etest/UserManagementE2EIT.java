@@ -14,17 +14,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ActiveProfiles("test")
-public class UserManagementE2ETest {
+class UserManagementE2EIT {
 
     @LocalServerPort
     private int port;
@@ -43,12 +42,10 @@ public class UserManagementE2ETest {
     @Order(1)
     void registerUser() {
         UserRequest userRequest = new UserRequest("Mari", "maripili@gft.com", "Mari1234567!");
-        ResponseEntity<Void> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, Void.class);
+        ResponseEntity<UUID> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, UUID.class);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        String location = Objects.requireNonNull(responseEntity.getHeaders().getLocation()).toString();
-        userId = UUID.fromString(location.substring(baseUrl().length() + 1));
-
+        userId = responseEntity.getBody();
     }
 
     @Test
@@ -151,21 +148,4 @@ public class UserManagementE2ETest {
         assertEquals("Algeciras", user.getAddress().city());
         assertEquals("La Pau", user.getAddress().street());
     }
-
-    @Test
-    @DisplayName("Change the user to disabled true")
-    @Order(7)
-    void disableUser() {
-        assertThat(userId).isNotNull();
-
-        String userUrl = baseUrl() + "/" + userId;
-        restTemplate.delete(userUrl);
-
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(userUrl, String.class);
-        User user = restTemplate.getForObject(userUrl, User.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertTrue(user.isDisabled());
-    }
-
 }

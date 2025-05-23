@@ -1,5 +1,7 @@
 package com.gft.user.application.user.management;
 
+import com.gft.user.domain.event.DomainEventPublisher;
+import com.gft.user.domain.event.UserDisabledEvent;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
@@ -14,13 +16,16 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteUserUseCaseTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private DomainEventPublisher domainEventPublisher;
 
     @InjectMocks
     private DeleteUserUseCase deleteUserUseCase;
@@ -54,5 +59,8 @@ class DeleteUserUseCaseTest {
         deleteUserUseCase.execute(userId);
 
         assertTrue(user.isDisabled());
+
+        verify(domainEventPublisher, times(1)).publishUserDisabledEvent(new UserDisabledEvent(userId));
+        verify(userRepository, times(1)).save(user);
     }
 }

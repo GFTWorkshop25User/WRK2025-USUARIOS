@@ -11,7 +11,7 @@ import java.util.UUID;
 @Generated
 public class UserId {
 
-    UUID uuid;
+    private final UUID uuid;
 
     public UserId() {
         uuid = UUID.randomUUID();

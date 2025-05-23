@@ -9,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,10 +51,9 @@ public class UserFavoritesControllerTest {
         favoriteIds.add(4L);
         when(getUserFavoriteProductsUseCase.execute(uuid)).thenReturn(favoriteIds);
 
-        ResponseEntity<?> response = userFavoritesController.getFavorites(uuid);
+        Set<Long> response = userFavoritesController.getFavorites(uuid);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(favoriteIds, response.getBody());
+        assertEquals(favoriteIds, response);
 
         verify(getUserFavoriteProductsUseCase, times(1)).execute(uuid);
     }
@@ -79,10 +76,9 @@ public class UserFavoritesControllerTest {
         );
 
         when(getUserIdsByFavoriteProductIdUseCase.execute(productId)).thenReturn(userIds);
-        ResponseEntity<?> responseEntity = userFavoritesController.getUserIdsWithProductId(productId);
+        List<UUID> response = userFavoritesController.getUserIdsWithProductId(productId);
 
-        assertEquals(userIds, responseEntity.getBody());
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(userIds, response);
         verify(getUserIdsByFavoriteProductIdUseCase, times(1)).execute(productId);
     }
 
