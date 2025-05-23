@@ -31,22 +31,7 @@ public class ChangePasswordUseCase {
         }
 
         User user = userRepository.getById(userId);
-        Password oldPassword = user.getPassword();
-
-        if (!oldPassword.checkPassword(oldPlainPassword)){
-            logger.warn("Tried to change password from user [{}] with an incorrect old password", userId);
-            throw new IllegalArgumentException("The old password does not match.");
-        }
-
-        if (newPlainPassword == null) {
-            logger.warn("Tried to change password from user [{}] to a null password", userId);
-            throw new IllegalArgumentException("The new password cannot be null.");
-        }
-
-        if (oldPlainPassword.equals(newPlainPassword)) {
-            logger.warn("Tried to change password from user [{}] to a the same password", userId);
-            throw new IllegalArgumentException("The new password cannot be the same as the old password.");
-        }
+        checkPassword(user, oldPlainPassword, newPlainPassword);
 
         PasswordFactory passwordFactory = new PasswordFactory();
         Password newPassword = passwordFactory.createFromPlainText(newPlainPassword);
@@ -54,5 +39,24 @@ public class ChangePasswordUseCase {
         user.changePassword(newPassword);
         userRepository.save(user);
         logger.info("Successfully changed password from user [{}]", userId);
+    }
+
+    private void checkPassword(User user, String oldPlainPassword, String newPlainPassword) {
+        Password oldPassword = user.getPassword();
+
+        if (!oldPassword.checkPassword(oldPlainPassword)){
+            logger.warn("Tried to change password from user [{}] with an incorrect old password", user.getId().getUuid());
+            throw new IllegalArgumentException("The old password does not match.");
+        }
+
+        if (newPlainPassword == null) {
+            logger.warn("Tried to change password from user [{}] to a null password", user.getId().getUuid());
+            throw new IllegalArgumentException("The new password cannot be null.");
+        }
+
+        if (oldPlainPassword.equals(newPlainPassword)) {
+            logger.warn("Tried to change password from user [{}] to a the same password", user.getId().getUuid());
+            throw new IllegalArgumentException("The new password cannot be the same as the old password.");
+        }
     }
 }

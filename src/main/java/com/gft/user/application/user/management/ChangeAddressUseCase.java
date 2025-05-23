@@ -24,16 +24,7 @@ public class ChangeAddressUseCase {
 
     @Transactional
     public void execute(UUID userId, Address address) {
-        Assert.notNull(address, "Address cannot be null");
-        Assert.notNull(address.city(), "City cannot be null");
-        Assert.notNull(address.country(), "Country cannot be null");
-        Assert.notNull(address.street(), "Street cannot be null");
-        Assert.notNull(address.zipCode(), "ZipCode cannot be null");
-
-        if (address.city().isBlank() || address.street().isBlank() || address.zipCode().isBlank() || address.country().isBlank()) {
-            logger.warn("Tried to change address with an empty field");
-            throw new IllegalArgumentException("Address cannot have empty fields");
-        }
+        validateAddress(address);
 
         if(!userRepository.existsByIdAndDisabledFalse(userId)) {
             logger.warn("Tried to change address to a disabled or non-existing user [{}]", userId);
@@ -45,5 +36,18 @@ public class ChangeAddressUseCase {
 
         logger.info("Changed address to user [{}]", userId);
         userRepository.save(user);
+    }
+
+    private void validateAddress(Address address) {
+        Assert.notNull(address, "Address cannot be null");
+        Assert.notNull(address.city(), "City cannot be null");
+        Assert.notNull(address.country(), "Country cannot be null");
+        Assert.notNull(address.street(), "Street cannot be null");
+        Assert.notNull(address.zipCode(), "ZipCode cannot be null");
+
+        if (address.city().isBlank() || address.street().isBlank() || address.zipCode().isBlank() || address.country().isBlank()) {
+            logger.warn("Tried to change address with an empty field");
+            throw new IllegalArgumentException("Address cannot have empty fields");
+        }
     }
 }
