@@ -1,7 +1,7 @@
 package com.gft.user.infrastructure.web.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gft.user.application.user.loyalty.GetUserLoyaltyPointsUseCase;
+import com.gft.user.application.usecase.loyalty.GetUserLoyaltyPointsUseCase;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import com.gft.user.infrastructure.web.controller.UserLoyaltyController;
 import org.junit.jupiter.api.Test;

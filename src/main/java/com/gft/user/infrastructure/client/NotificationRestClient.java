@@ -1,7 +1,7 @@
 package com.gft.user.infrastructure.client;
 
-import com.gft.user.application.notification.dto.NotificationDto;
-import com.gft.user.application.notification.service.NotificationService;
+import com.gft.user.application.dto.NotificationDto;
+import com.gft.user.application.service.NotificationService;
 import com.gft.user.infrastructure.dto.NotificationImportanceRequest;
 import com.gft.user.infrastructure.dto.NotificationResponse;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;

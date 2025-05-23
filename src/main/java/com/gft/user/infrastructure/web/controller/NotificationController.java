@@ -1,9 +1,9 @@
 package com.gft.user.infrastructure.web.controller;
 
-import com.gft.user.application.notification.dto.NotificationDto;
-import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
-import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
-import com.gft.user.application.notification.usecase.UpdateNotificationImportanceUseCase;
+import com.gft.user.application.dto.NotificationDto;
+import com.gft.user.application.usecase.notification.DeleteNotificationUseCase;
+import com.gft.user.application.usecase.notification.GetUserNotificationsUseCase;
+import com.gft.user.application.usecase.notification.UpdateNotificationImportanceUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

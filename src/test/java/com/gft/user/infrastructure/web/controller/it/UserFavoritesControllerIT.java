@@ -2,10 +2,10 @@ package com.gft.user.infrastructure.web.controller.it;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gft.user.application.user.favorites.AddUserFavoriteProductUseCase;
-import com.gft.user.application.user.favorites.GetUserFavoriteProductsUseCase;
-import com.gft.user.application.user.favorites.GetUserIdsByFavoriteProductIdUseCase;
-import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
+import com.gft.user.application.usecase.favorites.AddUserFavoriteProductUseCase;
+import com.gft.user.application.usecase.favorites.GetUserFavoriteProductsUseCase;
+import com.gft.user.application.usecase.favorites.GetUserIdsByFavoriteProductIdUseCase;
+import com.gft.user.application.usecase.favorites.RemoveUserFavoriteProductUseCase;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
