@@ -1,9 +1,9 @@
 package com.gft.user.infrastructure.web.controller;
 
-import com.gft.user.application.user.favorites.AddUserFavoriteProductUseCase;
-import com.gft.user.application.user.favorites.GetUserFavoriteProductsUseCase;
-import com.gft.user.application.user.favorites.GetUserIdsByFavoriteProductIdUseCase;
-import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
+import com.gft.user.application.usecase.favorites.AddUserFavoriteProductUseCase;
+import com.gft.user.application.usecase.favorites.GetUserFavoriteProductsUseCase;
+import com.gft.user.application.usecase.favorites.GetUserIdsByFavoriteProductIdUseCase;
+import com.gft.user.application.usecase.favorites.RemoveUserFavoriteProductUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

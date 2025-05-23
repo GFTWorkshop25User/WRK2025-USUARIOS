@@ -1,6 +1,6 @@
 package com.gft.user.infrastructure.web.controller;
 
-import com.gft.user.application.user.loyalty.GetUserLoyaltyPointsUseCase;
+import com.gft.user.application.usecase.loyalty.GetUserLoyaltyPointsUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
