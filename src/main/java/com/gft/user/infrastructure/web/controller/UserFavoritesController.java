@@ -6,9 +6,10 @@ import com.gft.user.application.user.favorites.GetUserIdsByFavoriteProductIdUseC
 import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -22,8 +23,8 @@ public class UserFavoritesController {
     private final GetUserIdsByFavoriteProductIdUseCase getUserIdsByFavoriteProductIdUseCase;
 
     @GetMapping("/{id}/favorite-products")
-    public ResponseEntity<?> getFavorites(@PathVariable UUID id) {
-        return ResponseEntity.ok(getUserFavoriteProductsUseCase.execute(id));
+    public Set<Long> getFavorites(@PathVariable UUID id) {
+        return getUserFavoriteProductsUseCase.execute(id);
     }
 
     @PutMapping("/{id}/favorite-products/add")
@@ -39,8 +40,8 @@ public class UserFavoritesController {
     }
 
     @GetMapping("/favorite-product/{productId}")
-    public ResponseEntity<?> getUserIdsWithProductId(@PathVariable Long productId) {
-        return ResponseEntity.ok(getUserIdsByFavoriteProductIdUseCase.execute(productId));
+    public List<UUID> getUserIdsWithProductId(@PathVariable Long productId) {
+        return getUserIdsByFavoriteProductIdUseCase.execute(productId);
     }
 
 }

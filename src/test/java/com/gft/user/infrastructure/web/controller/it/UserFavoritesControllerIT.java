@@ -1,4 +1,4 @@
-package com.gft.user.infrastructure.web.controller;
+package com.gft.user.infrastructure.web.controller.it;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,10 +9,12 @@ import com.gft.user.application.user.favorites.RemoveUserFavoriteProductUseCase;
 import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.domain.exception.ProductNotInFavoritesException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
+import com.gft.user.infrastructure.web.controller.UserFavoritesController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,9 +31,9 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("test")
 @WebMvcTest(UserFavoritesController.class)
 public class UserFavoritesControllerIT {
 

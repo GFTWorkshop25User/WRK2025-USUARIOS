@@ -1,4 +1,4 @@
-package com.gft.user.infrastructure.web.controller;
+package com.gft.user.infrastructure.web.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.notification.dto.NotificationDto;
@@ -6,11 +6,12 @@ import com.gft.user.application.notification.usecase.DeleteNotificationUseCase;
 import com.gft.user.application.notification.usecase.GetUserNotificationsUseCase;
 import com.gft.user.application.notification.usecase.UpdateNotificationImportanceUseCase;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
-import org.junit.jupiter.api.Disabled;
+import com.gft.user.infrastructure.web.controller.NotificationController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -19,7 +20,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@ActiveProfiles("test")
 @WebMvcTest(NotificationController.class)
 class NotificationControllerIT {
 
@@ -93,7 +94,7 @@ class NotificationControllerIT {
     }
 
     @Test
-    void should_updateNotificationImportance_when_called() throws Exception {
+    void should_updateNotificationImportanceImportance_when_called() throws Exception {
         UUID notificationId = UUID.randomUUID();
 
         doNothing().when(updateNotificationImportanceUseCase).execute(notificationId, true);

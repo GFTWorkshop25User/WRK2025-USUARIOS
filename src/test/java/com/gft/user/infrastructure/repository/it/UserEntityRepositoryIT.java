@@ -1,15 +1,17 @@
-package com.gft.user.infrastructure.repository;
+package com.gft.user.infrastructure.repository.it;
 
 import com.gft.user.domain.model.user.Email;
 import com.gft.user.domain.model.user.Password;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.infrastructure.entity.UserEntity;
 import com.gft.user.infrastructure.mapper.UserMapper;
+import com.gft.user.infrastructure.repository.UserEntityRepository;
 import com.gft.user.infrastructure.repository.jpa.JpaUserEntityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -19,6 +21,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @DataJpaTest
 @Sql(scripts= {"/data/h2/schema_testing.sql", "/data/h2/data_testing.sql"})
 class UserEntityRepositoryIT {

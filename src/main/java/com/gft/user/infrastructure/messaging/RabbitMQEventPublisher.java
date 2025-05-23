@@ -1,5 +1,6 @@
 package com.gft.user.infrastructure.messaging;
 
+import com.gft.user.domain.event.DomainEventPublisher;
 import com.gft.user.domain.event.UserDisabledEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
-public class RabbitMQEventPublisher {
+public class RabbitMQEventPublisher implements DomainEventPublisher {
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -15,8 +16,7 @@ public class RabbitMQEventPublisher {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void sendUserDisabledMessage(UserDisabledEvent event) {
+    public void publishUserDisabledEvent(UserDisabledEvent event) {
         final String exchange = "user";
         final String routingKey = "disabled";
         rabbitTemplate.convertAndSend(exchange, routingKey, event);
