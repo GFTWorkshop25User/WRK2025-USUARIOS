@@ -5,7 +5,6 @@ import com.gft.user.domain.model.user.*;
 import com.gft.user.infrastructure.entity.AddressEntity;
 import com.gft.user.infrastructure.entity.UserEntity;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.stream.Collectors;

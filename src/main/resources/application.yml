@@ -2,8 +2,29 @@ spring:
   application:
     name: workshop
 
-  profiles:
-    active: dev
+  datasource:
+    url: jdbc:postgresql://serveo.net:42069/users_db
+    driver-class-name: org.postgresql.Driver
+    username: dbuser
+    password: 12345678A
+
+  sql:
+    init:
+      schema-locations: classpath:/data/postgres/schema.sql
+      data-locations: classpath:/data/postgres/data.sql
+      mode: always
 
   jpa:
+    hibernate:
+      ddl-auto: update
     open-in-view: false
+    
+  rabbitmq:
+    host: serveo.net
+    port: 27074
+    username: admin
+    password: admin
+
+logging:
+  file:
+    name: logs/app.log
