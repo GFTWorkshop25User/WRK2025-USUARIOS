@@ -44,9 +44,6 @@ class NotificationRestClientTest {
     @MockitoBean
     NotificationMapper notificationMapper;
 
-    @Mock
-    FeatureFlags featureFlags;
-
     @Test
     void should_returnNotifications_when_areNotifications() throws JsonProcessingException {
 
