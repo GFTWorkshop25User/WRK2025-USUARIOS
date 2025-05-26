@@ -3,15 +3,20 @@ package com.gft.user.e2etest;
 import com.gft.user.application.dto.ChangePasswordRequest;
 import com.gft.user.application.dto.UserRequest;
 import com.gft.user.domain.model.user.User;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserManagementE2EIT {
 
     @LocalServerPort
@@ -35,24 +39,40 @@ class UserManagementE2EIT {
         return "http://localhost:" + port + "/api/v1/users";
     }
 
-    private static UUID userId;
+    private final UUID userId = UUID.fromString("ff9e84d8-cf7d-4730-a506-b9fb879d1bea");
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @AfterEach
+    void resetDatabase() {
+        entityManager.clear();
+        jdbcTemplate.execute("DROP ALL OBJECTS DELETE FILES");
+
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource("/data/h2/schema_testing.sql"));
+        populator.addScript(new ClassPathResource("/data/h2/data_testing.sql"));
+        populator.execute(dataSource);
+    }
 
     @Test
     @DisplayName("Register new user")
-    @Order(1)
     void registerUser() {
         UserRequest userRequest = new UserRequest("Mari", "maripili@gft.com", "Mari1234567!");
         ResponseEntity<UUID> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, UUID.class);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        userId = responseEntity.getBody();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
     @DisplayName("Get the user")
-    @Order(2)
     void getUser() {
-        assertThat(userId).isNotNull();
         String userUrl = baseUrl() + "/" + userId;
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(userUrl, String.class);
@@ -60,20 +80,18 @@ class UserManagementE2EIT {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertEquals(userId, user.getId().getUuid());
-        assertEquals("Mari", user.getName());
-        assertEquals("maripili@gft.com", user.getEmail().value());
+        assertEquals("Eve Black", user.getName());
+        assertEquals("eve@example.com", user.getEmail().value());
 
     }
 
     @Test
     @DisplayName("Change the user name")
-    @Order(3)
     void changeUsername() {
-        assertThat(userId).isNotNull();
 
         String updateNameUrl = baseUrl() + "/" + userId + "/change-name";
         String userUrl = baseUrl() + "/" + userId;
-        String newName = "Maria";
+        String newName = "Eve White";
         restTemplate.put(updateNameUrl, newName);
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(userUrl, String.class);
@@ -85,13 +103,11 @@ class UserManagementE2EIT {
 
     @Test
     @DisplayName("Change the user email")
-    @Order(4)
     void changeEmail() {
-        assertThat(userId).isNotNull();
 
         String updateEmailUrl = baseUrl() + "/" + userId + "/change-email";
         String userUrl = baseUrl() + "/" + userId;
-        String newEmail = "email@email.com";
+        String newEmail = "eve@gft.com";
         restTemplate.put(updateEmailUrl, newEmail);
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(userUrl, String.class);
@@ -103,14 +119,12 @@ class UserManagementE2EIT {
 
     @Test
     @DisplayName("Change the user password")
-    @Order(5)
     void changePassword() {
-        assertThat(userId).isNotNull();
 
         String updatePasswordUrl = baseUrl() + "/" + userId + "/change-password";
         String userUrl = baseUrl() + "/" + userId;
-        String oldPassword = "Mari1234567!";
-        String newPassword = "Mariano1234!";
+        String oldPassword = "Alice1234567!";
+        String newPassword = "White1234567!";
 
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(oldPassword, newPassword);
         restTemplate.put(updatePasswordUrl, changePasswordRequest);
@@ -124,9 +138,7 @@ class UserManagementE2EIT {
 
     @Test
     @DisplayName("Change the user address")
-    @Order(6)
     void changeAddress() {
-        assertThat(userId).isNotNull();
 
         String updateAddressUrl = baseUrl() + "/" + userId + "/change-address";
         String userUrl = baseUrl() + "/" + userId;
