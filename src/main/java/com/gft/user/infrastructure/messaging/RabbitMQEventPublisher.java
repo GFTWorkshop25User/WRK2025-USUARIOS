@@ -4,7 +4,6 @@ import com.gft.user.common.FeatureFlags;
 import com.gft.user.domain.event.DomainEventPublisher;
 import com.gft.user.domain.event.UserDisabledEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
