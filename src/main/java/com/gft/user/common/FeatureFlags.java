@@ -11,7 +11,4 @@ import org.springframework.stereotype.Component;
 public class FeatureFlags {
     @Value("${app.toggleNotifications}")
     private volatile boolean toggleNotifications;
-
-    @Value("${app.communicationsBackendUrl}")
-    private volatile String communicationsBackendUrl;
 }

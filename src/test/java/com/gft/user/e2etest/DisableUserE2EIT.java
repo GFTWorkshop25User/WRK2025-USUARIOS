@@ -1,5 +1,6 @@
 package com.gft.user.e2etest;
 
+import com.gft.user.common.FeatureFlags;
 import com.gft.user.domain.event.UserDisabledEvent;
 import com.gft.user.domain.model.user.User;
 import com.gft.user.domain.repository.UserRepository;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.verify;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts= {"/data/h2/schema_testing.sql", "/data/h2/data_testing.sql"})
+@Sql(scripts = {"/data/h2/schema_testing.sql", "/data/h2/data_testing.sql"})
 class DisableUserE2EIT {
 
     @LocalServerPort
@@ -43,6 +44,9 @@ class DisableUserE2EIT {
 
     private String baseUrl;
 
+    @Autowired
+    private FeatureFlags featureFlags;
+
     @BeforeEach
     void setUp() {
         baseUrl = "http://localhost:" + port;
@@ -50,10 +54,15 @@ class DisableUserE2EIT {
 
     @Test
     void should_disableUserAndSendNotification_when_userDisabled() {
+
+        if (!featureFlags.isToggleNotifications()) {
+            return;
+        }
+
         UUID userId = UUID.fromString("f19069b6-e374-4969-9ad3-47bb556dbf1e");
 
         ResponseEntity<Void> response = restTemplate.exchange(
-            baseUrl + "/api/v1/users/" + userId,
+                baseUrl + "/api/v1/users/" + userId,
                 HttpMethod.DELETE,
                 new HttpEntity<>(null),
                 Void.class

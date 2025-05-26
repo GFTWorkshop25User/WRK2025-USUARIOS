@@ -3,10 +3,12 @@ package com.gft.user.infrastructure.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gft.user.application.dto.NotificationDto;
+import com.gft.user.common.FeatureFlags;
 import com.gft.user.infrastructure.dto.NotificationResponse;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.mapper.NotificationMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
@@ -28,6 +30,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest(NotificationRestClient.class)
 class NotificationRestClientTest {
 
+    final String apiUrl = "http://notification_backend_url/api/v1";
+
     @Autowired
     MockRestServiceServer server;
 
@@ -42,6 +46,7 @@ class NotificationRestClientTest {
 
     @Test
     void should_returnNotifications_when_areNotifications() throws JsonProcessingException {
+
         UUID userId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
 
@@ -57,7 +62,7 @@ class NotificationRestClientTest {
         when(notificationMapper.toNotificationDto(notificationResponse1)).thenReturn(notificationDto1);
         when(notificationMapper.toNotificationDto(notificationResponse2)).thenReturn(notificationDto2);
 
-        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + userId))
+        server.expect(requestTo(apiUrl + "/notifications/" + userId))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(objectMapper.writeValueAsString(notificationResponses), MediaType.APPLICATION_JSON));
 
@@ -72,7 +77,7 @@ class NotificationRestClientTest {
     void should_returnEmptyList_when_responseIsNull() throws JsonProcessingException {
         UUID userId = UUID.randomUUID();
 
-        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + userId))
+        server.expect(requestTo(apiUrl + "/notifications/" + userId))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(objectMapper.writeValueAsString(null), MediaType.APPLICATION_JSON));
 
@@ -86,7 +91,7 @@ class NotificationRestClientTest {
     void should_noContent_when_deleteNotification() {
         UUID notificationId = UUID.randomUUID();
 
-        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + notificationId))
+        server.expect(requestTo(apiUrl + "/notifications/" + notificationId))
                 .andExpect(method(HttpMethod.DELETE))
                 .andRespond(withNoContent());
 
@@ -99,7 +104,7 @@ class NotificationRestClientTest {
     void should_throwException_when_deleteNotificationNotFound() {
         UUID notificationId = UUID.randomUUID();
 
-        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + notificationId))
+        server.expect(requestTo(apiUrl + "/notifications/" + notificationId))
                 .andExpect(method(HttpMethod.DELETE))
                 .andRespond(withResourceNotFound());
 
@@ -111,10 +116,10 @@ class NotificationRestClientTest {
     }
 
     @Test
-    void should_throwExceptionNotificationNotFound_when_updateNotificationImportance(){
+    void should_throwExceptionNotificationNotFound_when_updateNotificationImportance() {
         UUID notificationId = UUID.randomUUID();
 
-        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + notificationId))
+        server.expect(requestTo(apiUrl + "/notifications/" + notificationId))
                 .andExpect(method(HttpMethod.PATCH))
                 .andExpect(content().json("{\"importance\":true}"))
                 .andRespond(withResourceNotFound());
@@ -127,10 +132,10 @@ class NotificationRestClientTest {
     }
 
     @Test
-    void should_updateNotificationImportance(){
+    void should_updateNotificationImportance() {
         UUID notificationId = UUID.randomUUID();
 
-        server.expect(requestTo("http://notificacionservice/api/v1/notifications/" + notificationId))
+        server.expect(requestTo(apiUrl + "/notifications/" + notificationId))
                 .andExpect(method(HttpMethod.PATCH))
                 .andExpect(content().json("{\"importance\":true}"))
                 .andRespond(withNoContent());

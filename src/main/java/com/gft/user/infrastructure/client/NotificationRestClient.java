@@ -6,6 +6,7 @@ import com.gft.user.infrastructure.dto.NotificationImportanceRequest;
 import com.gft.user.infrastructure.dto.NotificationResponse;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.mapper.NotificationMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,11 +24,11 @@ public class NotificationRestClient implements NotificationService {
     private final RestClient restClient;
     private final NotificationMapper notificationMapper;
 
-    public NotificationRestClient(RestClient.Builder builder, NotificationMapper notificationMapper) {
-        this.restClient = builder
-                .baseUrl("http://notificacionservice/api/v1")
-                .build();
+    public NotificationRestClient(RestClient.Builder builder, NotificationMapper notificationMapper,  @Value("${app.communicationsBackendUrl}") String communicationsBackendUrl) {
         this.notificationMapper = notificationMapper;
+        this.restClient = builder
+                .baseUrl(communicationsBackendUrl)
+                .build();
     }
 
     @Override

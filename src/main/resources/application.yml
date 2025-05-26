@@ -27,7 +27,7 @@ spring:
 
 app:
   toggleNotifications: false
-  communicationsBackendUrl: "https://notification_backend_url/"
+  communicationsBackendUrl: "http://notification_backend_url/api/v1"
 
 logging:
   file:
