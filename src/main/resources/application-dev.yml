@@ -14,8 +14,8 @@ spring:
       ddl-auto: update
 
   rabbitmq:
-    host: localhost
-    port: 5672
+    host: serveo.net
+    port: 27074
     username: admin
     password: admin
 
