@@ -25,6 +25,10 @@ spring:
     username: admin
     password: admin
 
+app:
+  toggleNotifications: false
+  communicationsBackendUrl: "https://notification_backend_url/"
+
 logging:
   file:
     name: logs/app.log
