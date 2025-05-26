@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -25,10 +26,7 @@ class AddressMapperTest {
         Address address = new Address("Spain", "241852", "Villalba", "Calle los floriponcios");
         AddressEntity addressEntity = addressMapper.toAddressEntity(address);
 
-        assertEquals(address.city(), addressEntity.getCity());
-        assertEquals(address.country(), addressEntity.getCountry());
-        assertEquals(address.zipCode(), addressEntity.getZipCode());
-        assertEquals(address.street(), addressEntity.getStreet());
+        assertThat(address).usingRecursiveComparison().isEqualTo(addressEntity);
     }
 
     @Test
@@ -42,10 +40,7 @@ class AddressMapperTest {
         AddressEntity addressEntity = new AddressEntity("Spain", "241852", "Villalba", "Calle los floriponcios");
         Address address = addressMapper.fromAddressEntity(addressEntity);
 
-        assertEquals(addressEntity.getCity(), address.city());
-        assertEquals(addressEntity.getCountry(), address.country());
-        assertEquals(addressEntity.getZipCode(), address.zipCode());
-        assertEquals(addressEntity.getStreet(), address.street());
+        assertThat(addressEntity).usingRecursiveComparison().isEqualTo(address);
     }
 
 }
