@@ -2,8 +2,7 @@ package com.gft.user.infrastructure.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gft.user.application.notification.dto.NotificationDto;
-import com.gft.user.infrastructure.dto.NotificationImportanceRequest;
+import com.gft.user.application.dto.NotificationDto;
 import com.gft.user.infrastructure.dto.NotificationResponse;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.mapper.NotificationMapper;
@@ -12,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
+@ActiveProfiles("test")
 @RestClientTest(NotificationRestClient.class)
 class NotificationRestClientTest {
 

@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -100,6 +100,14 @@
 			<version>0.4</version>
 		</dependency>
 
+    	<!-- Postgres -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
+			<scope>runtime</scope>
+		</dependency>
+    
 		<!-- RabbitMQ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,7 +119,6 @@
 			<artifactId>spring-rabbit-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -132,6 +139,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<profiles>
+						<profile>test</profile>
+					</profiles>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -161,6 +171,7 @@
 				</executions>
 				<configuration>
 					<excludes>
+						<exclude>com/gft/user/WorkshopApplication*</exclude>
 						<exclude>com/gft/user/infrastructure/messaging/RabbitMQNotificationConsumer*</exclude>
 					</excludes>
 				</configuration>

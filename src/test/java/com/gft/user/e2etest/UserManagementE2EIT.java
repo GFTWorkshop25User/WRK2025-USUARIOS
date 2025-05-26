@@ -1,7 +1,7 @@
 package com.gft.user.e2etest;
 
-import com.gft.user.application.user.management.dto.ChangePasswordRequest;
-import com.gft.user.application.user.management.dto.UserRequest;
+import com.gft.user.application.dto.ChangePasswordRequest;
+import com.gft.user.application.dto.UserRequest;
 import com.gft.user.domain.model.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;

@@ -1,14 +1,17 @@
 spring:
+  application:
+    name: workshop-test
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
 
-  sql:
-    init:
-      schema-locations: classpath:/data/h2/schema_testing.sql
-      data-locations: classpath:/data/h2/data_testing.sql
+    sql:
+      init:
+        schema-locations: classpath:/data/h2/schema_testing.sql
+        data-locations: classpath:/data/h2/data_testing.sql
 
   jpa:
     hibernate:
       ddl-auto: validate
+    open-in-view: false
