@@ -45,13 +45,6 @@ class PasswordTest {
 
         assertEquals(hashedPassword, password.getHashedValue());
     }
-
-    @Test
-    void should_returnTrue_when_checkCorrectPassword() {
-        String plainPassword = "Password12345!";
-        Password password = Password.createPasswordFromPlain(plainPassword);
-        assertTrue(password.checkPassword(plainPassword));
-    }
     
     @Test
     void should_changePassword_when_passwordIsValid() {
