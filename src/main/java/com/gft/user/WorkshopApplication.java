@@ -1,6 +1,5 @@
 package com.gft.user;
 
-import jakarta.annotation.Generated;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

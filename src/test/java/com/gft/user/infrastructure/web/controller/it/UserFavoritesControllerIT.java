@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @WebMvcTest(UserFavoritesController.class)
-public class UserFavoritesControllerIT {
+class UserFavoritesControllerIT {
 
     @Autowired
     private MockMvc mockMvc;

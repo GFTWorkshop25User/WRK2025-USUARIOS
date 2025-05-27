@@ -1,7 +1,5 @@
 package com.gft.user.application.usecase.favorites;
 
-
-import com.gft.user.application.usecase.favorites.AddUserFavoriteProductUseCase;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;

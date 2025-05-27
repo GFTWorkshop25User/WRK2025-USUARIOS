@@ -1,6 +1,5 @@
 package com.gft.user.application.usecase.favorites;
 
-import com.gft.user.application.usecase.favorites.RemoveUserFavoriteProductUseCase;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
@@ -47,8 +46,6 @@ class RemoveUserFavoriteProductUseCaseTest {
 
     @Test
     void should_disableUser_when_userIdExists() {
-        UUID userId = UUID.randomUUID();
-
         when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 

@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ChangeAddressUseCaseTest {
+class ChangeAddressUseCaseTest {
+
     @Mock
     private UserRepository userRepository;
 

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @WebMvcTest(UserLoyaltyController.class)
-public class UserLoyaltyControllerIT {
+class UserLoyaltyControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
