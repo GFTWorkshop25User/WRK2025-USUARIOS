@@ -42,14 +42,14 @@ class AddUserFavoriteProductUseCaseTest {
         when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 
-        addUserFavoriteProductUseCase.execute(user.getId().getUuid(), 5L);
+        addUserFavoriteProductUseCase.execute(userId, 5L);
 
         assertTrue(user.getFavoriteProductIds().contains(new FavoriteId(5L)));
     }
 
     @Test
     void should_throwIllegalArgumentException_when_productIdNull() {
-        assertThrows(IllegalArgumentException.class, () -> addUserFavoriteProductUseCase.execute(user.getId().getUuid(), null));
+        assertThrows(IllegalArgumentException.class, () -> addUserFavoriteProductUseCase.execute(userId, null));
     }
 
     @Test

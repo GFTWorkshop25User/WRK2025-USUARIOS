@@ -76,7 +76,8 @@ class UserTest {
         var user = User.register(name, email, password);
         user.addFavoriteProduct(new FavoriteId(4L));
 
-        assertThrows(ProductAlreadyInFavoritesException.class, () -> user.addFavoriteProduct(new FavoriteId(4L)));
+        FavoriteId favoriteId = new FavoriteId(4L);
+        assertThrows(ProductAlreadyInFavoritesException.class, () -> user.addFavoriteProduct(favoriteId));
     }
   
     @Test
@@ -97,7 +98,8 @@ class UserTest {
                 new LoyaltyPoints(0),
                 false
         );
-        assertThrows(ProductNotInFavoritesException.class, () -> user.removeFavorite(new FavoriteId(2L)));
+        FavoriteId favoriteId = new FavoriteId(2L);
+        assertThrows(ProductNotInFavoritesException.class, () -> user.removeFavorite(favoriteId));
     }
 
     @Test
