@@ -3,10 +3,10 @@ spring:
     name: workshop
 
   datasource:
-    url: jdbc:postgresql://serveo.net:42069/users_db
+    url: ${POSTGRES_URL}
     driver-class-name: org.postgresql.Driver
-    username: dbuser
-    password: 12345678A
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
 
   sql:
     init:
@@ -20,14 +20,14 @@ spring:
     open-in-view: false
     
   rabbitmq:
-    host: serveo.net
-    port: 27074
-    username: admin
-    password: admin
+    host: ${RABBIT_URL}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
 
 app:
   toggleNotifications: false
-  communicationsBackendUrl: "http://notification_backend_url/api/v1"
+  communicationsBackendUrl: "https://coms-microservice-899231617905.europe-southwest1.run.app/api/v1/"
 
 logging:
   file:
