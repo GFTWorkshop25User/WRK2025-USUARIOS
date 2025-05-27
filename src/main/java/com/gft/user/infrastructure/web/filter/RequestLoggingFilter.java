@@ -24,12 +24,14 @@ public class RequestLoggingFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        logger.info("""
-                HTTP REQUEST
-                Request: {} {}
-                IP: {}
-                User-Agent: {}
-                """, request.getMethod(), request.getRequestURI(), request.getRemoteAddr(), request.getHeader("User-Agent"));
+        if(logger.isInfoEnabled()) {
+            logger.info("""
+                    HTTP REQUEST
+                    Request: {} {}
+                    IP: {}
+                    User-Agent: {}
+                    """, request.getMethod(), request.getRequestURI(), request.getRemoteAddr(), request.getHeader("User-Agent"));
+        }
 
         filterChain.doFilter(servletRequest, servletResponse);
 

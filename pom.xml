@@ -173,6 +173,7 @@
 					<excludes>
 						<exclude>com/gft/user/WorkshopApplication*</exclude>
 						<exclude>com/gft/user/infrastructure/messaging/RabbitMQNotificationConsumer*</exclude>
+						<exclude>com/gft/user/infrastructure/web/filter/RequestLoggingFilter*</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
