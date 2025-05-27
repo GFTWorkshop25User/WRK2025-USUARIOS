@@ -30,7 +30,7 @@ class ArchitectureTest {
     }
 
     @ArchTest
-    ArchRule ControllerNaming = classes()
+    ArchRule controllerNaming = classes()
             .that().areAnnotatedWith(RestController.class)
             .or().haveSimpleNameEndingWith("Controller")
             .should().beAnnotatedWith(RestController.class)
@@ -38,7 +38,7 @@ class ArchitectureTest {
             .because("controller should be easy to find");
 
     @ArchTest
-    ArchRule RepositoryNaming = classes()
+    ArchRule repositoryNaming = classes()
             .that().areAnnotatedWith(Repository.class)
             .should().haveSimpleNameEndingWith("Repository")
             .because("repository should be easy to find");
