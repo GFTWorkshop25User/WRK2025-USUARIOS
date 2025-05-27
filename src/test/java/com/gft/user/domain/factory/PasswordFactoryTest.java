@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PasswordFactoryTest {
 
-    Password password = null;
+    private Password password = null;
 
     @Test
     void should_ThrowIllegalArgumentException_when_password_is_null() {
@@ -33,7 +33,7 @@ class PasswordFactoryTest {
     @Test
     void should_CreatePassword_when_password_is_valid() {
         var passwordFactory = new PasswordFactory();
-        Password password = passwordFactory.createFromPlainText("Password123456!");
+        password = passwordFactory.createFromPlainText("Password123456!");
 
         assertNotEquals(null, password);
     }

@@ -1,6 +1,5 @@
 package com.gft.user.application.usecase.loyalty;
 
-import com.gft.user.application.usecase.loyalty.IncrementLoyaltyPointsUseCase;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IncrementLoyaltyPointsUseCaseTest {
+class IncrementLoyaltyPointsUseCaseTest {
 
     @Mock
     private UserRepository userRepository;

@@ -1,6 +1,5 @@
 package com.gft.user.application.usecase.loyalty;
 
-import com.gft.user.application.usecase.loyalty.DecrementLoyaltyPointsUseCase;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;

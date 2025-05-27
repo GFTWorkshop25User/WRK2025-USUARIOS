@@ -1,6 +1,5 @@
 package com.gft.user.application.usecase.favorites;
 
-import com.gft.user.application.usecase.favorites.GetUserIdsByFavoriteProductIdUseCase;
 import com.gft.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

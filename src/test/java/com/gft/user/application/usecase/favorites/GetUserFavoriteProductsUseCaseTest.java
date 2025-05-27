@@ -1,6 +1,5 @@
 package com.gft.user.application.usecase.favorites;
 
-import com.gft.user.application.usecase.favorites.GetUserFavoriteProductsUseCase;
 import com.gft.user.domain.model.user.*;
 import com.gft.user.domain.repository.UserRepository;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GetUserFavoriteProductsUseCaseTest {
+class GetUserFavoriteProductsUseCaseTest {
 
     @Mock
     private UserRepository userRepository;

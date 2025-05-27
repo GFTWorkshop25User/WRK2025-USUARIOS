@@ -5,7 +5,6 @@ import com.gft.user.domain.exception.ProductAlreadyInFavoritesException;
 import com.gft.user.infrastructure.exception.EmailAlreadyRegisteredException;
 import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

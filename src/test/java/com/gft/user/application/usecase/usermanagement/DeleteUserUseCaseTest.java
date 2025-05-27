@@ -51,8 +51,6 @@ class DeleteUserUseCaseTest {
 
     @Test
     void should_disableUser_when_userIdExists() {
-        UUID userId = UUID.randomUUID();
-
         when(userRepository.existsByIdAndDisabledFalse(userId)).thenReturn(true);
         when(userRepository.getById(userId)).thenReturn(user);
 

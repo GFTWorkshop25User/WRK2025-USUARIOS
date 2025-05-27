@@ -12,7 +12,7 @@ import java.util.UUID;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DeleteNotificationUseCaseTest {
+class DeleteNotificationUseCaseTest {
 
     @Mock
     private NotificationService notificationService;
