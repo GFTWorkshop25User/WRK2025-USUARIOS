@@ -43,7 +43,7 @@ public class NotificationRestClient implements NotificationService {
             return Collections.emptyList();
         }
 
-        return response.stream().map(notificationMapper::toNotificationDto).collect(Collectors.toList());
+        return response.stream().map(notificationMapper::toNotificationDto).toList();
     }
 
     @Override
