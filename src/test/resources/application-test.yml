@@ -6,16 +6,12 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
 
-    sql:
-      init:
-        schema-locations: classpath:/data/h2/schema_testing.sql
-        data-locations: classpath:/data/h2/data_testing.sql
+  sql:
+    init:
+      schema-locations: classpath:/data/h2/schema_testing.sql
+      data-locations: classpath:/data/h2/data_testing.sql
 
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: false
-
-app:
-  toggleNotifications: false
-  communicationsBackendUrl: "http://notification_backend_url/api/v1"
