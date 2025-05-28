@@ -40,8 +40,6 @@ class CommunicationE2EIT {
 
         ResponseEntity<String> response = restTemplate.getForEntity(userNotificationsUrl, String.class);
 
-        System.err.println(response.getBody());
-
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertNotNull(response.getBody());
         assertFalse(response.getBody().isEmpty());
