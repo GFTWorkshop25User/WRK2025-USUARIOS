@@ -2,7 +2,7 @@
 
 This service provides RESTful endpoints for managing users, their favorite products, and notifications.  
 It follows a Domain-Driven Design (DDD) architecture.
-## Base URL http://localhost:8080/api/v1
+## Base URL http://wrk25uwuarios.dpdns.org/api/v1
 
 ---
 
@@ -51,7 +51,7 @@ It follows a Domain-Driven Design (DDD) architecture.
 ## · Swagger UI
 
 After starting the app, browse:
-http://localhost:8080/swagger-ui.html
+http://wrk25uwuarios.dpdns.org/swagger-ui/index.html
 to explore and test the API.
 
 ---
