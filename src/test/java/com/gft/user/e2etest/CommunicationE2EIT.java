@@ -1,7 +1,5 @@
 package com.gft.user.e2etest;
 
-import com.gft.user.application.dto.NotificationDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
