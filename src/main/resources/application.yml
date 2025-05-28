@@ -27,7 +27,7 @@ spring:
 
 app:
   toggleNotifications: false
-  communicationsBackendUrl: "https://coms-microservice-899231617905.europe-southwest1.run.app/api/v1/"
+  communicationsBackendUrl: "https://coms-microservice-899231617905.europe-southwest1.run.app/api/v1"
 
 logging:
   file:
