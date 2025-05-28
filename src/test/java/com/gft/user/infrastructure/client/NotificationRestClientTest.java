@@ -8,6 +8,7 @@ import com.gft.user.infrastructure.exception.NotificationNotFoundException;
 import com.gft.user.infrastructure.mapper.NotificationMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -28,7 +29,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest(NotificationRestClient.class)
 class NotificationRestClientTest {
 
-    final String apiUrl = "http://notification_backend_url/api/v1";
+    @Value("${app.communicationsBackendUrl}")
+    private String apiUrl;
 
     @Autowired
     MockRestServiceServer server;
