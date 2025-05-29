@@ -2,6 +2,7 @@ package com.gft.user.e2etest;
 
 import com.gft.user.application.dto.ChangePasswordRequest;
 import com.gft.user.application.dto.UserRequest;
+import com.gft.user.domain.model.user.Address;
 import com.gft.user.domain.model.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.*;
@@ -143,13 +144,9 @@ class UserManagementE2EIT {
         String updateAddressUrl = baseUrl() + "/" + userId + "/change-address";
         String userUrl = baseUrl() + "/" + userId;
 
-        Map<String, String> body = new HashMap<>();
-        body.put("country", "Colombia");
-        body.put("zipCode", "46440");
-        body.put("city", "Algeciras");
-        body.put("street", "La Pau");
+        Address address = new Address("Colombia","46440","Algeciras","La Pau");
 
-        restTemplate.put(updateAddressUrl, body);
+        restTemplate.put(updateAddressUrl, address);
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(userUrl, String.class);
         User user = restTemplate.getForObject(userUrl, User.class);
