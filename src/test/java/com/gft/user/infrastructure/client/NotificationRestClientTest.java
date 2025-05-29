@@ -121,7 +121,7 @@ class NotificationRestClientTest {
 
         server.expect(requestTo(apiUrl + "/notifications/" + notificationId))
                 .andExpect(method(HttpMethod.PATCH))
-                .andExpect(content().json("{\"importance\":true}"))
+                .andExpect(content().json("{\"important\":true}"))
                 .andRespond(withResourceNotFound());
 
         var exception = assertThrows(NotificationNotFoundException.class, () -> client.updateNotificationImportance(notificationId, true));
@@ -137,7 +137,7 @@ class NotificationRestClientTest {
 
         server.expect(requestTo(apiUrl + "/notifications/" + notificationId))
                 .andExpect(method(HttpMethod.PATCH))
-                .andExpect(content().json("{\"importance\":true}"))
+                .andExpect(content().json("{\"important\":true}"))
                 .andRespond(withNoContent());
 
         client.updateNotificationImportance(notificationId, true);
