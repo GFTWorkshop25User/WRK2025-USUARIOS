@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RabbitMQOrderConsumer {
 
-    Logger logger = LoggerFactory.getLogger(RabbitMQNotificationConsumer.class);
+    Logger logger = LoggerFactory.getLogger(RabbitMQOrderConsumer.class);
     private final IncrementLoyaltyPointsUseCase incrementLoyaltyPointsUseCase;
 
     public RabbitMQOrderConsumer(IncrementLoyaltyPointsUseCase incrementLoyaltyPointsUseCase) {
