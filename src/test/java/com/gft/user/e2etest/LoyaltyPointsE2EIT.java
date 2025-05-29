@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class LoyaltyPointsE2EIT {
+class LoyaltyPointsE2EIT {
 
     @LocalServerPort
     private int port;
