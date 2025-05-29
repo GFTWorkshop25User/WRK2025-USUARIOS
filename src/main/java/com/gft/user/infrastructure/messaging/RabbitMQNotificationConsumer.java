@@ -11,7 +11,7 @@ public class RabbitMQNotificationConsumer {
 
     Logger logger = LoggerFactory.getLogger(RabbitMQNotificationConsumer.class);
 
-    @RabbitListener(queues = "user.notification")
+    @RabbitListener(queues = "coms.notification")
     public void receiveNotification(NotificationResponse notificationResponse) {
         logger.info("Received notification from user [{}]: {}", notificationResponse.userId(), notificationResponse.message());
     }
