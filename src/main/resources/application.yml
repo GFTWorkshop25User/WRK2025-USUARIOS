@@ -35,7 +35,7 @@ management:
       show-details: always
 
 app:
-  toggleNotifications: false
+  toggleNotifications: true
   communicationsBackendUrl: "https://coms-microservice-899231617905.europe-southwest1.run.app/api/v1"
 
 logging:
