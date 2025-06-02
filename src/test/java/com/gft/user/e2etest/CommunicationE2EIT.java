@@ -6,6 +6,7 @@ import com.gft.user.application.dto.NotificationDto;
 import com.gft.user.infrastructure.dto.NotificationImportanceRequest;
 import com.gft.user.infrastructure.dto.NotificationResponse;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.http.Fault;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,5 +171,25 @@ class CommunicationE2EIT {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isEqualTo("Notification with id " + notificationId + " not found");
+    }
+
+    @Test
+    void should_responseInternalServerError_when_serverIsDown() {
+        UUID notificationId = UUID.randomUUID();
+        String updateNotificationImportanceUrl = baseUrl + "/notifications/" + notificationId;
+
+        stubFor(delete(urlEqualTo("/notifications/" + notificationId))
+                .willReturn(aResponse()
+                        .withFault(Fault.CONNECTION_RESET_BY_PEER)));
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                updateNotificationImportanceUrl,
+                HttpMethod.DELETE,
+                new HttpEntity<>(null),
+                String.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        assertThat(response.getBody()).isEqualTo("Internal communication error");
     }
 }
