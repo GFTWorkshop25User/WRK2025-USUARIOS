@@ -22,8 +22,8 @@ public class RabbitMQEventPublisher implements DomainEventPublisher {
             return;
         }
 
-        final String exchange = "user";
-        final String routingKey = "disabled";
+        final String exchange = "users";
+        final String routingKey = "user.deleted";
         rabbitTemplate.convertAndSend(exchange, routingKey, event);
     }
 }

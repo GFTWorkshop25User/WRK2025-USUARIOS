@@ -34,7 +34,7 @@ class RabbitMQEventPublisherTest {
 
         eventPublisher.publishUserDisabledEvent(userDisabledEvent);
 
-        verify(rabbitTemplate, times(1)).convertAndSend("user", "disabled", userDisabledEvent);
+        verify(rabbitTemplate, times(1)).convertAndSend("users", "user.deleted", userDisabledEvent);
     }
 
 
@@ -47,6 +47,6 @@ class RabbitMQEventPublisherTest {
 
         eventPublisher.publishUserDisabledEvent(userDisabledEvent);
 
-        verify(rabbitTemplate, times(0)).convertAndSend("user", "disabled", userDisabledEvent);
+        verify(rabbitTemplate, times(0)).convertAndSend("users", "user.deleted", userDisabledEvent);
     }
 }
