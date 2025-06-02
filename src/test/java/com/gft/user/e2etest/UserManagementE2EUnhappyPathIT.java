@@ -6,6 +6,9 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -20,6 +23,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,31 +64,20 @@ class UserManagementE2EUnhappyPathIT {
         populator.execute(dataSource);
     }
 
-    @Test
-    @DisplayName("Register is angry because email")
-    void should_throwIllegalArg_when_registerEmailIsWrong() {
-        UserRequest userRequest = new UserRequest("Mari", "emailInvalido", "Mari1234567!");
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, String.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    @ParameterizedTest
+    @MethodSource("userRequestsAndResponses")
+    @DisplayName("Register is angry if requests are wrong")
+    void should_throwException_when_requestWrong(UserRequest userRequest, HttpStatus expectedStatus) {
+        ResponseEntity<String> response = restTemplate.postForEntity(baseUrl(), userRequest, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(expectedStatus);
     }
 
-    @Test
-    @DisplayName("Register is angry because password")
-    void should_throwIllegalArg_when_registerPasswordIsWrong() {
-        UserRequest userRequest = new UserRequest("Mari", "mari@gft.com", "PasswordInvalida");
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, String.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
-    @DisplayName("Register is angry because email already is registered")
-    void should_throwIllegalAr_when_registerEmailAlreadyIsReigstered() {
-        UserRequest userRequest = new UserRequest("Mari", "eve@example.com", "Mari1234567!");
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(baseUrl(), userRequest, String.class);
-
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+    static Stream<Arguments> userRequestsAndResponses() {
+        return Stream.of(
+                Arguments.of(new UserRequest("Mari", "emailInvalido", "Mari1234567!"), HttpStatus.BAD_REQUEST),
+                Arguments.of(new UserRequest("Mari", "mari@gft.com", "PasswordInvalida"), HttpStatus.BAD_REQUEST),
+                Arguments.of(new UserRequest("Mari", "eve@example.com", "Mari1234567!"), HttpStatus.CONFLICT)
+        );
     }
 
     @Test
