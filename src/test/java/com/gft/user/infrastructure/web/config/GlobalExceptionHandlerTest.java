@@ -25,7 +25,7 @@ class GlobalExceptionHandlerTest {
     @Test
     void should_throwException_when_GenericException() {
         Exception ex = new Exception();
-        ResponseEntity<Object> response = handler.handleException();
+        ResponseEntity<Object> response = handler.handleException(ex);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals("Something went wrong", response.getBody());
