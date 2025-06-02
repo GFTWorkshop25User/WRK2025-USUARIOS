@@ -36,7 +36,7 @@ management:
 
 app:
   toggleNotifications: true
-  communicationsBackendUrl: "https://coms-microservice-899231617905.europ-southwest1.run.app/api/v1"
+  communicationsBackendUrl: "https://coms-microservice-899231617905.europe-southwest1.run.app/api/v1"
 
 logging:
   file:
