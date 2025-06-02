@@ -25,7 +25,7 @@ management:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
+      endpoint: ${ZIPKIN_URL}
   endpoints:
     web:
       exposure:
@@ -36,7 +36,7 @@ management:
 
 app:
   toggleNotifications: true
-  communicationsBackendUrl: "https://coms-microservice-899231617905.europe-southwest1.run.app/api/v1"
+  communicationsBackendUrl: "https://coms-microservice-899231617905.europ-southwest1.run.app/api/v1"
 
 logging:
   file:
