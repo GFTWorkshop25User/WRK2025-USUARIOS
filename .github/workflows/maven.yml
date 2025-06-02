@@ -18,6 +18,7 @@ jobs:
       SPRING_RABBITMQ_PORT: ${{ secrets.RABBITMQ_PORT }}
       SPRING_RABBITMQ_USERNAME: ${{ secrets.RABBITMQ_USERNAME }}
       SPRING_RABBITMQ_PASSWORD: ${{ secrets.RABBITMQ_PASSWORD }}
+      ZIPKIN_URL: ${{ secrets.ZIPKIN_URL }}
 
     steps:
     - uses: actions/checkout@v4

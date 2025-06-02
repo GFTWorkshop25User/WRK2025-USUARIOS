@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.ResourceAccessException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,11 +24,11 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void should_throwException_when_GenericException() {
-        Exception ex = new Exception("Generic exception has been thrown");
+        Exception ex = new Exception();
         ResponseEntity<Object> response = handler.handleException(ex);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("Generic exception has been thrown", response.getBody());
+        assertEquals("Something went wrong", response.getBody());
     }
 
     @Test
@@ -85,5 +86,14 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Notification not found", response.getBody());
+    }
+
+    @Test
+    void should_throwException_when_resourceAccessException() {
+        ResourceAccessException ex = new ResourceAccessException("Internal communication error");
+        ResponseEntity<Object> response = handler.handleException(ex);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Internal communication error", response.getBody());
     }
 }
