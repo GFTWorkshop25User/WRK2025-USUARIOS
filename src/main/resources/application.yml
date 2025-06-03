@@ -1,6 +1,6 @@
 spring:
   application:
-    name: workshop
+    name: ms-user
 
   datasource:
     url: ${POSTGRES_URL}
