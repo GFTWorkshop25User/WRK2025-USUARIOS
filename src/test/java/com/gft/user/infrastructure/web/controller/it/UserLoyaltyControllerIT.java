@@ -1,7 +1,9 @@
 package com.gft.user.infrastructure.web.controller.it;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gft.user.application.usecase.loyalty.DecrementLoyaltyPointsUseCase;
 import com.gft.user.application.usecase.loyalty.GetUserLoyaltyPointsUseCase;
+import com.gft.user.application.usecase.loyalty.IncrementLoyaltyPointsUseCase;
 import com.gft.user.infrastructure.exception.UserNotFoundException;
 import com.gft.user.infrastructure.web.controller.UserLoyaltyController;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,12 @@ class UserLoyaltyControllerIT {
 
     @MockitoBean
     private GetUserLoyaltyPointsUseCase getUserLoyaltyPointsCaseUseCase;
+
+    @MockitoBean
+    private IncrementLoyaltyPointsUseCase incrementLoyaltyPointsUseCase;
+
+    @MockitoBean
+    private DecrementLoyaltyPointsUseCase decrementLoyaltyPointsUseCase;
 
     @Test
     void should_responseNotFound_when_userNotFoundForLoyaltyPoints() throws Exception {
